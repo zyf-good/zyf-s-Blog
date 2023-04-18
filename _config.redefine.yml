@@ -21,11 +21,11 @@ info:
 # IMAGE CONFIGURATION >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> start
 defaults:
   # Favicon
-  favicon: https://tva3.sinaimg.cn/bmiddle/0047knjhgy1gumuseyrmxj60j60j674p02.jpg
+  favicon: images/lipu.jpeg
   # Site logo
-  logo: https://tva3.sinaimg.cn/bmiddle/0047knjhgy1gumuseyrmxj60j60j674p02.jpg
+  logo: images/lipu.jpeg
   # Site avatar
-  avatar: https://tva3.sinaimg.cn/bmiddle/0047knjhgy1gumuseyrmxj60j60j674p02.jpg
+  avatar: images/lipu.jpeg
 # IMAGE CONFIGURATION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
 

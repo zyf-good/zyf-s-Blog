@@ -150,7 +150,7 @@ finish
 
 这是一个配合**@Composable** 注解使用的注解，标识着可组合项可以被预览，这个注解的强大在于可以运行单个页面和查看其点击效果。试想一下如果我们只运行一个页面在手机上，是不是会快很多。
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/1a3c9441cdc846b89d59ba7230d09c35.png)
+![在这里插入图片描述](/images/3B3A9318-411D-4B89-B6CD-7C756B346216.png)
 
 这是最简单的使用，我们点进@Preview的源码
 
@@ -179,7 +179,7 @@ finish
    - uiMode—根据android.content.res.Configuration.uiMode的ui模式位掩码
 
   - device—指示要在预览中使用的设备的设备字符串。
-    ![在这里插入图片描述](https://img-blog.csdnimg.cn/361e12b1a2c64b41aa9494d52012bc15.png)
+    ![在这里插入图片描述](/images/361e12b1a2c64b41aa9494d52012bc15.png)
 
 我们将DefaultPreview改一下（ps：locale为设置不同的用户语言区域的参数；参数 uiMode 可接受任意 Configuration.UI_* 常量，并允许您相应地更改预览的行为。例如，您可以将预览设置为夜间模式，看看主题如何响应。本例中未体现）
 
@@ -204,7 +204,7 @@ fun DefaultPreview() {
 
 预览效果如下
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/6b03da867db348c6a4acb57fdfdb3da7.png)
+![在这里插入图片描述](/images/6b03da867db348c6a4acb57fdfdb3da7.png)
 注意点
 **showBackground 必须为true，backgroundColor 属性才生效，并且backgroundColor 是 ARGB Long，而不是 Color 值**
 **同一个函数可以使用多个@Preview注解**
@@ -228,7 +228,7 @@ fun DefaultPreview() {
 }
 ```
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/6e3ebe99526e4bcba3e09b30899629d9.png)
+![在这里插入图片描述](/images/6e3ebe99526e4bcba3e09b30899629d9.png)
 
 
 
@@ -479,7 +479,7 @@ fun DefaultPreview() {
 
 最后，我们通过一个分享页面的绘制来对比一下两种方式的差别，顺便熟悉下可组合项的使用方法
 
-<img src="https://img-blog.csdnimg.cn/80558c4acda64b398e9a52843cb831a5.jpeg" alt="在这里插入图片描述" style="zoom: 25%;" />
+  ![image-20230404152220446](/images/80558c4acda64b398e9a52843cb831a5.png)
 
 上图是我用xml实现的，点击按钮过后弹出二维码分享页面，下面是xml代码
 
@@ -677,7 +677,7 @@ fun DefaultPreview() {
 ## Compose实现
 
 通过上面的xml布局不难看出，我们想要实现的这个分享页面，结构如下
-<img src="https://img-blog.csdnimg.cn/975cb32ea56f4b50aa1e262e56eab84c.png" alt="在这里插入图片描述" style="zoom:200%;" />
+  ![image-20230404152220446](/images/975cb32ea56f4b50aa1e262e56eab84c.png)
 接下来我们将分享页面拆分为 二维码分享组件和底部分享组件来实现，底部分享组件在下方，二维码分享组件在中间，所以我采用了约束布局
 
 ```kotlin
@@ -711,7 +711,7 @@ fun ShareQRCode() {
 ## 1.底部分享组件
 
 让我们来分析下，底部分享组件需要哪些元素
-![在这里插入图片描述](https://img-blog.csdnimg.cn/7e64312536814309903d71be14bfd921.png)
+![在这里插入图片描述](/images/7e64312536814309903d71be14bfd921.png)
 所以我们需要这样一个结构来实现
 
 ```kotlin
@@ -743,12 +743,12 @@ Button{
 ```
 
 shape 属性设置圆角，上述代码中RoundedCornerShape分别设置左上，右上，左下，右下的圆角
-![在这里插入图片描述](https://img-blog.csdnimg.cn/86d942f964f8449db6be0b585c29280a.png)
+![在这里插入图片描述](/images/86d942f964f8449db6be0b585c29280a.png)
 
 ###  b.自定义分享按钮
 
  自定义分享按钮的样式是这样的
- <img src="https://img-blog.csdnimg.cn/c209d631cc8449ea8e6de929929f6af6.png" alt="在这里插入图片描述" style="zoom:150%;" />
+ ![在这里插入图片描述](/images/c209d631cc8449ea8e6de929929f6af6.png)
 上面是一个图片，下面是文字，然后都有一个局居中，代码如下
 
 ```kotlin
@@ -956,7 +956,8 @@ fun ImageButton(@DrawableRes id: Int, text: String, modifier: Modifier) {
 ```
 
 效果如下
-<img src="https://img-blog.csdnimg.cn/7344695b99454ad5a355f893d7ffc12c.jpeg" alt="在这里插入图片描述" style="zoom:25%;" />
+![在这里插入图片描述](/images/7344695b99454ad5a355f893d7ffc12c.jpeg)
+
 
 
 
@@ -964,7 +965,7 @@ fun ImageButton(@DrawableRes id: Int, text: String, modifier: Modifier) {
 ## 2.二维码分享组件
 
 一样的我们先分析一下
-![在这里插入图片描述](https://img-blog.csdnimg.cn/c0053df1dead413982c1524b3d9992d0.png)
+![在这里插入图片描述](/images/c0053df1dead413982c1524b3d9992d0.png)
 可以看出二维码分享组件还是比较简单，当然在绘制组件前还要定位
 
 ### a.组件居中
@@ -985,7 +986,7 @@ fun LinearLayoutQrcode(modifier: Modifier){
 ```
 
 运行出来效果如下，显而易见，这和我们理想中的效果有点偏差
-<img src="https://img-blog.csdnimg.cn/00145d66ded7497b8250a6950afb373e.png" alt="在这里插入图片描述" style="zoom: 50%;" />
+![在这里插入图片描述](/images/00145d66ded7497b8250a6950afb373e.png)
 对比了下之前的xml布局，发现我们在compose中的组件是居于父布局居中的，xml布局是上半部分布局居中的，下面我们来修改一下，将ConstraintLayout中的居中取消，并在Column中居中
 
 ```kotlin
@@ -1047,7 +1048,7 @@ fun LinearLayoutQrcode(modifier: Modifier){
 ```
 
 效果
-<img src="https://img-blog.csdnimg.cn/a72ff79407e243d0b66a5f1609d8fd35.jpeg" alt="在这里插入图片描述" style="zoom:25%;" />
+![在这里插入图片描述](/images/a72ff79407e243d0b66a5f1609d8fd35.jpeg)
 可以看到，非常理想啊，我们继续下一步
 
 ### b.顶部头像
@@ -1080,7 +1081,7 @@ fun LinearLayoutQrcode(modifier: Modifier){
 ```
 
 这就没啥好说的，比较简单，有点不习惯的就是没有了外边距，好难受好难受
-<img src="https://img-blog.csdnimg.cn/80558c4acda64b398e9a52843cb831a5.jpeg" alt="在这里插入图片描述" style="zoom:25%;" />
+![在这里插入图片描述](/images/80558c4acda64b398e9a52843cb831a5.png)
 
 ### c.二维码
 
@@ -1110,7 +1111,7 @@ fun LinearLayoutQrcode(modifier: Modifier){
 
 大功告成，让我们看看效果
 
-<img src="https://img-blog.csdnimg.cn/80558c4acda64b398e9a52843cb831a5.jpeg" alt="在这里插入图片描述" style="zoom:25%;" />
+![在这里插入图片描述](/images/80558c4acda64b398e9a52843cb831a5.png)
 
 非常的完美啊，和xml分毫不差，大功告成，完整代码
 

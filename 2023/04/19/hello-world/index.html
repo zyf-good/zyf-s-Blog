@@ -25,8 +25,8 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Welcome to Hexo ! This is your very first post. Check documentation  for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting  or you can ask me on GitHub . Q">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-04-19T01:52:03.225Z">
-<meta property="article:modified_time" content="2023-04-19T01:52:03.225Z">
+<meta property="article:published_time" content="2023-04-19T03:47:25.988Z">
+<meta property="article:modified_time" content="2023-04-19T03:47:25.988Z">
 <meta property="article:author" content="曾一峰">
 <meta name="twitter:card" content="summary">
     
@@ -226,15 +226,15 @@
                             <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2023-04-19 01:52:03</span>
-        <span class="mobile">2023-04-19 01:52</span>
+        <span class="desktop">2023-04-19 03:47:25</span>
+        <span class="mobile">2023-04-19 03:47</span>
         <span class="hover-info">创建</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-04-19 01:52:03</span>
-            <span class="mobile">2023-04-19 01:52</span>
+            <span class="desktop">2023-04-19 03:47:25</span>
+            <span class="mobile">2023-04-19 03:47</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -280,10 +280,10 @@
     <ul>
         <li><strong>标题:</strong> Hello World</li>
         <li><strong>作者:</strong> 曾一峰</li>
-        <li><strong>创建于:</strong> 2023-04-19 01:52:03</li>
+        <li><strong>创建于:</strong> 2023-04-19 03:47:25</li>
         
             <li>
-                <strong>更新于:</strong> 2023-04-19 01:52:03
+                <strong>更新于:</strong> 2023-04-19 03:47:25
             </li>
         
         <li>
@@ -303,6 +303,26 @@
             
 
             
+                <div class="article-nav">
+                    
+                        <div class="article-prev">
+                            <a class="prev"
+                            rel="prev"
+                            href="/2023/04/19/Jetpack-Compose%E5%85%A5%E9%97%A8/Jetpack-Compose%E5%85%A5%E9%97%A8/"
+                            >
+                                <span class="left arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </span>
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">Jetpack Compose入门</span>
+                                    <span class="post-nav-item">上一篇</span>
+                                </span>
+                            </a>
+                        </div>
+                    
+                    
+                </div>
+            
 
 
             
@@ -316,30 +336,43 @@
 
         
             
- 
-    <div id="waline"></div>
-    <script type="module"  data-pjax>
-        import { init } from 'https://evan.beee.top/js/waline.mjs';
+    <div id="gitalk-container"></div>
+    <script data-pjax
+            src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+    <script data-pjax>
 
-        function loadWaline() {
-            init({
-                el: '#waline',
-                serverURL: 'https://example.example.com',
-                lang: 'zh-CN',
-                dark: 'body[class~="dark-mode"]',
-                requiredMeta: ['nick','mail'], // cannot customize by theme config, change it yourself
-            });
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: 'e2c821b7e7706fb9dfe1',
+                    clientSecret: '1e3e01d441df06461eb89d2f958fa38d84bb8053',
+                    repo: 'zyf-good.github.io',
+                    owner: 'zyf-good',
+                    admin: ['zyf-good'],
+                    id: __gitalk__pathname,
+                    language: 'zh-CN'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
         }
 
         if ('true') {
-            const loadWalineTimeout = setTimeout(() => {
-                loadWaline();
-                clearTimeout(loadWalineTimeout);
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
             }, 1000);
         } else {
-            window.addEventListener('DOMContentLoaded', loadWaline);
+            window.addEventListener('DOMContentLoaded', loadGitalk);
         }
-        
     </script>
 
 

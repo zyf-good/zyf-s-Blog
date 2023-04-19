@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="曾一峰">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://evan.beee.top" crossorigin>
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://zyf-good.github.io/images/jetpack-compose入门.html"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="一.前言本篇文章将简单介绍 Jectpack Compose,只带领大家认识在安卓中Compose的使用，既然要使用Jectpack Compose，那就必须踩一捧一了（doge） 二.原生View的缺点与Compose的优点原生View的缺点 以下仅代表个人观点，不可否认view也有自己的优点  臃肿所有人一入行Android都是从xml布局开始的，都是从view开始的，不得不说作为一个基类，它">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Jetpack Compose入门">
+<meta property="og:url" content="https://zyf-good.github.io/images/Jetpack-Compose%E5%85%A5%E9%97%A8.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一.前言本篇文章将简单介绍 Jectpack Compose,只带领大家认识在安卓中Compose的使用，既然要使用Jectpack Compose，那就必须踩一捧一了（doge） 二.原生View的缺点与Compose的优点原生View的缺点 以下仅代表个人观点，不可否认view也有自己的优点  臃肿所有人一入行Android都是从xml布局开始的，都是从view开始的，不得不说作为一个基类，它">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zyf-good.github.io/images/image-20230403175158572.png">
+<meta property="og:image" content="https://zyf-good.github.io/images/image-20230404102128397.png">
+<meta property="og:image" content="https://zyf-good.github.io/images/image-20230404102342123.png">
+<meta property="og:image" content="https://zyf-good.github.io/images/image-20230404102915709.png">
+<meta property="og:image" content="https://zyf-good.github.io/images/image-20230404110658795.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/1a3c9441cdc846b89d59ba7230d09c35.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/361e12b1a2c64b41aa9494d52012bc15.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/6b03da867db348c6a4acb57fdfdb3da7.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/6e3ebe99526e4bcba3e09b30899629d9.png">
+<meta property="og:image" content="https://zyf-good.github.io/images/image-20230404114115004.png">
+<meta property="og:image" content="https://zyf-good.github.io/images/image-20230404144803400.png">
+<meta property="og:image" content="https://zyf-good.github.io/images/image-20230404145358361.png">
+<meta property="og:image" content="https://zyf-good.github.io/images/image-20230404150122732.png">
+<meta property="og:image" content="https://zyf-good.github.io/images/image-20230404152220446.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/80558c4acda64b398e9a52843cb831a5.jpeg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/975cb32ea56f4b50aa1e262e56eab84c.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/7e64312536814309903d71be14bfd921.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/86d942f964f8449db6be0b585c29280a.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/c209d631cc8449ea8e6de929929f6af6.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/7344695b99454ad5a355f893d7ffc12c.jpeg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/c0053df1dead413982c1524b3d9992d0.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/00145d66ded7497b8250a6950afb373e.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/a72ff79407e243d0b66a5f1609d8fd35.jpeg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/80558c4acda64b398e9a52843cb831a5.jpeg">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/80558c4acda64b398e9a52843cb831a5.jpeg">
+<meta property="article:published_time" content="2023-04-19T11:01:01.000Z">
+<meta property="article:modified_time" content="2023-04-19T03:47:25.988Z">
+<meta property="article:author" content="曾一峰">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zyf-good.github.io/images/image-20230403175158572.png">
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/lipu.jpeg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/lipu.jpeg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/lipu.jpeg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Jetpack Compose入门 -
+        
+        我怀里的猫的博客
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/assets/fonts.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    let Global = window.Global || {};
+    Global.hexo_config = {"hostname":"zyf-good.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    Global.theme_config = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[""]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"busuanzi_counter":{"enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"pjax":true,"open_graph":true},"home_banner":{"enable":true,"image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"一个90后安卓开发","subtitle":{"text":[""],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn/"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/zyf-good","instagram":null,"zhihu":null,"twitter":null,"email":null,"fa-solid fa-wand-magic-sparkles":"https://blog.csdn.net/shop_and_sleep?spm=1011.2124.3001.5343"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.1.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}}};
+    Global.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="main-content-container">
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+                <a class="logo-image" href="/">
+                    <img src="/images/lipu.jpeg">
+                </a>
+            
+            <a class="logo-title" href="/">
+                
+                我怀里的猫的博客
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        首页
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer">
+        <ul class="drawer-navbar-list">
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                首页
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="page-template-container">
+        
+        
+        <div class="page-template-content markdown-body">
+            
+                <h1 id="一-前言"><a href="#一-前言" class="headerlink" title="一.前言"></a>一.前言</h1><p>本篇文章将简单介绍 <strong>Jectpack Compose</strong>,只带领大家认识在安卓中Compose的使用，既然要使用<strong>Jectpack Compose</strong>，那就必须踩一捧一了（doge）</p>
+<h1 id="二-原生View的缺点与Compose的优点"><a href="#二-原生View的缺点与Compose的优点" class="headerlink" title="二.原生View的缺点与Compose的优点"></a>二.原生View的缺点与Compose的优点</h1><h2 id="原生View的缺点"><a href="#原生View的缺点" class="headerlink" title="原生View的缺点"></a>原生View的缺点</h2><blockquote>
+<p>以下仅代表个人观点，不可否认view也有自己的优点</p>
+</blockquote>
+<h2 id="臃肿"><a href="#臃肿" class="headerlink" title="臃肿"></a>臃肿</h2><p>所有人一入行Android都是从xml布局开始的，都是从view开始的，不得不说作为一个基类，它确实很强大，很成熟，但是相信大部分人都不没有去看看view的源码有多少行，今天告诉大家，一共有3468行。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/image-20230403175158572.png"
+                      alt="image-20230403175158572"
+                ></p>
+<p>是的，作为一个基类，它太臃肿了。</p>
+<hr>
+<h2 id="使用麻烦"><a href="#使用麻烦" class="headerlink" title="使用麻烦"></a>使用麻烦</h2><p>大家写xml都写习惯了，各种属性熟记于心，所以并不觉得什么，那么我们通过一个小例子来对比一下</p>
+<p>用原生View的方式声明一个文本，不谈动态更改值，你得声明一个xml吧</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;TextView</span><br><span class="line">    android:id=<span class="string">&quot;@+id/text&quot;</span></span><br><span class="line">    android:text=<span class="string">&quot;这是一条文本&quot;</span></span><br><span class="line">    android:layout_width=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">    android:layout_height=<span class="string">&quot;match_parent&quot;</span>/&gt;</span><br></pre></td></tr></table></figure></div>
+
+<p>而Compose结合kotlin的Lamda，声明一个文本，只需要一行代码</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Text(<span class="string">&quot;这是一条文本&quot;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<hr>
+<p>这两种方式的实现效果是一样的，但是很直观的你可以看到</p>
+<h2 id="预览功能不够强大"><a href="#预览功能不够强大" class="headerlink" title="预览功能不够强大"></a>预览功能不够强大</h2><p>好了有些杠精就要说了“我可以在xml布局中预览啊”，你先别急，我们再举个在工作当中的例子，当你美滋滋的完成了开发任务，正在进行UI验收时，UI跑过来跟你说，这个发布页下面有一根分割线，我的UI图里分割线是1.dp，你这里有2.dp；你看着你在xml中的预览，确实是1.dp啊，你说好我看下，一跑项目十五分钟过去了，发现确实是2.dp然后再回过头来看为什么，这但是Compose就可以直接指定运行某个页面，甚至可以切换主题和交互，而不是像xml只能看看。</p>
+<p><strong>综上所诉，高下立判，xml在现在看来确实不够优雅了</strong></p>
+<hr>
+<h1 id="Compose的优点"><a href="#Compose的优点" class="headerlink" title="Compose的优点"></a>Compose的优点</h1><h3 id="为什么采用-Compose"><a href="#为什么采用-Compose" class="headerlink" title="为什么采用 Compose"></a>为什么采用 Compose</h3><p>Jetpack Compose 是用于构建原生 Android 界面的新工具包。它使用更少的代码、强大的工具和直观的 Kotlin API，可以帮助您简化并加快 Android 界面开发，打造生动而精彩的应用。它可让您更快速、更轻松地构建 Android 界面。</p>
+<h2 id="更少的代码"><a href="#更少的代码" class="headerlink" title="更少的代码"></a>更少的代码</h2><p>编写更少的代码会影响到所有开发阶段：作为代码撰写者，需要测试和调试的代码会更少，出现 bug 的可能性也更小，您就可以专注于解决手头的问题；作为审核人员或维护人员，您需要阅读、理解、审核和维护的代码就更少。</p>
+<p>与使用 Android View 系统（按钮、列表或动画）相比，Compose 可让您使用更少的代码实现更多的功能。无论您需要构建什么内容，现在需要编写的代码都更少了。以下是我们的一些合作伙伴的感想：</p>
+<ul>
+<li>“对于相同的 Button 类，代码的体量要小 10 倍。”(Twitter)</li>
+<li>“使用 RecyclerView 构建的任何屏幕（我们的大部分屏幕都使用它构建）的大小也显著减小。”(Monzo)</li>
+<li>““只需要很少几行代码就可以在应用中创建列表或动画，这一点令我们非常满意。对于每项功能，我们编写的代码行更少了，这让我们能够将更多精力放在为客户提供价值上。”(Cuvva)</li>
+</ul>
+<p>编写代码只需要采用 Kotlin，而不必拆分成 Kotlin 和 XML 部分：“当所有代码都使用同一种语言编写并且通常位于同一文件中（而不是在 Kotlin 和 XML 语言之间来回切换）时，跟踪变得更容易”(Monzo)</p>
+<p>无论您要构建什么，使用 Compose 编写的代码都很简洁且易于维护。“Compose 的布局系统在概念上更简单，因此可以更轻松地推断。查看复杂组件的代码也更轻松。”(Square)</p>
+<h2 id="直观"><a href="#直观" class="headerlink" title="直观"></a>直观</h2><p>Compose 使用声明性 API，这意味着您只需描述界面，Compose 会负责完成其余工作。这类 API 十分直观 - 易于探索和使用：“我们的主题层更加直观，也更加清晰。我们能够在单个 Kotlin 文件中完成之前需要在多个 XML 文件中完成的任务，这些 XML 文件负责通过多个分层主题叠加层定义和分配属性。”(Twitter)</p>
+<p>利用 Compose，您可以构建不与特定 activity 或 fragment 相关联的小型无状态组件。这让您可以轻松重用和测试这些组件：“我们给自己设定的目标是，交付一组新的无状态界面组件，确保它们易于使用和维护，且可直观实现&#x2F;扩展&#x2F;自定义。就这一点而言，Compose 确实为我们提供了一个可靠的答案。”(Twitter)</p>
+<p>在 Compose 中，状态是显式的，并且会传递给相应的可组合项。这样一来，状态便具有单一可信来源，因而是封装和分离的。然后，应用状态变化时，界面会自动更新。“在对某些内容进行推断时，不必处理太多信息，并且无法控制或难以理解的行为也更少”(Cuvva)</p>
+<h2 id="加速开发"><a href="#加速开发" class="headerlink" title="加速开发"></a>加速开发</h2><p>Compose 与您所有的现有代码兼容：您可以从 View 调用 Compose 代码，也可以从 Compose 调用 View。大多数常用库（如 Navigation、ViewModel 和 Kotlin 协程）都适用于 Compose，因此您可以随时随地开始采用。“我们集成 Compose 的初衷是实现互操作性，我们发现这件事情已经‘水到渠成’。我们不必考虑浅色模式和深色模式等问题，整个体验无比顺畅。”(Cuvva)</p>
+<p>借助全面的 Android Studio 支持以及实时预览等功能，您可以更快地迭代和交付代码：“<em>Android Studio 中的预览功能极大地节省了我们的时间。构建多个预览的能力也帮我们节省了时间。我们通常需要检查不同状态下或采用不同设置的界面组件（例如错误状态或采用不同的字体大小等）。由于能够创建多个预览，我们可以轻松执行这些检查。</em>”(Square)</p>
+<h2 id="功能强大"><a href="#功能强大" class="headerlink" title="功能强大"></a>功能强大</h2><p>利用 Compose，您可以凭借对 Android 平台 API 的直接访问和对于 Material Design、深色主题、动画等的内置支持，创建精美的应用：“Compose 不仅解决了声明性界面的问题，还改进了无障碍功能 API、布局等各种内容。将设想变为现实所需的步骤更少了”(Square)。</p>
+<p>利用 Compose，您可以轻松快速地通过动画让应用变得生动有趣：“在 Compose 中添加动画效果非常简单，没有理由不去为颜色&#x2F;大小&#x2F;高度变化添加动画效果”(Monzo)，“不需要任何特殊的工具就能制作动画，这与显示静态屏幕没有什么不同”(Square)。</p>
+<p>无论您是使用 Material Design 还是自己的设计系统进行构建，Compose 都可以让您灵活地实现所需的设计：“从基础上将 Material Design 分离出来对我们来说非常有用，因为我们要构建自己的设计系统，这往往需要与 Material 不同的设计要求。”(Square)</p>
+<h1 id="三-Hello-Compose"><a href="#三-Hello-Compose" class="headerlink" title="三.Hello Compose"></a>三.Hello Compose</h1><p>光说不练假把式，我们马上操练起来。</p>
+<h2 id="先new-一个-project"><a href="#先new-一个-project" class="headerlink" title="先new 一个 project"></a>先new 一个 project</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/image-20230404102128397.png"
+                      alt="image-20230404102128397"
+                ></p>
+<h2 id="然后选择创建一个空的Compose-项目"><a href="#然后选择创建一个空的Compose-项目" class="headerlink" title="然后选择创建一个空的Compose 项目"></a>然后选择创建一个空的Compose 项目</h2><blockquote>
+<p>注意只有新版AS才有这个选项</p>
+</blockquote>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/image-20230404102342123.png"
+                      alt="image-20230404102342123"
+                ></p>
+<hr>
+<p>名字就叫Hello Compose吧</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/image-20230404102915709.png"
+                      alt="image-20230404102915709"
+                ></p>
+<p>finish</p>
+<hr>
+<p>编译完成后我们可以看到这样一个界面</p>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/image-20230404110658795.png"
+                      alt="image-20230404110658795" style="zoom: 200%;" 
+                >
+
+<p>可以看到一个适合Compose开发的环境已经搭建好了，后面的介绍也是基于此环境的。</p>
+<hr>
+<h3 id="setContent函数"><a href="#setContent函数" class="headerlink" title="setContent函数"></a>setContent函数</h3><p>与常规的setContentView函数不同setContent函数必须是activity继承ComponentActivity才能使用，并且其接收参数为声明UI内容的@Composable函数。</p>
+<h3 id="Composable-注解"><a href="#Composable-注解" class="headerlink" title="@Composable 注解"></a><strong>@Composable</strong> 注解</h3><p>我们可以看到页面中的带有 <strong>@Composable</strong> 注解的函数 <strong>Greeting()</strong> 与<strong>DefaultPreview()</strong>,它们都是被声明为UI内容的，换句话说，它们都是页面；字面意思来说，它是一个可组合项。（ps：下文所说的可组合项都是指代带有 <strong>@Composable</strong> 注解的函数）</p>
+<h3 id="Preview-注解"><a href="#Preview-注解" class="headerlink" title="@Preview 注解"></a>@Preview 注解</h3><p>这是一个配合**@Composable** 注解使用的注解，标识着可组合项可以被预览，这个注解的强大在于可以运行单个页面和查看其点击效果。试想一下如果我们只运行一个页面在手机上，是不是会快很多。</p>
+<p><img src="https://img-blog.csdnimg.cn/1a3c9441cdc846b89d59ba7230d09c35.png" alt="![在这里插入图片描述](https://img-blog.csdnimg.cn/c0fea892fcd3460792a42f68d1573215.png"></p>
+<p>这是最简单的使用，我们点进@Preview的源码</p>
+<p>参数：</p>
+<ul>
+<li><p>name-此预览的显示名称，允许在面板中识别它。</p>
+</li>
+<li><p>group-此@Preview的组名称。这允许在UI中对它们进行分组，并仅显示其中一个或多个。</p>
+</li>
+<li><p>apiLevel—呈现带注释的@Composable时使用的API级别</p>
+</li>
+<li><p>widthDp—将在其中渲染带注释的@Composable的最大DP宽度。使用此选项可以限制渲染视口的大小。</p>
+</li>
+<li><p>heightDp-将在其中渲染注释的@Composable的最大高度（以DP为单位）。使用此选项可以限制渲染视口的大小。</p>
+</li>
+<li><p>locale-区域设置的当前用户首选项，对应于区域设置资源限定符。默认情况下，将使用默认文件夹。</p>
+</li>
+<li><p>fontScale-用户首选字体的缩放因子，相对于基本密度缩放。</p>
+</li>
+<li><p>showSystemUi-如果为true，将显示设备的状态栏和操作栏。@Composable将在完整活动的上下文中呈现。</p>
+</li>
+<li><p>showBackground-如果为true，@Composable将使用默认背景色。</p>
+</li>
+<li><p>backgroundColor-背景的32位ARGB颜色int，如果未设置，则为0</p>
+</li>
+<li><p>uiMode—根据android.content.res.Configuration.uiMode的ui模式位掩码</p>
+</li>
+<li><p>device—指示要在预览中使用的设备的设备字符串。<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://img-blog.csdnimg.cn/361e12b1a2c64b41aa9494d52012bc15.png"
+                      alt="在这里插入图片描述"
+                ></p>
+</li>
+</ul>
+<p>我们将DefaultPreview改一下（ps：locale为设置不同的用户语言区域的参数；参数 uiMode 可接受任意 Configuration.UI_* 常量，并允许您相应地更改预览的行为。例如，您可以将预览设置为夜间模式，看看主题如何响应。本例中未体现）</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Preview(name = <span class="string">&quot;name&quot;</span>,</span></span><br><span class="line"><span class="meta">    group = <span class="string">&quot;group&quot;</span>,</span></span><br><span class="line"><span class="meta">    widthDp = 100,</span></span><br><span class="line"><span class="meta">    heightDp = 100,</span></span><br><span class="line"><span class="meta">    fontScale = 2f,</span></span><br><span class="line"><span class="meta">    backgroundColor = 0xFF00FF00,</span></span><br><span class="line"><span class="meta">    showBackground = true,</span></span><br><span class="line"><span class="meta">    showSystemUi = true,</span></span><br><span class="line"><span class="meta">    device = Devices.NEXUS_5</span></span><br><span class="line"><span class="meta">)</span></span><br><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">DefaultPreview</span><span class="params">()</span></span> &#123;</span><br><span class="line">    PlayComposeTheme &#123;</span><br><span class="line">        Greeting(<span class="string">&quot;Android&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>预览效果如下</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://img-blog.csdnimg.cn/6b03da867db348c6a4acb57fdfdb3da7.png"
+                      alt="在这里插入图片描述"
+                ><br>注意点<br><strong>showBackground 必须为true，backgroundColor 属性才生效，并且backgroundColor 是 ARGB Long，而不是 Color 值</strong><br><strong>同一个函数可以使用多个@Preview注解</strong></p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Preview(</span></span><br><span class="line"><span class="meta">    name = <span class="string">&quot;small font&quot;</span>,</span></span><br><span class="line"><span class="meta">    group = <span class="string">&quot;font scales&quot;</span>,</span></span><br><span class="line"><span class="meta">    fontScale = 0.5f</span></span><br><span class="line"><span class="meta">)</span></span><br><span class="line"><span class="meta">@Preview(</span></span><br><span class="line"><span class="meta">    name = <span class="string">&quot;large font&quot;</span>,</span></span><br><span class="line"><span class="meta">    group = <span class="string">&quot;font scales&quot;</span>,</span></span><br><span class="line"><span class="meta">    fontScale = 1.5f</span></span><br><span class="line"><span class="meta">)</span></span><br><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">DefaultPreview</span><span class="params">()</span></span> &#123;</span><br><span class="line">    PlayComposeTheme &#123;</span><br><span class="line">        Greeting(<span class="string">&quot;Android&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://img-blog.csdnimg.cn/6e3ebe99526e4bcba3e09b30899629d9.png"
+                      alt="在这里插入图片描述"
+                ></p>
+<blockquote>
+<p>如果要传递参数，还有**@PreviewParameter注解**可以配合使用。</p>
+</blockquote>
+<h2 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h2><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/image-20230404114115004.png"
+                      alt="image-20230404114115004"
+                ></p>
+<p>再来看看项目的结构，项目创建成功过后左侧自动帮我们建好了一个叫ui.theme的文件夹，这是Compose提供给开发者控制颜色，形状,主题，字体的文件夹，用以替代xml布局当中的drawble,values文件夹，不难看出以后Compose成熟后的想法，讲个笑话 <strong>官网说：”我们会支持java！“</strong></p>
+<p>我们主要讲下主题</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zyf.hellocompose.ui.theme</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> androidx.compose.foundation.isSystemInDarkTheme</span><br><span class="line"><span class="keyword">import</span> androidx.compose.material.MaterialTheme</span><br><span class="line"><span class="keyword">import</span> androidx.compose.material.darkColors</span><br><span class="line"><span class="keyword">import</span> androidx.compose.material.lightColors</span><br><span class="line"><span class="keyword">import</span> androidx.compose.runtime.Composable</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">val</span> DarkColorPalette = darkColors(</span><br><span class="line">    primary = Purple200,</span><br><span class="line">    primaryVariant = Purple700,</span><br><span class="line">    secondary = Teal200</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">val</span> LightColorPalette = lightColors(</span><br><span class="line">    primary = Purple500,</span><br><span class="line">    primaryVariant = Purple700,</span><br><span class="line">    secondary = Teal200</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Other default colors to override</span></span><br><span class="line"><span class="comment">    background = Color.White,</span></span><br><span class="line"><span class="comment">    surface = Color.White,</span></span><br><span class="line"><span class="comment">    onPrimary = Color.White,</span></span><br><span class="line"><span class="comment">    onSecondary = Color.Black,</span></span><br><span class="line"><span class="comment">    onBackground = Color.Black,</span></span><br><span class="line"><span class="comment">    onSurface = Color.Black,</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">HelloComposeTheme</span><span class="params">(darkTheme: <span class="type">Boolean</span> = isSystemInDarkTheme()</span></span>, content: <span class="meta">@Composable</span> () -&gt; <span class="built_in">Unit</span>) &#123;</span><br><span class="line">    <span class="keyword">val</span> colors = <span class="keyword">if</span> (darkTheme) &#123;</span><br><span class="line">        DarkColorPalette</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        LightColorPalette</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    MaterialTheme(</span><br><span class="line">        colors = colors,</span><br><span class="line">        typography = Typography,</span><br><span class="line">        shapes = Shapes,</span><br><span class="line">        content = content</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<ul>
+<li>DarkColorPalette与LightColorPalette</li>
+</ul>
+<p>深色主题与亮色主题，如果我们想要更多颜色的主题可以在这里定义，通过定义主题的主要颜色，主要变体及次要颜色等属性配置你想要的主题</p>
+<ul>
+<li><p>HelloComposeTheme</p>
+<p>项目中使用的主题，显而易见这是一个可组合项，通过判定系统的主题来切换合适的样式。一般在setContent{}中 包裹页面使用</p>
+<hr>
+</li>
+</ul>
+<h2 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h2><p>复习一下xml布局中常用的五大布局</p>
+<ul>
+<li><p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45932709/article/details/123965369#1_3" >1.线性布局 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</li>
+<li><p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45932709/article/details/123965369#2_37" >2.相对布局 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</li>
+<li><p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45932709/article/details/123965369#3_111" >3.帧布局 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</li>
+<li><p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45932709/article/details/123965369#4_129" >4.表格布局（不常用） <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+</li>
+<li><p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45932709/article/details/123965369#5_153" >5.绝对布局（不常用） <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<hr>
+</li>
+</ul>
+<p>在Compose中，也有几种布局概念，分别为</p>
+<h3 id="Column"><a href="#Column" class="headerlink" title="Column"></a>Column</h3><div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">Greeting</span><span class="params">(name: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">    Column() &#123;</span><br><span class="line">        Text(text = <span class="string">&quot;Hello <span class="variable">$name</span>!&quot;</span>)</span><br><span class="line">        Text(text = <span class="string">&quot;Hello <span class="variable">$name</span>!&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Preview(showBackground = true, showSystemUi = true)</span></span><br><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">DefaultPreview</span><span class="params">()</span></span> &#123;</span><br><span class="line">    HelloComposeTheme &#123;</span><br><span class="line">        Greeting(<span class="string">&quot;Compose&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>垂直排列元素的布局</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/image-20230404144803400.png"
+                      alt="image-20230404144803400"
+                ></p>
+<hr>
+<h3 id="Row"><a href="#Row" class="headerlink" title="Row"></a>Row</h3><div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">Greeting</span><span class="params">(name: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line"><span class="comment">//    Column() &#123;</span></span><br><span class="line"><span class="comment">//        Text(text = &quot;Hello $name!&quot;)</span></span><br><span class="line"><span class="comment">//        Text(text = &quot;Hello $name!&quot;)</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line"></span><br><span class="line">    Row() &#123;</span><br><span class="line">        Text(text = <span class="string">&quot;Hello <span class="variable">$name</span>!&quot;</span>)</span><br><span class="line">        Text(text = <span class="string">&quot;Hello <span class="variable">$name</span>!&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Preview(showBackground = true, showSystemUi = true)</span></span><br><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">DefaultPreview</span><span class="params">()</span></span> &#123;</span><br><span class="line">    HelloComposeTheme &#123;</span><br><span class="line">        Greeting(<span class="string">&quot;Compose&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>水平排列元素的布局</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/image-20230404145358361.png"
+                      alt="image-20230404145358361"
+                ></p>
+<hr>
+<h3 id="Box"><a href="#Box" class="headerlink" title="Box"></a>Box</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@Composable</span><br><span class="line">fun Greeting(name: String) &#123;</span><br><span class="line">    Box() &#123;</span><br><span class="line">        Text(text = &quot;Hello $name!&quot;,Modifier.background(Color.Green).size(200.dp))</span><br><span class="line">        Text(text = &quot;11111111111111111111&quot;,Modifier.background(Color.Yellow))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Preview(showBackground = true, showSystemUi = true)</span><br><span class="line">@Composable</span><br><span class="line">fun DefaultPreview() &#123;</span><br><span class="line">    HelloComposeTheme &#123;</span><br><span class="line">        Greeting(&quot;Compose&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>按照代码顺序堆砌在布局中</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/image-20230404150122732.png"
+                      alt="image-20230404150122732"
+                ></p>
+<p>上诉代码中<strong>Modifier</strong>为修饰符，其作用在于修饰其可组合项可以更改可组合项的大小、布局、外观，我们就更改了布局的背景和尺寸以更好的表现Box的特性</p>
+<hr>
+<h3 id="ConstraintLayout"><a href="#ConstraintLayout" class="headerlink" title="ConstraintLayout"></a>ConstraintLayout</h3><p>这个布局要使用需要添加单独的依赖</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">implementation &quot;androidx.constraintlayout:constraintlayout-compose:1.0.1&quot;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">Greeting</span><span class="params">(name: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">    ConstraintLayout()&#123;</span><br><span class="line">        <span class="keyword">val</span> (view1, view2,view3) = createRefs()</span><br><span class="line">        Box(</span><br><span class="line">            Modifier.constrainAs(view1) &#123;</span><br><span class="line">                top.linkTo(parent.top)</span><br><span class="line">                start.linkTo(parent.start)</span><br><span class="line">                end.linkTo(parent.end)</span><br><span class="line">                bottom.linkTo(parent.bottom)</span><br><span class="line">            &#125;</span><br><span class="line">                .background(Color.Green)</span><br><span class="line">                .size(<span class="number">200.</span>dp)</span><br><span class="line">        )</span><br><span class="line">        Box(</span><br><span class="line">            Modifier.constrainAs(view2) &#123;</span><br><span class="line">                top.linkTo(view1.bottom)</span><br><span class="line">                start.linkTo(view1.start)</span><br><span class="line">            &#125;</span><br><span class="line">                .background(Color.Yellow)</span><br><span class="line">                .size(<span class="number">200.</span>dp)</span><br><span class="line">        )</span><br><span class="line">        Box(</span><br><span class="line">            Modifier.constrainAs(view3) &#123;</span><br><span class="line">                bottom.linkTo(view1.top)</span><br><span class="line">                start.linkTo(view1.start)</span><br><span class="line">            &#125;</span><br><span class="line">                .background(Color.Blue)</span><br><span class="line">                .size(<span class="number">200.</span>dp)</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Preview(showBackground = true, showSystemUi = true)</span></span><br><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">DefaultPreview</span><span class="params">()</span></span> &#123;</span><br><span class="line">    HelloComposeTheme &#123;</span><br><span class="line">        Greeting(<span class="string">&quot;Compose&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;    </span><br></pre></td></tr></table></figure></div>
+
+<p>代码将根据约束来确定自己的位置，要使用ConstraintLayout需要经历下列几步操作</p>
+<ul>
+<li><p>首先要使用**createRefs()**创建约束</p>
+</li>
+<li><p>然后通过**Modifier.constrainAs()**绑定约束和制定约束</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/image-20230404152220446.png"
+                      alt="image-20230404152220446"
+                ></p>
+</li>
+</ul>
+<h1 id="四-小试牛刀"><a href="#四-小试牛刀" class="headerlink" title="四.小试牛刀"></a>四.小试牛刀</h1><p>相信看了上述的代码过后，你会发现其实很多东西和xml还是互通的，万变不离其宗嘛，只是换了一个表达方式而已；</p>
+<p>最后，我们通过一个分享页面的绘制来对比一下两种方式的差别，顺便熟悉下可组合项的使用方法</p>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://img-blog.csdnimg.cn/80558c4acda64b398e9a52843cb831a5.jpeg"
+                      alt="在这里插入图片描述" style="zoom: 25%;" 
+                >
+
+<p>上图是我用xml实现的，点击按钮过后弹出二维码分享页面，下面是xml代码</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br></pre></td><td class="code"><pre><span class="line">&lt;RelativeLayout</span><br><span class="line">    android:layout_width=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">    android:layout_height=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">    android:background=<span class="string">&quot;#99000000&quot;</span></span><br><span class="line">    android:orientation=<span class="string">&quot;vertical&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line">    &lt;RelativeLayout</span><br><span class="line">        android:layout_width=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">        android:layout_height=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">        android:layout_above=<span class="string">&quot;@+id/bottom_layout&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line">        &lt;LinearLayout</span><br><span class="line">            android:id=<span class="string">&quot;@+id/ll_qr_code&quot;</span></span><br><span class="line">            android:layout_width=<span class="string">&quot;@dimen/dp270&quot;</span></span><br><span class="line">            android:layout_height=<span class="string">&quot;@dimen/dp370&quot;</span></span><br><span class="line">            android:layout_centerInParent=<span class="string">&quot;true&quot;</span></span><br><span class="line">            android:background=<span class="string">&quot;@mipmap/self_qr_bg&quot;</span></span><br><span class="line">            android:orientation=<span class="string">&quot;vertical&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            &lt;ImageView</span><br><span class="line">                android:id=<span class="string">&quot;@+id/iv_avatar_address&quot;</span></span><br><span class="line">                android:layout_width=<span class="string">&quot;@dimen/dp40&quot;</span></span><br><span class="line">                android:layout_height=<span class="string">&quot;@dimen/dp40&quot;</span></span><br><span class="line">                android:layout_gravity=<span class="string">&quot;center&quot;</span></span><br><span class="line">                android:layout_marginTop=<span class="string">&quot;@dimen/dp13&quot;</span></span><br><span class="line">                android:src=<span class="string">&quot;@mipmap/ic_show_qccode_head&quot;</span> /&gt;</span><br><span class="line"></span><br><span class="line">            &lt;TextView</span><br><span class="line">                android:layout_width=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">                android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">                android:layout_gravity=<span class="string">&quot;center&quot;</span></span><br><span class="line">                android:layout_marginTop=<span class="string">&quot;@dimen/dp4&quot;</span></span><br><span class="line">                android:text=<span class="string">&quot;邀请你加入工队&quot;</span></span><br><span class="line">                android:textColor=<span class="string">&quot;@color/color_1C1C1C&quot;</span></span><br><span class="line">                android:textSize=<span class="string">&quot;@dimen/sp13&quot;</span> /&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            &lt;TextView</span><br><span class="line">                android:id=<span class="string">&quot;@+id/tv_title&quot;</span></span><br><span class="line">                android:layout_width=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">                android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">                android:layout_gravity=<span class="string">&quot;center&quot;</span></span><br><span class="line">                android:layout_marginTop=<span class="string">&quot;@dimen/dp3&quot;</span></span><br><span class="line">                android:ellipsize=<span class="string">&quot;end&quot;</span></span><br><span class="line">                android:singleLine=<span class="string">&quot;true&quot;</span></span><br><span class="line">                android:textColor=<span class="string">&quot;@color/color_969696&quot;</span></span><br><span class="line">                android:textSize=<span class="string">&quot;@dimen/sp12&quot;</span> /&gt;</span><br><span class="line"></span><br><span class="line">            &lt;ImageView</span><br><span class="line">                android:id=<span class="string">&quot;@+id/iv_qr_code&quot;</span></span><br><span class="line">                android:layout_width=<span class="string">&quot;@dimen/dp148&quot;</span></span><br><span class="line">                android:layout_height=<span class="string">&quot;@dimen/dp148&quot;</span></span><br><span class="line">                android:layout_gravity=<span class="string">&quot;center&quot;</span></span><br><span class="line">                android:layout_marginTop=<span class="string">&quot;@dimen/dp45&quot;</span></span><br><span class="line">                android:src=<span class="string">&quot;@mipmap/add&quot;</span> /&gt;</span><br><span class="line"></span><br><span class="line">            &lt;TextView</span><br><span class="line">                android:layout_width=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">                android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">                android:layout_gravity=<span class="string">&quot;center&quot;</span></span><br><span class="line">                android:layout_marginTop=<span class="string">&quot;@dimen/dp20&quot;</span></span><br><span class="line">                android:text=<span class="string">&quot;扫码立即加入&quot;</span></span><br><span class="line">                android:textColor=<span class="string">&quot;@color/color_666666&quot;</span></span><br><span class="line">                android:textSize=<span class="string">&quot;@dimen/sp12&quot;</span> /&gt;</span><br><span class="line"></span><br><span class="line">        &lt;/LinearLayout&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/RelativeLayout&gt;</span><br><span class="line"></span><br><span class="line">    &lt;RelativeLayout</span><br><span class="line">        android:id=<span class="string">&quot;@+id/bottom_layout&quot;</span></span><br><span class="line">        android:layout_width=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">        android:layout_height=<span class="string">&quot;@dimen/dp167&quot;</span></span><br><span class="line">        android:layout_alignParentBottom=<span class="string">&quot;true&quot;</span></span><br><span class="line">        android:background=<span class="string">&quot;@drawable/shape_top_round_white_14&quot;</span></span><br><span class="line">        android:orientation=<span class="string">&quot;vertical&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line">        &lt;LinearLayout</span><br><span class="line">            android:layout_width=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">            android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">            android:layout_marginTop=<span class="string">&quot;@dimen/dp25&quot;</span></span><br><span class="line">            android:orientation=<span class="string">&quot;horizontal&quot;</span></span><br><span class="line">            android:paddingStart=<span class="string">&quot;@dimen/dp8&quot;</span></span><br><span class="line">            android:paddingEnd=<span class="string">&quot;@dimen/dp8&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line">            &lt;TextView</span><br><span class="line">                android:id=<span class="string">&quot;@+id/tv_dingding&quot;</span></span><br><span class="line">                android:layout_width=<span class="string">&quot;@dimen/dp45&quot;</span></span><br><span class="line">                android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">                android:layout_weight=<span class="string">&quot;1&quot;</span></span><br><span class="line">                android:drawableTop=<span class="string">&quot;@mipmap/icon_details_share_dingding&quot;</span></span><br><span class="line">                android:drawablePadding=<span class="string">&quot;@dimen/dp8&quot;</span></span><br><span class="line">                android:gravity=<span class="string">&quot;center_horizontal&quot;</span></span><br><span class="line">                android:minWidth=<span class="string">&quot;@dimen/dp45&quot;</span></span><br><span class="line">                android:text=<span class="string">&quot;钉钉&quot;</span></span><br><span class="line">                android:textColor=<span class="string">&quot;@color/color_666666&quot;</span></span><br><span class="line">                android:textSize=<span class="string">&quot;12sp&quot;</span> /&gt;</span><br><span class="line"></span><br><span class="line">            &lt;TextView</span><br><span class="line">                android:id=<span class="string">&quot;@+id/tv_qq&quot;</span></span><br><span class="line">                android:layout_width=<span class="string">&quot;@dimen/dp45&quot;</span></span><br><span class="line">                android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">                android:layout_weight=<span class="string">&quot;1&quot;</span></span><br><span class="line">                android:drawableTop=<span class="string">&quot;@mipmap/icon_details_share_qq&quot;</span></span><br><span class="line">                android:drawablePadding=<span class="string">&quot;@dimen/dp8&quot;</span></span><br><span class="line">                android:gravity=<span class="string">&quot;center_horizontal&quot;</span></span><br><span class="line">                android:text=<span class="string">&quot;QQ&quot;</span></span><br><span class="line">                android:textColor=<span class="string">&quot;@color/color_666666&quot;</span></span><br><span class="line">                android:textSize=<span class="string">&quot;12sp&quot;</span> /&gt;</span><br><span class="line"></span><br><span class="line">            &lt;TextView</span><br><span class="line">                android:id=<span class="string">&quot;@+id/tv_wechat&quot;</span></span><br><span class="line">                android:layout_width=<span class="string">&quot;@dimen/dp45&quot;</span></span><br><span class="line">                android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">                android:layout_weight=<span class="string">&quot;1&quot;</span></span><br><span class="line">                android:drawableTop=<span class="string">&quot;@mipmap/icon_details_share_wechat&quot;</span></span><br><span class="line">                android:drawablePadding=<span class="string">&quot;@dimen/dp8&quot;</span></span><br><span class="line">                android:gravity=<span class="string">&quot;center_horizontal&quot;</span></span><br><span class="line">                android:text=<span class="string">&quot;微信好友&quot;</span></span><br><span class="line">                android:textColor=<span class="string">&quot;@color/color_666666&quot;</span></span><br><span class="line">                android:textSize=<span class="string">&quot;12sp&quot;</span> /&gt;</span><br><span class="line"></span><br><span class="line">            &lt;TextView</span><br><span class="line">                android:id=<span class="string">&quot;@+id/tv_wechat_moments&quot;</span></span><br><span class="line">                android:layout_width=<span class="string">&quot;@dimen/dp45&quot;</span></span><br><span class="line">                android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">                android:layout_weight=<span class="string">&quot;1&quot;</span></span><br><span class="line">                android:drawableTop=<span class="string">&quot;@mipmap/icon_details_share_wechat_moments&quot;</span></span><br><span class="line">                android:drawablePadding=<span class="string">&quot;@dimen/dp8&quot;</span></span><br><span class="line">                android:gravity=<span class="string">&quot;center_horizontal&quot;</span></span><br><span class="line">                android:text=<span class="string">&quot;朋友圈&quot;</span></span><br><span class="line">                android:textColor=<span class="string">&quot;@color/color_666666&quot;</span></span><br><span class="line">                android:textSize=<span class="string">&quot;12sp&quot;</span> /&gt;</span><br><span class="line"></span><br><span class="line">            &lt;TextView</span><br><span class="line">                android:id=<span class="string">&quot;@+id/tv_copy&quot;</span></span><br><span class="line">                android:layout_width=<span class="string">&quot;@dimen/dp45&quot;</span></span><br><span class="line">                android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">                android:layout_weight=<span class="string">&quot;1&quot;</span></span><br><span class="line">                android:drawableTop=<span class="string">&quot;@mipmap/icon_details_share_copy&quot;</span></span><br><span class="line">                android:drawablePadding=<span class="string">&quot;@dimen/dp8&quot;</span></span><br><span class="line">                android:gravity=<span class="string">&quot;center_horizontal&quot;</span></span><br><span class="line">                android:text=<span class="string">&quot;复制链接&quot;</span></span><br><span class="line">                android:textColor=<span class="string">&quot;@color/color_666666&quot;</span></span><br><span class="line">                android:textSize=<span class="string">&quot;12sp&quot;</span> /&gt;</span><br><span class="line"></span><br><span class="line">            &lt;TextView</span><br><span class="line">                android:id=<span class="string">&quot;@+id/tv_save&quot;</span></span><br><span class="line">                android:layout_width=<span class="string">&quot;@dimen/dp45&quot;</span></span><br><span class="line">                android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">                android:layout_weight=<span class="string">&quot;1&quot;</span></span><br><span class="line">                android:drawableTop=<span class="string">&quot;@mipmap/icon_details_share_save&quot;</span></span><br><span class="line">                android:drawablePadding=<span class="string">&quot;@dimen/dp8&quot;</span></span><br><span class="line">                android:gravity=<span class="string">&quot;center_horizontal&quot;</span></span><br><span class="line">                android:text=<span class="string">&quot;保存图片&quot;</span></span><br><span class="line">                android:textColor=<span class="string">&quot;@color/color_666666&quot;</span></span><br><span class="line">                android:textSize=<span class="string">&quot;12sp&quot;</span> /&gt;</span><br><span class="line"></span><br><span class="line">        &lt;/LinearLayout&gt;</span><br><span class="line"></span><br><span class="line">        &lt;TextView</span><br><span class="line">            android:id=<span class="string">&quot;@+id/tv_cancel&quot;</span></span><br><span class="line">            android:layout_width=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">            android:layout_height=<span class="string">&quot;@dimen/dp48&quot;</span></span><br><span class="line">            android:layout_alignParentBottom=<span class="string">&quot;true&quot;</span></span><br><span class="line">            android:background=<span class="string">&quot;@color/white&quot;</span></span><br><span class="line">            android:gravity=<span class="string">&quot;center&quot;</span></span><br><span class="line">            android:text=<span class="string">&quot;取消&quot;</span></span><br><span class="line">            android:textColor=<span class="string">&quot;@color/color_666666&quot;</span></span><br><span class="line">            android:textSize=<span class="string">&quot;16sp&quot;</span> /&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/RelativeLayout&gt;</span><br><span class="line"></span><br><span class="line">&lt;/RelativeLayout&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>因为是透明弹窗，所以需要一个透明弹窗的样式，这个compose也是一样的</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--透明activity的style--&gt;</span><br><span class="line">&lt;style name=<span class="string">&quot;transparent_activity&quot;</span>&gt;</span><br><span class="line">    &lt;item name=<span class="string">&quot;android:windowBackground&quot;</span>&gt;<span class="meta">@color</span>/transparent&lt;/item&gt;</span><br><span class="line">    &lt;item name=<span class="string">&quot;android:windowNoTitle&quot;</span>&gt;<span class="literal">true</span>&lt;/item&gt;</span><br><span class="line">    &lt;item name=<span class="string">&quot;android:windowIsTranslucent&quot;</span>&gt;<span class="literal">true</span>&lt;/item&gt;</span><br><span class="line">    &lt;item name=<span class="string">&quot;android:windowAnimationStyle&quot;</span>&gt;<span class="meta">@android</span>:style/Animation.Translucent&lt;/item&gt;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="Compose实现"><a href="#Compose实现" class="headerlink" title="Compose实现"></a>Compose实现</h2><p>通过上面的xml布局不难看出，我们想要实现的这个分享页面，结构如下<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://img-blog.csdnimg.cn/975cb32ea56f4b50aa1e262e56eab84c.png"
+                      alt="在这里插入图片描述" style="zoom:200%;" 
+                ><br>接下来我们将分享页面拆分为 二维码分享组件和底部分享组件来实现，底部分享组件在下方，二维码分享组件在中间，所以我采用了约束布局</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//分享页面</span></span><br><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">ShareQRCode</span><span class="params">()</span></span> &#123;</span><br><span class="line">    ConstraintLayout &#123;</span><br><span class="line">        <span class="keyword">val</span> (bottomLayout, llQrcode) = createRefs()</span><br><span class="line"></span><br><span class="line">		<span class="comment">//二维码分享组件</span></span><br><span class="line">        LinearLayoutQrcode(</span><br><span class="line">            Modifier.constrainAs(llQrcode)&#123;</span><br><span class="line">                top.linkTo(parent.top)</span><br><span class="line">                start.linkTo(parent.start)</span><br><span class="line">                end.linkTo(parent.end)</span><br><span class="line">                bottom.linkTo(parent.bottom)</span><br><span class="line">            &#125;</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">		<span class="comment">//底部分享组件</span></span><br><span class="line">        BottomLayout(</span><br><span class="line">            modifier = Modifier.constrainAs(bottomLayout) &#123;</span><br><span class="line">                bottom.linkTo(parent.bottom)</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="1-底部分享组件"><a href="#1-底部分享组件" class="headerlink" title="1.底部分享组件"></a>1.底部分享组件</h2><p>让我们来分析下，底部分享组件需要哪些元素<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://img-blog.csdnimg.cn/7e64312536814309903d71be14bfd921.png"
+                      alt="在这里插入图片描述"
+                ><br>所以我们需要这样一个结构来实现</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Column&#123;<span class="comment">//背景需要半圆角</span></span><br><span class="line"></span><br><span class="line"> Row&#123;</span><br><span class="line">	<span class="comment">//这里有六个按钮</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//取消按钮需要在底部</span></span><br><span class="line">Button&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="a-背景半圆角"><a href="#a-背景半圆角" class="headerlink" title="a.背景半圆角"></a>a.背景半圆角</h3><div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Column(</span><br><span class="line">     modifier = modifier</span><br><span class="line">         .height(<span class="number">167.</span>dp)</span><br><span class="line">         .background(</span><br><span class="line">             colorResource(R.color.color_f5f5f5),</span><br><span class="line">             shape = RoundedCornerShape(<span class="number">16.</span>dp, <span class="number">16.</span>dp, <span class="number">0.</span>dp, <span class="number">0.</span>dp)</span><br><span class="line">         )</span><br><span class="line"> )</span><br></pre></td></tr></table></figure></div>
+
+<p>shape 属性设置圆角，上述代码中RoundedCornerShape分别设置左上，右上，左下，右下的圆角<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://img-blog.csdnimg.cn/86d942f964f8449db6be0b585c29280a.png"
+                      alt="在这里插入图片描述"
+                ></p>
+<h3 id="b-自定义分享按钮"><a href="#b-自定义分享按钮" class="headerlink" title="b.自定义分享按钮"></a>b.自定义分享按钮</h3><p> 自定义分享按钮的样式是这样的<br> <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://img-blog.csdnimg.cn/c209d631cc8449ea8e6de929929f6af6.png"
+                      alt="在这里插入图片描述" style="zoom:150%;" 
+                ><br>上面是一个图片，下面是文字，然后都有一个局居中，代码如下</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">ImageButton</span><span class="params">(<span class="meta">@DrawableRes</span> id: <span class="type">Int</span>, text: <span class="type">String</span>, modifier: <span class="type">Modifier</span>)</span></span> &#123;</span><br><span class="line">    Column(</span><br><span class="line">        modifier</span><br><span class="line">            .width(<span class="number">45.</span>dp),</span><br><span class="line">    ) &#123;</span><br><span class="line">        Image(</span><br><span class="line">            painter = painterResource(id = id),</span><br><span class="line">            contentDescription = <span class="string">&quot;&quot;</span>,</span><br><span class="line">            Modifier</span><br><span class="line">                .fillMaxWidth()</span><br><span class="line">                .padding(bottom = <span class="number">8.</span>dp),</span><br><span class="line">            Alignment.Center</span><br><span class="line">        )</span><br><span class="line">        Text(</span><br><span class="line">            text = text,</span><br><span class="line">            fontSize = <span class="number">11.</span>sp,</span><br><span class="line">            color = colorResource(id = R.color.color_666666),</span><br><span class="line">            textAlign = TextAlign.Center,</span><br><span class="line">            modifier = Modifier.fillMaxWidth()</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>Alignment.Center</strong>是一个居中属性，<strong>TextAlign.Center</strong>代表文字居中，但是在实际使用中，我发现单独使用Alignment.Center并不生效，于是我搭配了Modifier.fillMaxWidth()使其生效，painterResource是使用图片资源函数</p>
+<p>然后再在row中使用，从xml中可以看到这个地方使用了权重，在compose中我们也可以用 Modifier.weight()属性来代替</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">Row(</span><br><span class="line">           Modifier</span><br><span class="line">               .fillMaxWidth()</span><br><span class="line">               .padding(<span class="number">8.</span>dp, <span class="number">25.</span>dp, <span class="number">8.</span>dp, <span class="number">0.</span>dp)</span><br><span class="line"></span><br><span class="line">       ) &#123;</span><br><span class="line">           ImageButton(</span><br><span class="line">               id = R.mipmap.icon_details_share_dingding,</span><br><span class="line">               text = <span class="string">&quot;钉钉&quot;</span>,</span><br><span class="line">               Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">           )</span><br><span class="line">           ImageButton(</span><br><span class="line">               id = R.mipmap.icon_details_share_qq,</span><br><span class="line">               text = <span class="string">&quot;QQ&quot;</span>,</span><br><span class="line">               Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">           )</span><br><span class="line">           ImageButton(</span><br><span class="line">               id = R.mipmap.icon_details_share_wechat,</span><br><span class="line">               text = <span class="string">&quot;微信好友&quot;</span>,</span><br><span class="line">               Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">           )</span><br><span class="line">           ImageButton(</span><br><span class="line">               id = R.mipmap.icon_details_share_wechat_moments,</span><br><span class="line">               text = <span class="string">&quot;朋友圈&quot;</span>,</span><br><span class="line">               Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">           )</span><br><span class="line">           ImageButton(</span><br><span class="line">               id = R.mipmap.icon_details_share_copy,</span><br><span class="line">               text = <span class="string">&quot;复制链接&quot;</span>,</span><br><span class="line">               Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">           )</span><br><span class="line">           ImageButton(</span><br><span class="line">               id = R.mipmap.icon_details_share_save,</span><br><span class="line">               text = <span class="string">&quot;保存图片&quot;</span>,</span><br><span class="line">               Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">           )</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h3 id="c-在底部的取消按钮"><a href="#c-在底部的取消按钮" class="headerlink" title="c.在底部的取消按钮"></a>c.在底部的取消按钮</h3><p> 为了学习嘛，就尝试了另外一种将控件放于底部的方式</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> Column(</span><br><span class="line">            Modifier.fillMaxHeight(),</span><br><span class="line">            Arrangement.Bottom</span><br><span class="line">        )&#123;</span><br><span class="line">Button（）&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="d-总体"><a href="#d-总体" class="headerlink" title="d.总体"></a>d.总体</h3><p>这里为了显示点击的Toast，多传递了一个context: Activity，BottomLayout完整代码如下</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">BottomLayout</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    modifier: <span class="type">Modifier</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">    context: <span class="type">Activity</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span> &#123;</span><br><span class="line">    Column(</span><br><span class="line">        modifier = modifier</span><br><span class="line">            .height(<span class="number">167.</span>dp)</span><br><span class="line">            .background(</span><br><span class="line">                colorResource(R.color.color_f5f5f5),</span><br><span class="line">                shape = RoundedCornerShape(<span class="number">16.</span>dp, <span class="number">16.</span>dp, <span class="number">0.</span>dp, <span class="number">0.</span>dp)</span><br><span class="line">            )</span><br><span class="line">    ) &#123;</span><br><span class="line">        Row(</span><br><span class="line">            Modifier</span><br><span class="line">                .fillMaxWidth()</span><br><span class="line">                .padding(<span class="number">8.</span>dp, <span class="number">25.</span>dp, <span class="number">8.</span>dp, <span class="number">0.</span>dp)</span><br><span class="line"></span><br><span class="line">        ) &#123;</span><br><span class="line">            ImageButton(</span><br><span class="line">                id = R.mipmap.icon_details_share_dingding,</span><br><span class="line">                text = <span class="string">&quot;钉钉&quot;</span>,</span><br><span class="line">                Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">            )</span><br><span class="line">            ImageButton(</span><br><span class="line">                id = R.mipmap.icon_details_share_qq,</span><br><span class="line">                text = <span class="string">&quot;QQ&quot;</span>,</span><br><span class="line">                Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">            )</span><br><span class="line">            ImageButton(</span><br><span class="line">                id = R.mipmap.icon_details_share_wechat,</span><br><span class="line">                text = <span class="string">&quot;微信好友&quot;</span>,</span><br><span class="line">                Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">            )</span><br><span class="line">            ImageButton(</span><br><span class="line">                id = R.mipmap.icon_details_share_wechat_moments,</span><br><span class="line">                text = <span class="string">&quot;朋友圈&quot;</span>,</span><br><span class="line">                Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">            )</span><br><span class="line">            ImageButton(</span><br><span class="line">                id = R.mipmap.icon_details_share_copy,</span><br><span class="line">                text = <span class="string">&quot;复制链接&quot;</span>,</span><br><span class="line">                Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">            )</span><br><span class="line">            ImageButton(</span><br><span class="line">                id = R.mipmap.icon_details_share_save,</span><br><span class="line">                text = <span class="string">&quot;保存图片&quot;</span>,</span><br><span class="line">                Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">            )</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Column(</span><br><span class="line">            Modifier.fillMaxHeight(),</span><br><span class="line">            Arrangement.Bottom</span><br><span class="line">        ) &#123;</span><br><span class="line">            Button(</span><br><span class="line">                onClick = &#123;</span><br><span class="line">                    Toast.makeText(context, <span class="string">&quot;取消分享&quot;</span>, Toast.LENGTH_SHORT).show()</span><br><span class="line">                    context.finish()</span><br><span class="line"></span><br><span class="line">                &#125;,</span><br><span class="line">                Modifier.fillMaxWidth(),</span><br><span class="line">                colors = ButtonDefaults.buttonColors(</span><br><span class="line">                    containerColor = Color.White</span><br><span class="line">                ),</span><br><span class="line">                shape = RoundedCornerShape(<span class="number">0.</span>dp)<span class="comment">//圆角</span></span><br><span class="line"></span><br><span class="line">            ) &#123;</span><br><span class="line">                Text(</span><br><span class="line">                    text = <span class="string">&quot;取消&quot;</span>,</span><br><span class="line">                    fontSize = <span class="number">16.</span>sp,</span><br><span class="line">                    textAlign = TextAlign.Center,</span><br><span class="line">                    modifier = Modifier</span><br><span class="line">                        .fillMaxWidth()</span><br><span class="line">                )</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">ImageButton</span><span class="params">(<span class="meta">@DrawableRes</span> id: <span class="type">Int</span>, text: <span class="type">String</span>, modifier: <span class="type">Modifier</span>)</span></span> &#123;</span><br><span class="line">    Column(</span><br><span class="line">        modifier</span><br><span class="line">            .width(<span class="number">45.</span>dp),</span><br><span class="line">    ) &#123;</span><br><span class="line">        Image(</span><br><span class="line">            painter = painterResource(id = id),</span><br><span class="line">            contentDescription = <span class="string">&quot;&quot;</span>,</span><br><span class="line">            Modifier</span><br><span class="line">                .fillMaxWidth()</span><br><span class="line">                .padding(bottom = <span class="number">8.</span>dp),</span><br><span class="line">            Alignment.Center</span><br><span class="line">        )</span><br><span class="line">        Text(</span><br><span class="line">            text = text,</span><br><span class="line">            fontSize = <span class="number">11.</span>sp,</span><br><span class="line">            color = colorResource(id = R.color.color_666666),</span><br><span class="line">            textAlign = TextAlign.Center,</span><br><span class="line">            modifier = Modifier.fillMaxWidth()</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>效果如下<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://img-blog.csdnimg.cn/7344695b99454ad5a355f893d7ffc12c.jpeg"
+                      alt="在这里插入图片描述" style="zoom:25%;" 
+                ></p>
+<h2 id="2-二维码分享组件"><a href="#2-二维码分享组件" class="headerlink" title="2.二维码分享组件"></a>2.二维码分享组件</h2><p>一样的我们先分析一下<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://img-blog.csdnimg.cn/c0053df1dead413982c1524b3d9992d0.png"
+                      alt="在这里插入图片描述"
+                ><br>可以看出二维码分享组件还是比较简单，当然在绘制组件前还要定位</p>
+<h3 id="a-组件居中"><a href="#a-组件居中" class="headerlink" title="a.组件居中"></a>a.组件居中</h3><p>首先我们让它显示出来</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">LinearLayoutQrcode</span><span class="params">(modifier: <span class="type">Modifier</span>)</span></span>&#123;</span><br><span class="line">    Column(</span><br><span class="line">        modifier.paint(painterResource(id = R.mipmap.self_qr_bg))</span><br><span class="line">            .width(<span class="number">270.</span>dp)</span><br><span class="line">            .height(<span class="number">370.</span>dp)</span><br><span class="line">    ) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>运行出来效果如下，显而易见，这和我们理想中的效果有点偏差<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://img-blog.csdnimg.cn/00145d66ded7497b8250a6950afb373e.png"
+                      alt="在这里插入图片描述" style="zoom: 50%;" 
+                ><br>对比了下之前的xml布局，发现我们在compose中的组件是居于父布局居中的，xml布局是上半部分布局居中的，下面我们来修改一下，将ConstraintLayout中的居中取消，并在Column中居中</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//引用</span></span><br><span class="line">        LinearLayoutQrcode(</span><br><span class="line">            Modifier.constrainAs(llQrcode)&#123;</span><br><span class="line"><span class="comment">//                top.linkTo(parent.top)</span></span><br><span class="line"><span class="comment">//                start.linkTo(parent.start)</span></span><br><span class="line"><span class="comment">//                end.linkTo(parent.end)</span></span><br><span class="line"><span class="comment">//                bottom.linkTo(parent.bottom)</span></span><br><span class="line">            &#125;</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">LinearLayoutQrcode</span><span class="params">(modifier: <span class="type">Modifier</span>)</span></span>&#123;</span><br><span class="line">    Column(</span><br><span class="line">        modifier.paint(painterResource(id = R.mipmap.self_qr_bg))</span><br><span class="line">            .fillMaxSize(),</span><br><span class="line">        verticalArrangement = Arrangement.Center,</span><br><span class="line">        horizontalAlignment = Alignment.CenterHorizontally</span><br><span class="line"></span><br><span class="line">    ) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>然而并没有变化，给我干蒙了，在仔细检查后，我觉得可能是因为LinearLayoutQrcode使用的是父布局的modifier，所以fillMaxSize属性也是父布局的，所以我用了另外一个办法，先让LinearLayoutQrcode组件设置一个和BottomLayout高度一样的外边距，然后再让它居中，就能实现我们想要的效果，可是compose没有外边距，所以我多包了一层Column，代码如下</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//引用</span></span><br><span class="line">        LinearLayoutQrcode(</span><br><span class="line">            Modifier.constrainAs(llQrcode)&#123;</span><br><span class="line">                top.linkTo(parent.top)</span><br><span class="line">                start.linkTo(parent.start)</span><br><span class="line">                end.linkTo(parent.end)</span><br><span class="line">                bottom.linkTo(parent.bottom)</span><br><span class="line">            &#125;</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">LinearLayoutQrcode</span><span class="params">(modifier: <span class="type">Modifier</span>)</span></span>&#123;</span><br><span class="line">    Column(</span><br><span class="line">        modifier</span><br><span class="line">            .padding(bottom = <span class="number">167.</span>dp)</span><br><span class="line">    ) &#123;</span><br><span class="line"></span><br><span class="line">        Column(</span><br><span class="line">            Modifier.paint(painterResource(id = R.mipmap.self_qr_bg)),</span><br><span class="line">            horizontalAlignment = Alignment.CenterHorizontally</span><br><span class="line">        ) &#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>效果<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://img-blog.csdnimg.cn/a72ff79407e243d0b66a5f1609d8fd35.jpeg"
+                      alt="在这里插入图片描述" style="zoom:25%;" 
+                ><br>可以看到，非常理想啊，我们继续下一步</p>
+<h3 id="b-顶部头像"><a href="#b-顶部头像" class="headerlink" title="b.顶部头像"></a>b.顶部头像</h3><div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Image(</span><br><span class="line">               painter = painterResource(id = R.mipmap.ic_show_qccode_head),</span><br><span class="line">               contentDescription = <span class="string">&quot;默认头像&quot;</span>,</span><br><span class="line">               Modifier</span><br><span class="line">                   .width(<span class="number">53.</span>dp)</span><br><span class="line">                   .height(<span class="number">53.</span>dp)</span><br><span class="line">                   .padding(top = <span class="number">13.</span>dp)</span><br><span class="line">           )</span><br><span class="line">           Text(</span><br><span class="line">               text = <span class="string">&quot;邀请你加入工队&quot;</span>,</span><br><span class="line">               color = colorResource(id = R.color.color_1C1C1C),</span><br><span class="line">               fontSize = <span class="number">13.</span>sp,</span><br><span class="line">               textAlign = TextAlign.Center,</span><br><span class="line">               modifier = Modifier</span><br><span class="line">                   .fillMaxWidth()</span><br><span class="line">           )</span><br><span class="line">           Text(</span><br><span class="line">               text = <span class="string">&quot;水电费-试一试1-施工队&quot;</span>, color = colorResource(id = R.color.color_969696),</span><br><span class="line">               fontSize = <span class="number">12.</span>sp,</span><br><span class="line">               textAlign = TextAlign.Center,</span><br><span class="line">               modifier = Modifier</span><br><span class="line">                   .fillMaxWidth()</span><br><span class="line">                   .padding(top = <span class="number">3.</span>dp)</span><br><span class="line">           )</span><br></pre></td></tr></table></figure></div>
+
+<p>这就没啥好说的，比较简单，有点不习惯的就是没有了外边距，好难受好难受<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://img-blog.csdnimg.cn/80558c4acda64b398e9a52843cb831a5.jpeg"
+                      alt="在这里插入图片描述" style="zoom:25%;" 
+                ></p>
+<h3 id="c-二维码"><a href="#c-二维码" class="headerlink" title="c.二维码"></a>c.二维码</h3><p>最后加上二维码</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Image(</span><br><span class="line">               painter = painterResource(id = R.mipmap.qrcode),</span><br><span class="line">               contentDescription = <span class="string">&quot;默认头像&quot;</span>,</span><br><span class="line">               Modifier</span><br><span class="line">                   .width(<span class="number">193.</span>dp)</span><br><span class="line">                   .height(<span class="number">193.</span>dp)</span><br><span class="line">                   .padding(top = <span class="number">45.</span>dp),</span><br><span class="line"></span><br><span class="line">               )</span><br><span class="line"></span><br><span class="line">           Text(</span><br><span class="line">               text = <span class="string">&quot;扫码立即加入&quot;</span>,</span><br><span class="line">               color = colorResource(id = R.color.color_666666),</span><br><span class="line">               fontSize = <span class="number">12.</span>sp,</span><br><span class="line">               textAlign = TextAlign.Center,</span><br><span class="line">               modifier = Modifier</span><br><span class="line">                   .fillMaxWidth()</span><br><span class="line">                   .padding(top = <span class="number">20.</span>dp)</span><br><span class="line">           )</span><br></pre></td></tr></table></figure></div>
+
+<p>大功告成，让我们看看效果</p>
+<img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://img-blog.csdnimg.cn/80558c4acda64b398e9a52843cb831a5.jpeg"
+                      alt="在这里插入图片描述" style="zoom:25%;" 
+                >
+
+<p>非常的完美啊，和xml分毫不差，大功告成，完整代码</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xf.mycomepose</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.app.Activity</span><br><span class="line"><span class="keyword">import</span> android.content.Context</span><br><span class="line"><span class="keyword">import</span> android.os.Bundle</span><br><span class="line"><span class="keyword">import</span> android.widget.ImageButton</span><br><span class="line"><span class="keyword">import</span> android.widget.Toast</span><br><span class="line"><span class="keyword">import</span> androidx.activity.ComponentActivity</span><br><span class="line"><span class="keyword">import</span> androidx.activity.compose.setContent</span><br><span class="line"><span class="keyword">import</span> androidx.<span class="keyword">annotation</span>.DrawableRes</span><br><span class="line"><span class="keyword">import</span> androidx.compose.foundation.Image</span><br><span class="line"><span class="keyword">import</span> androidx.compose.foundation.background</span><br><span class="line"><span class="keyword">import</span> androidx.compose.foundation.layout.*</span><br><span class="line"><span class="keyword">import</span> androidx.compose.foundation.shape.CornerBasedShape</span><br><span class="line"><span class="keyword">import</span> androidx.compose.foundation.shape.CornerSize</span><br><span class="line"><span class="keyword">import</span> androidx.compose.foundation.shape.RoundedCornerShape</span><br><span class="line"><span class="keyword">import</span> androidx.compose.material3.*</span><br><span class="line"><span class="keyword">import</span> androidx.compose.runtime.Composable</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.Alignment</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.Modifier</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.draw.drawBehind</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.draw.paint</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.graphics.Color</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.graphics.RectangleShape</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.res.colorResource</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.res.painterResource</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.text.style.TextAlign</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.tooling.preview.Preview</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.unit.dp</span><br><span class="line"><span class="keyword">import</span> androidx.compose.ui.unit.sp</span><br><span class="line"><span class="keyword">import</span> androidx.constraintlayout.compose.ConstraintLayout</span><br><span class="line"><span class="keyword">import</span> com.xf.mycomepose.ui.theme.MyComeposeTheme</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ShareQRCodeActivity</span> : <span class="type">ComponentActivity</span>() &#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        setContent &#123;</span><br><span class="line">            MyComeposeTheme &#123;</span><br><span class="line">                <span class="comment">// A surface container using the &#x27;background&#x27; color from the theme</span></span><br><span class="line">                Surface(</span><br><span class="line">                    modifier = Modifier.fillMaxSize(),</span><br><span class="line">                    color = Color(<span class="number">99000000</span>)</span><br><span class="line">                ) &#123;</span><br><span class="line">                    ShareQRCode(<span class="keyword">this</span><span class="symbol">@ShareQRCodeActivity</span>)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">ShareQRCode</span><span class="params">(context: <span class="type">Activity</span>)</span></span> &#123;</span><br><span class="line">    ConstraintLayout &#123;</span><br><span class="line">        <span class="keyword">val</span> (bottomLayout, llQrcode) = createRefs()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        LinearLayoutQrcode(</span><br><span class="line">            Modifier.constrainAs(llQrcode) &#123;</span><br><span class="line">                top.linkTo(parent.top)</span><br><span class="line">                start.linkTo(parent.start)</span><br><span class="line">                end.linkTo(parent.end)</span><br><span class="line">                bottom.linkTo(parent.bottom)</span><br><span class="line">            &#125;</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        BottomLayout(</span><br><span class="line">            modifier = Modifier.constrainAs(bottomLayout) &#123;</span><br><span class="line">                bottom.linkTo(parent.bottom)</span><br><span class="line">            &#125;,</span><br><span class="line">            context = context</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">LinearLayoutQrcode</span><span class="params">(modifier: <span class="type">Modifier</span>)</span></span> &#123;</span><br><span class="line">    Column(</span><br><span class="line">        modifier</span><br><span class="line">            .padding(bottom = <span class="number">167.</span>dp)</span><br><span class="line">    ) &#123;</span><br><span class="line"></span><br><span class="line">        Column(</span><br><span class="line">            Modifier.paint(painterResource(id = R.mipmap.self_qr_bg)),</span><br><span class="line">            horizontalAlignment = Alignment.CenterHorizontally</span><br><span class="line">        ) &#123;</span><br><span class="line"></span><br><span class="line">            Image(</span><br><span class="line">                painter = painterResource(id = R.mipmap.ic_show_qccode_head),</span><br><span class="line">                contentDescription = <span class="string">&quot;默认头像&quot;</span>,</span><br><span class="line">                Modifier</span><br><span class="line">                    .width(<span class="number">53.</span>dp)</span><br><span class="line">                    .height(<span class="number">53.</span>dp)</span><br><span class="line">                    .padding(top = <span class="number">13.</span>dp)</span><br><span class="line">            )</span><br><span class="line">            Text(</span><br><span class="line">                text = <span class="string">&quot;邀请你加入工队&quot;</span>,</span><br><span class="line">                color = colorResource(id = R.color.color_1C1C1C),</span><br><span class="line">                fontSize = <span class="number">13.</span>sp,</span><br><span class="line">                textAlign = TextAlign.Center,</span><br><span class="line">                modifier = Modifier</span><br><span class="line">                    .fillMaxWidth()</span><br><span class="line">            )</span><br><span class="line">            Text(</span><br><span class="line">                text = <span class="string">&quot;水电费-试一试1-施工队&quot;</span>,</span><br><span class="line">                color = colorResource(id = R.color.color_969696),</span><br><span class="line">                fontSize = <span class="number">12.</span>sp,</span><br><span class="line">                textAlign = TextAlign.Center,</span><br><span class="line">                modifier = Modifier</span><br><span class="line">                    .fillMaxWidth()</span><br><span class="line">                    .padding(top = <span class="number">3.</span>dp)</span><br><span class="line">            )</span><br><span class="line">            Image(</span><br><span class="line">                painter = painterResource(id = R.mipmap.qrcode),</span><br><span class="line">                contentDescription = <span class="string">&quot;默认头像&quot;</span>,</span><br><span class="line">                Modifier</span><br><span class="line">                    .width(<span class="number">193.</span>dp)</span><br><span class="line">                    .height(<span class="number">193.</span>dp)</span><br><span class="line">                    .padding(top = <span class="number">45.</span>dp),</span><br><span class="line"></span><br><span class="line">                )</span><br><span class="line"></span><br><span class="line">            Text(</span><br><span class="line">                text = <span class="string">&quot;扫码立即加入&quot;</span>,</span><br><span class="line">                color = colorResource(id = R.color.color_666666),</span><br><span class="line">                fontSize = <span class="number">12.</span>sp,</span><br><span class="line">                textAlign = TextAlign.Center,</span><br><span class="line">                modifier = Modifier</span><br><span class="line">                    .fillMaxWidth()</span><br><span class="line">                    .padding(top = <span class="number">20.</span>dp)</span><br><span class="line">            )</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">BottomLayout</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    modifier: <span class="type">Modifier</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">    context: <span class="type">Activity</span></span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span> &#123;</span><br><span class="line">    Column(</span><br><span class="line">        modifier = modifier</span><br><span class="line">            .height(<span class="number">167.</span>dp)</span><br><span class="line">            .background(</span><br><span class="line">                colorResource(R.color.color_f5f5f5),</span><br><span class="line">                shape = RoundedCornerShape(<span class="number">16.</span>dp, <span class="number">16.</span>dp, <span class="number">0.</span>dp, <span class="number">0.</span>dp)</span><br><span class="line">            )</span><br><span class="line">    ) &#123;</span><br><span class="line">        Row(</span><br><span class="line">            Modifier</span><br><span class="line">                .fillMaxWidth()</span><br><span class="line">                .padding(<span class="number">8.</span>dp, <span class="number">25.</span>dp, <span class="number">8.</span>dp, <span class="number">0.</span>dp)</span><br><span class="line"></span><br><span class="line">        ) &#123;</span><br><span class="line">            ImageButton(</span><br><span class="line">                id = R.mipmap.icon_details_share_dingding,</span><br><span class="line">                text = <span class="string">&quot;钉钉&quot;</span>,</span><br><span class="line">                Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">            )</span><br><span class="line">            ImageButton(</span><br><span class="line">                id = R.mipmap.icon_details_share_qq,</span><br><span class="line">                text = <span class="string">&quot;QQ&quot;</span>,</span><br><span class="line">                Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">            )</span><br><span class="line">            ImageButton(</span><br><span class="line">                id = R.mipmap.icon_details_share_wechat,</span><br><span class="line">                text = <span class="string">&quot;微信好友&quot;</span>,</span><br><span class="line">                Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">            )</span><br><span class="line">            ImageButton(</span><br><span class="line">                id = R.mipmap.icon_details_share_wechat_moments,</span><br><span class="line">                text = <span class="string">&quot;朋友圈&quot;</span>,</span><br><span class="line">                Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">            )</span><br><span class="line">            ImageButton(</span><br><span class="line">                id = R.mipmap.icon_details_share_copy,</span><br><span class="line">                text = <span class="string">&quot;复制链接&quot;</span>,</span><br><span class="line">                Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">            )</span><br><span class="line">            ImageButton(</span><br><span class="line">                id = R.mipmap.icon_details_share_save,</span><br><span class="line">                text = <span class="string">&quot;保存图片&quot;</span>,</span><br><span class="line">                Modifier.weight(<span class="number">1f</span>)</span><br><span class="line">            )</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Column(</span><br><span class="line">            Modifier.fillMaxHeight(),</span><br><span class="line">            Arrangement.Bottom</span><br><span class="line">        ) &#123;</span><br><span class="line">            Button(</span><br><span class="line">                onClick = &#123;</span><br><span class="line">                    Toast.makeText(context, <span class="string">&quot;取消分享&quot;</span>, Toast.LENGTH_SHORT).show()</span><br><span class="line">                    context.finish()</span><br><span class="line"></span><br><span class="line">                &#125;,</span><br><span class="line">                Modifier.fillMaxWidth(),</span><br><span class="line">                colors = ButtonDefaults.buttonColors(</span><br><span class="line">                    containerColor = Color.White</span><br><span class="line">                ),</span><br><span class="line">                shape = RoundedCornerShape(<span class="number">0.</span>dp)<span class="comment">//圆角</span></span><br><span class="line"></span><br><span class="line">            ) &#123;</span><br><span class="line">                Text(</span><br><span class="line">                    text = <span class="string">&quot;取消&quot;</span>,</span><br><span class="line">                    fontSize = <span class="number">16.</span>sp,</span><br><span class="line">                    textAlign = TextAlign.Center,</span><br><span class="line">                    modifier = Modifier</span><br><span class="line">                        .fillMaxWidth()</span><br><span class="line">                )</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@Composable</span></span><br><span class="line"><span class="function"><span class="keyword">fun</span> <span class="title">ImageButton</span><span class="params">(<span class="meta">@DrawableRes</span> id: <span class="type">Int</span>, text: <span class="type">String</span>, modifier: <span class="type">Modifier</span>)</span></span> &#123;</span><br><span class="line">    Column(</span><br><span class="line">        modifier</span><br><span class="line">            .width(<span class="number">45.</span>dp),</span><br><span class="line">    ) &#123;</span><br><span class="line">        Image(</span><br><span class="line">            painter = painterResource(id = id),</span><br><span class="line">            contentDescription = <span class="string">&quot;&quot;</span>,</span><br><span class="line">            Modifier</span><br><span class="line">                .fillMaxWidth()</span><br><span class="line">                .padding(bottom = <span class="number">8.</span>dp),</span><br><span class="line">            Alignment.Center</span><br><span class="line">        )</span><br><span class="line">        Text(</span><br><span class="line">            text = text,</span><br><span class="line">            fontSize = <span class="number">11.</span>sp,</span><br><span class="line">            color = colorResource(id = R.color.color_666666),</span><br><span class="line">            textAlign = TextAlign.Center,</span><br><span class="line">            modifier = Modifier.fillMaxWidth()</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>在MainActivity中跳转到这个页面</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> intent = Intent()</span><br><span class="line">        intent.setClass(<span class="keyword">this</span>, ShareQRCodeActivity::<span class="keyword">class</span>.java)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Button(</span><br><span class="line">            onClick = &#123;</span><br><span class="line">                startActivity(mainActivity, intent, <span class="literal">null</span>);</span><br><span class="line">            &#125;,</span><br><span class="line">            modifier = Modifier.constrainAs(button) &#123;</span><br><span class="line">                top.linkTo(parent.top)</span><br><span class="line">                start.linkTo(parent.start)</span><br><span class="line">                end.linkTo(parent.end)</span><br><span class="line">                bottom.linkTo(parent.bottom)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        ) &#123;</span><br><span class="line">            Text(text = <span class="string">&quot;Hello <span class="variable">$name</span>!&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>别忘了透明主题</p>
+
+            
+        </div>
+        <div class="page-template-comments">
+            
+        </div>
+    </div>
+</div>
+
+
+                
+
+            </div>
+            
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2023&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">曾一峰</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            <span class="powered-by-container">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 驱动</span>
+                <br>
+            <span class="theme-version-container">主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.1.2</a>
+        </div>
+        
+        
+        
+            <div id="start_div" style="display:none">
+                2023/4/18 12:00:00
+            </div>
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+        
+            <script async data-pjax>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-expand-width flex-center">
+            <i class="fa-regular fa-expand"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/layouts/navbarShrink.js"></script>
+
+<script src="/js/tools/scrollTopBottom.js"></script>
+
+<script src="/js/tools/lightDarkSwitch.js"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/layouts/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js"></script>
+
+
+
+
+
+
+
+<div class="post-scripts pjax">
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax',
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            Global.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            Global.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            Global.refresh();
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>

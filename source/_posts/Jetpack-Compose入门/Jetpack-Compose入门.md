@@ -1,7 +1,9 @@
 ---
 title: Jetpack Compose入门
 date: 2023-04-19 11:01:01
-tags:
+tags: Jetpack Compose
+categories: andorid
+thumbnail: "/images/jp_fengmian.jpg"
 ---
 
 # 一.前言

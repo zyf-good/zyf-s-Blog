@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="曾一峰">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://evan.beee.top" crossorigin>
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://zyf-good.github.io/2022/05/11/andriod-andserver-全局转发代理（部分接口在本地）的实现思路/andriod-andserver-全局转发代理（部分接口在本地）的实现思路/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="前言AndServer 是 Android 平台的 Web Server 和 Web Framework。 它基于编译时注解提供了类似 SpringMVC 的注解和功能，如果您熟悉 SpringMVC，则可以非常快速地掌握它。—-yanzhenjie 参考资料 链接:源码地址 https:&#x2F;&#x2F;github.com&#x2F;yanzhenjie&#x2F;AndServer&#x2F; .  链接:文档地址 https:&#x2F;&#x2F;y">
+<meta property="og:type" content="article">
+<meta property="og:title" content="andriod andserver 全局转发代理（部分接口在本地）的实现思路">
+<meta property="og:url" content="https://zyf-good.github.io/2022/05/11/andriod-andserver-%E5%85%A8%E5%B1%80%E8%BD%AC%E5%8F%91%E4%BB%A3%E7%90%86%EF%BC%88%E9%83%A8%E5%88%86%E6%8E%A5%E5%8F%A3%E5%9C%A8%E6%9C%AC%E5%9C%B0%EF%BC%89%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF/andriod-andserver-%E5%85%A8%E5%B1%80%E8%BD%AC%E5%8F%91%E4%BB%A3%E7%90%86%EF%BC%88%E9%83%A8%E5%88%86%E6%8E%A5%E5%8F%A3%E5%9C%A8%E6%9C%AC%E5%9C%B0%EF%BC%89%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言AndServer 是 Android 平台的 Web Server 和 Web Framework。 它基于编译时注解提供了类似 SpringMVC 的注解和功能，如果您熟悉 SpringMVC，则可以非常快速地掌握它。—-yanzhenjie 参考资料 链接:源码地址 https:&#x2F;&#x2F;github.com&#x2F;yanzhenjie&#x2F;AndServer&#x2F; .  链接:文档地址 https:&#x2F;&#x2F;y">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zyf-good.github.io/images/e245f3d9f01e4ea6af2f7f35e8e8c9ff.jpg">
+<meta property="og:image" content="https://zyf-good.github.io/images/e245f3d9f01e4ea6af2f7f35e8e8c9ff.jpg">
+<meta property="og:image" content="https://zyf-good.github.io/images/e245f3d9f01e4ea6af2f7f35e8e8c9ff.jpg">
+<meta property="og:image" content="https://zyf-good.github.io/images/e245f3d9f01e4ea6af2f7f35e8e8c9ff.jpg">
+<meta property="og:image" content="https://zyf-good.github.io/images/e245f3d9f01e4ea6af2f7f35e8e8c9ff.jpg">
+<meta property="article:published_time" content="2022-05-11T11:36:15.000Z">
+<meta property="article:modified_time" content="2023-04-20T08:12:38.503Z">
+<meta property="article:author" content="曾一峰">
+<meta property="article:tag" content="Andserver">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zyf-good.github.io/images/e245f3d9f01e4ea6af2f7f35e8e8c9ff.jpg">
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/android_icon.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/android_icon.png">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/android_icon.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            andriod andserver 全局转发代理（部分接口在本地）的实现思路 -
+        
+        我怀里的猫的博客
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/assets/fonts.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    let Global = window.Global || {};
+    Global.hexo_config = {"hostname":"zyf-good.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    Global.theme_config = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[""]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"busuanzi_counter":{"enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"pjax":true,"open_graph":true},"home_banner":{"enable":true,"image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"一个90后安卓开发","subtitle":{"text":[""],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn/"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/zyf-good","instagram":null,"zhihu":null,"twitter":null,"email":null,"fa-solid fa-solid fa-c":"https://blog.csdn.net/shop_and_sleep?spm=1011.2124.3001.5343"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"Imagine","artist":"John Lennon","url":"https://evan.beee.top/music/Imagine%20-%20John%20Lennon.mp3","cover":"https://evan.beee.top/music/covers/Lennon_Imagine_Sleeve_1975.jpg"},{"name":"Something Just Like This","artist":"Coldplay","url":"https://evan.beee.top/music/Something%20Just%20Like%20This%20-%20The%20Chainsmokers%E3%80%81Coldplay.mp3","cover":"https://evan.beee.top/music/covers/Something_Just_Like_This.png"}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.1.2","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive","tags":null},"Tags":{"icon":"fa-solid fa-tags","path":"/tags/"},"Categories":{"icon":"fa-solid fa-folder","path":"/categories/"},"About":{"icon":"fa-regular fa-user","submenus":{"博主":"/about","Github":"https://github.com/zyf-good","CSDN":"https://blog.csdn.net/shop_and_sleep/"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}}};
+    Global.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="main-content-container">
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                我怀里的猫的博客
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        首页
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        归档
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/tags/"  >
+                                    
+                                        
+                                            <i class="fa-solid fa-tags"></i>
+                                        
+                                        标签
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories/"  >
+                                    
+                                        
+                                            <i class="fa-solid fa-folder"></i>
+                                        
+                                        分类
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        关于&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">博主
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/zyf-good">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://blog.csdn.net/shop_and_sleep/">CSDN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer">
+        <ul class="drawer-navbar-list">
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                首页
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                归档
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/tags/"  >
+                             
+                                
+                                    <i class="fa-solid fa-tags"></i>
+                                
+                                标签
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/categories/"  >
+                             
+                                
+                                    <i class="fa-solid fa-folder"></i>
+                                
+                                分类
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                关于&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="dropdown-item flex-center">
+                                <a class="dropdown-item" href="/about">博主</a>
+                            </li>
+                        
+                            <li class="dropdown-item flex-center">
+                                <a class="dropdown-item" target="_blank" rel="noopener" href="https://github.com/zyf-good">GITHUB</a>
+                            </li>
+                        
+                            <li class="dropdown-item flex-center">
+                                <a class="dropdown-item" target="_blank" rel="noopener" href="https://blog.csdn.net/shop_and_sleep/">CSDN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container">
+        <div class="article-content-container">
+
+            
+                      
+                <div class="article-title">
+                    <img src="/images/jp_fengmian.jpg" alt="andriod andserver 全局转发代理（部分接口在本地）的实现思路" />
+                    <h1 class="article-title-cover">andriod andserver 全局转发代理（部分接口在本地）的实现思路</h1>
+                </div>
+            
+                
+            
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="/images/lipu.jpeg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">曾一峰</span>
+                            
+                                <span class="author-label"></span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2022-05-11 11:36:15</span>
+        <span class="mobile">2022-05-11 11:36</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-04-20 08:12:38</span>
+            <span class="mobile">2023-04-20 08:12</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/andorid/">andorid</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Andserver/">Andserver</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content markdown-body">
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>AndServer 是 Android 平台的 Web Server 和 Web Framework。 它基于编译时注解提供了类似 SpringMVC 的注解和功能，如果您熟悉 SpringMVC，则可以非常快速地掌握它。—-yanzhenjie</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p> 链接:源码地址 <a class="link"   target="_blank" rel="noopener" href="https://github.com/yanzhenjie/AndServer/" >https://github.com/yanzhenjie/AndServer/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.<br>  链接:文档地址 <a class="link"   target="_blank" rel="noopener" href="https://yanzhenjie.github.io/AndServer/" >https://yanzhenjie.github.io/AndServer/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.<br>   链接:旧版文档 <a class="link"   target="_blank" rel="noopener" href="https://yanzhenjie.github.io/AndServer/1.x/" >https://yanzhenjie.github.io/AndServer/1.x/ <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.</p>
+<h1 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h1><h3 id="业务需求"><a href="#业务需求" class="headerlink" title="业务需求"></a>业务需求</h3><p>项目采用了andserver的架构来实现一个安卓端的网络框架，由一个webview套一个网页发请求到andserver，但是很多接口是需要中台处理的。</p>
+<p>安卓端代码大概是这样的：<br>  项目前期在andserver的接口接收到请求后，使用retrofit转发给中台，接收到中台的请求后，再由andserver返回给网页；甚至有的接口需要在安卓端做一些处理然后再转发。    </p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">    @<span class="title class_">RequestMapping</span>(method = &#123;<span class="title class_">RequestMethod</span>.<span class="property">OPTIONS</span>, <span class="title class_">RequestMethod</span>.<span class="property">GET</span>&#125;, path = <span class="string">&quot;/test&quot;</span>)</span><br><span class="line">    public <span class="title class_">AndroidResponse</span> <span class="title function_">test</span>(@<span class="title class_">RequestParam</span>(<span class="string">&quot;organizationId&quot;</span>) <span class="title class_">String</span> store, @<span class="title class_">RequestParam</span>(<span class="string">&quot;customerId&quot;</span>) <span class="title class_">String</span> customer) throws <span class="title class_">IOException</span> &#123;</span><br><span class="line">        <span class="title class_">AndroidResponse</span> response = <span class="keyword">new</span> <span class="title class_">AndroidResponse</span>();</span><br><span class="line">        <span class="comment">//这里可以自己做处理(请求前)</span></span><br><span class="line">        <span class="title class_">Call</span>&lt;<span class="title class_">AndroidResponse</span>&gt; call = api.<span class="title function_">test</span>(store, customer);</span><br><span class="line">        <span class="title class_">Response</span>&lt;<span class="title class_">AndroidResponse</span>&gt; responseResponse = call.<span class="title function_">execute</span>();</span><br><span class="line">        <span class="keyword">if</span> (!responseResponse.<span class="title function_">isSuccessful</span>() || responseResponse.<span class="title function_">errorBody</span>() != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="title class_">Logger</span>.<span class="title function_">err</span>(<span class="string">&quot;Unable to sysLookupItem request:isSuccessful&quot;</span> + responseResponse.<span class="title function_">isSuccessful</span>() + <span class="string">&quot;,errorBody:&quot;</span> + responseResponse.<span class="title function_">errorBody</span>());</span><br><span class="line"><span class="comment">//                throw new RuntimeException(&quot;Unable to reqeust&quot;);</span></span><br><span class="line">            <span class="title class_">List</span>&lt;<span class="title class_">LookupitemModel</span>&gt; lookupitemModels = <span class="title function_">offlineLookupitem</span>();</span><br><span class="line">            <span class="keyword">if</span> (lookupitemModels != <span class="literal">null</span>) &#123;</span><br><span class="line">                response .<span class="title function_">setData</span>(lookupitemModels);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> response ;</span><br><span class="line">        &#125;</span><br><span class="line">        response = responseResponse.<span class="title function_">body</span>();</span><br><span class="line">        <span class="comment">//这里可以自己做处理(请求后)</span></span><br><span class="line">        <span class="keyword">return</span> response ;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="瓶颈"><a href="#瓶颈" class="headerlink" title="瓶颈"></a>瓶颈</h3><p>前面写的挺顺畅的，看到这儿大家可能都觉得没什么问题，这确实是一个能解决问题的方案，但是有一天前后台的接口因为业务需求进行了一些改动，比如加了个入参之类的，这个时候安卓端不仅需要改动andserver的api，还需要改动retrofit的api，改一个接口没有问题，改两个接口也没有问题，但是当改动的接口涉及到整个项目，且项目比较赶的时候，这个问题就很大了。</p>
+<p>架构师说：“我们必须要有一个全局的转发，然后还不能全转发，一些调硬件的接口得你自己处理，一些登录的初始化你的拦截做了处理然后发中台……”</p>
+<p>我的内心：“&#x2F;-+！@#￥%&amp;**”</p>
+<p>我的回答：“好的，我下去看看”<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/e245f3d9f01e4ea6af2f7f35e8e8c9ff.jpg"
+                      alt="在这里插入图片描述"
+                ></p>
+<h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><p>然后就是查资料哇，面向百度编程嘛，开始我就想，既然andserver提供了类似 SpringMVC 的注解和功能，我是不是可以通过Interceptor拦截器来实现然后把文档墙放好，一头撞了上去</p>
+<p>andserver的文档是这么解释的：<br>   链接:  HandlerInterceptor <a class="link"   target="_blank" rel="noopener" href="https://yanzhenjie.com/AndServer/class/HandlerInterceptor.html" >https://yanzhenjie.com/AndServer/class/HandlerInterceptor.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.<span class="property">aw</span>.<span class="property">ccpos</span>.<span class="property">client</span>.<span class="property">logger</span>.<span class="property">Logger</span>;</span><br><span class="line"><span class="keyword">import</span> com.<span class="property">yanzhenjie</span>.<span class="property">andserver</span>.<span class="property">annotation</span>.<span class="property">Interceptor</span>;</span><br><span class="line"><span class="keyword">import</span> com.<span class="property">yanzhenjie</span>.<span class="property">andserver</span>.<span class="property">framework</span>.<span class="property">HandlerInterceptor</span>;</span><br><span class="line"><span class="keyword">import</span> com.<span class="property">yanzhenjie</span>.<span class="property">andserver</span>.<span class="property">framework</span>.<span class="property">handler</span>.<span class="property">RequestHandler</span>;</span><br><span class="line"><span class="keyword">import</span> com.<span class="property">yanzhenjie</span>.<span class="property">andserver</span>.<span class="property">http</span>.<span class="property">HttpRequest</span>;</span><br><span class="line"><span class="keyword">import</span> com.<span class="property">yanzhenjie</span>.<span class="property">andserver</span>.<span class="property">http</span>.<span class="property">HttpResponse</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> androidx.<span class="property">annotation</span>.<span class="property">NonNull</span>;</span><br><span class="line"></span><br><span class="line">@<span class="title class_">Interceptor</span></span><br><span class="line">public <span class="keyword">class</span> <span class="title class_">SysInterceptor</span> implements <span class="title class_">HandlerInterceptor</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Intercept the execution of a handler.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> request  current request.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> response current response.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> handler  the corresponding handler of the current request.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> true if the interceptor has processed the request and responded.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    @<span class="title class_">Override</span></span><br><span class="line">    public boolean <span class="title function_">onIntercept</span>(@<span class="title class_">NonNull</span> <span class="title class_">HttpRequest</span> request, @<span class="title class_">NonNull</span> <span class="title class_">HttpResponse</span> response, @<span class="title class_">NonNull</span> <span class="title class_">RequestHandler</span> handler) throws <span class="title class_">Exception</span> &#123;</span><br><span class="line">        <span class="title class_">RequestModel</span> requestModel = <span class="keyword">new</span> <span class="title class_">RequestModel</span>();</span><br><span class="line">        <span class="title class_">String</span> app = request.<span class="title function_">getHeader</span>(<span class="string">&quot;app&quot;</span>);</span><br><span class="line">        requestModel.<span class="title function_">setApp</span>(app);</span><br><span class="line">        <span class="title class_">String</span> token = request.<span class="title function_">getHeader</span>(<span class="string">&quot;x-token&quot;</span>);</span><br><span class="line">        requestModel.<span class="title function_">setToken</span>(token);</span><br><span class="line">        <span class="title class_">String</span> storeId = request.<span class="title function_">getHeader</span>(<span class="string">&quot;storeId&quot;</span>);</span><br><span class="line">        requestModel.<span class="title function_">setStoreId</span>(storeId);</span><br><span class="line">        <span class="title class_">String</span> terminalId = request.<span class="title function_">getHeader</span>(<span class="string">&quot;terminalId&quot;</span>);</span><br><span class="line">        requestModel.<span class="title function_">setTerminalId</span>(terminalId);</span><br><span class="line">        <span class="title class_">String</span> terminalNo = request.<span class="title function_">getHeader</span>(<span class="string">&quot;terminalNo&quot;</span>);</span><br><span class="line">        requestModel.<span class="title function_">setTerminalNo</span>(terminalNo);</span><br><span class="line"></span><br><span class="line">        <span class="title class_">String</span> organizationId = request.<span class="title function_">getHeader</span>(<span class="string">&quot;organizationId&quot;</span>);</span><br><span class="line">        requestModel.<span class="title function_">setOrganizationId</span>(organizationId);</span><br><span class="line"></span><br><span class="line">        <span class="title class_">String</span> userid = request.<span class="title function_">getHeader</span>(<span class="string">&quot;userid&quot;</span>);</span><br><span class="line">        requestModel.<span class="title function_">setUserid</span>(userid);</span><br><span class="line"></span><br><span class="line">        <span class="title class_">String</span> username = request.<span class="title function_">getHeader</span>(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">        requestModel.<span class="title function_">setUsername</span>(username);</span><br><span class="line"></span><br><span class="line">        <span class="title class_">String</span> displayName = request.<span class="title function_">getHeader</span>(<span class="string">&quot;displayname&quot;</span>);</span><br><span class="line">        requestModel.<span class="title function_">setDisplayName</span>(displayName);</span><br><span class="line"></span><br><span class="line">        <span class="title class_">String</span> customerId = request.<span class="title function_">getHeader</span>(<span class="string">&quot;terminalCustomerId&quot;</span>);</span><br><span class="line">        requestModel.<span class="title function_">setCustomerId</span>(customerId);</span><br><span class="line"></span><br><span class="line">        <span class="title class_">String</span> storeCode = request.<span class="title function_">getHeader</span>(<span class="string">&quot;storeCode&quot;</span>);</span><br><span class="line">        requestModel.<span class="title function_">setStoreCode</span>(storeCode);</span><br><span class="line"></span><br><span class="line">        <span class="title class_">String</span> sName = request.<span class="title function_">getHeader</span>(<span class="string">&quot;storeName&quot;</span>);</span><br><span class="line">        requestModel.<span class="title function_">setStoreNameOriginal</span>(sName);</span><br><span class="line"></span><br><span class="line">        <span class="title class_">SysUtil</span>.<span class="title function_">create</span>(requestModel);</span><br><span class="line">        <span class="title class_">Logger</span>.<span class="title function_">d</span>(<span class="string">&quot;SysInterceptor check : requestModel &quot;</span> + requestModel);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//外部链接拒绝访问</span></span><br><span class="line"><span class="comment">//        String ip = request.getHeader(&quot;Host&quot;);</span></span><br><span class="line"><span class="comment">//        if (!ip.equals(&quot;0.0.0.0:8080&quot;))&#123;</span></span><br><span class="line"><span class="comment">//            Logger.w(&quot;External address access, blocked&quot;);</span></span><br><span class="line"><span class="comment">//            return true;</span></span><br><span class="line"><span class="comment">//        &#125;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>示例中写的功能和我们需要转发的接口功能差不多，看到过后我就开撸代码，撸完一跑，确实能拦截到，可以转发，就是所有的接口都被拦截了，我一个接口都别想处理，有的同学就说了，你每一个要处理的url判断一下放过去不就行了？<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/e245f3d9f01e4ea6af2f7f35e8e8c9ff.jpg"
+                      alt="在这里插入图片描述"
+                ><br>确实可以，没有问题，但是这个方法和第一种有什么区别呢？所以还是另寻它法吧</p>
+<h3 id="最终解决"><a href="#最终解决" class="headerlink" title="最终解决"></a>最终解决</h3><p>ExeceptionResolver<br>   链接:  ExeceptionResolver<a class="link"   target="_blank" rel="noopener" href="https://yanzhenjie.com/AndServer/class/ExceptionResolver.html" >https://yanzhenjie.com/AndServer/class/ExceptionResolver.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>.<br>andserver的文档是这么解释的：<br>ExeceptionResolver用来处理所有请求Http Api时发生的异常，默认情况下会输出异常的Message到客户端。</p>
+<p>这个时候又有同学要说了，看起来和我们需求没关系啊<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/e245f3d9f01e4ea6af2f7f35e8e8c9ff.jpg"
+                      alt="在这里插入图片描述"
+                ><br>别着急，我给你讲讲我清晰的脑回路，当我们本地有接口的时候，andserver正常走接口，我们正常处理然后返回，需要在接口中请求中台就使用retrofit，接口有改动安卓端必须跟着改，这个是无法避免的，但是如果是直接转发走的接口，我们自定义的ExeceptionResolver就会捕获到异常然后从新转发出去就好了<br>代码如下：</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.<span class="property">aw</span>.<span class="property">ccpos</span>.<span class="property">client</span>.<span class="property">Client</span>;</span><br><span class="line"><span class="keyword">import</span> com.<span class="property">aw</span>.<span class="property">ccpos</span>.<span class="property">client</span>.<span class="property">logger</span>.<span class="property">Logger</span>;</span><br><span class="line"><span class="keyword">import</span> com.<span class="property">yanzhenjie</span>.<span class="property">andserver</span>.<span class="property">annotation</span>.<span class="property">Resolver</span>;</span><br><span class="line"><span class="keyword">import</span> com.<span class="property">yanzhenjie</span>.<span class="property">andserver</span>.<span class="property">error</span>.<span class="property">MethodNotSupportException</span>;</span><br><span class="line"><span class="keyword">import</span> com.<span class="property">yanzhenjie</span>.<span class="property">andserver</span>.<span class="property">error</span>.<span class="property">NotFoundException</span>;</span><br><span class="line"><span class="keyword">import</span> com.<span class="property">yanzhenjie</span>.<span class="property">andserver</span>.<span class="property">framework</span>.<span class="property">ExceptionResolver</span>;</span><br><span class="line"><span class="keyword">import</span> com.<span class="property">yanzhenjie</span>.<span class="property">andserver</span>.<span class="property">framework</span>.<span class="property">body</span>.<span class="property">JsonBody</span>;</span><br><span class="line"><span class="keyword">import</span> com.<span class="property">yanzhenjie</span>.<span class="property">andserver</span>.<span class="property">http</span>.<span class="property">HttpMethod</span>;</span><br><span class="line"><span class="keyword">import</span> com.<span class="property">yanzhenjie</span>.<span class="property">andserver</span>.<span class="property">http</span>.<span class="property">HttpRequest</span>;</span><br><span class="line"><span class="keyword">import</span> com.<span class="property">yanzhenjie</span>.<span class="property">andserver</span>.<span class="property">http</span>.<span class="property">HttpResponse</span>;</span><br><span class="line"><span class="keyword">import</span> com.<span class="property">yanzhenjie</span>.<span class="property">andserver</span>.<span class="property">http</span>.<span class="property">RequestBody</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.<span class="property">util</span>.<span class="property">HashMap</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">util</span>.<span class="property">Map</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> androidx.<span class="property">annotation</span>.<span class="property">NonNull</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ProjectName</span> : </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> : yifeng_zeng</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Time</span> : 2021/2/5 10:09</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> : Andserver GlobalExceptionSolver</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">@<span class="title class_">Resolver</span></span><br><span class="line">public <span class="keyword">class</span> <span class="title class_">GlobalExceptionSolver</span> implements <span class="title class_">ExceptionResolver</span> &#123;</span><br><span class="line">    @<span class="title class_">Override</span></span><br><span class="line">    public <span class="keyword">void</span> <span class="title function_">onResolve</span>(<span class="params">@NonNull HttpRequest request, @NonNull HttpResponse response, @NonNull Throwable e</span>) &#123;</span><br><span class="line">        <span class="title class_">HttpMethod</span> method = request.<span class="title function_">getMethod</span>();</span><br><span class="line">	<span class="comment">//GlobalException后面再说</span></span><br><span class="line">        <span class="keyword">if</span> (!(e <span class="keyword">instanceof</span> <span class="title class_">NotFoundException</span>) &amp;&amp; !(e <span class="keyword">instanceof</span> <span class="title class_">MethodNotSupportException</span>)</span><br><span class="line">                &amp;&amp; !(e <span class="keyword">instanceof</span> <span class="title class_">GlobalException</span>)) &#123;</span><br><span class="line">            <span class="title class_">Logger</span>.<span class="title function_">err</span>(<span class="string">&quot;handle request failed&quot;</span>, e);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title class_">String</span> uri = request.<span class="title function_">getURI</span>();</span><br><span class="line">        uri = uri.<span class="title function_">replace</span>(<span class="string">&quot;scheme:&quot;</span>, <span class="string">&quot;&quot;</span>);</span><br><span class="line"><span class="comment">//        uri = uri.replace(&quot;/spin/user&quot;,&quot;/user&quot;);</span></span><br><span class="line">        <span class="keyword">if</span> (uri.<span class="title function_">startsWith</span>(<span class="string">&quot;/&quot;</span>)) &#123;</span><br><span class="line">            uri = uri.<span class="title function_">substring</span>(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title class_">Logger</span>.<span class="title function_">i</span>(<span class="string">&quot;redirect with URI &quot;</span> + uri);</span><br><span class="line">        <span class="title class_">String</span> url = <span class="title class_">Client</span>.<span class="title function_">i</span>().<span class="title function_">getServerUrl</span>() + uri;</span><br><span class="line"></span><br><span class="line">       	<span class="title class_">Logger</span>.<span class="title function_">i</span>(<span class="string">&quot;redirect to url &quot;</span> + url);</span><br><span class="line">        <span class="title class_">String</span> terminalId = request.<span class="title function_">getHeader</span>(<span class="string">&quot;terminalId&quot;</span>);</span><br><span class="line">        <span class="title class_">SysUtil</span>.<span class="property">requestModelLocal</span>.<span class="title function_">setTerminalId</span>(terminalId);</span><br><span class="line"></span><br><span class="line">        <span class="title class_">String</span> token = request.<span class="title function_">getHeader</span>(<span class="string">&quot;x-token&quot;</span>);</span><br><span class="line">        <span class="title class_">SysUtil</span>.<span class="property">requestModelLocal</span>.<span class="title function_">setToken</span>(token);</span><br><span class="line"></span><br><span class="line">        <span class="title class_">String</span> terminalNo = request.<span class="title function_">getHeader</span>(<span class="string">&quot;terminalNo&quot;</span>);</span><br><span class="line">         <span class="title class_">SysUtil</span>.<span class="property">requestModelLocal</span>.<span class="title function_">setTerminalNo</span>(terminalNo);</span><br><span class="line"></span><br><span class="line">        <span class="title class_">String</span> organizationId = request.<span class="title function_">getHeader</span>(<span class="string">&quot;organizationId&quot;</span>);</span><br><span class="line">         <span class="title class_">SysUtil</span>.<span class="property">requestModelLocal</span>.<span class="title function_">setOrganizationId</span>(organizationId);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span> (method) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="attr">POST</span>:</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="title class_">RequestBody</span> body = request.<span class="title function_">getBody</span>();</span><br><span class="line">                    <span class="title class_">String</span> string = body.<span class="title function_">string</span>();</span><br><span class="line">                    <span class="keyword">if</span> (e <span class="keyword">instanceof</span> <span class="title class_">GlobalException</span>)&#123;</span><br><span class="line">                        string = e.<span class="title function_">getMessage</span>();</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="title class_">Map</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; headers = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">                    <span class="keyword">for</span> (<span class="title class_">String</span> header : request.<span class="title function_">getHeaderNames</span>()) &#123;</span><br><span class="line">                        headers.<span class="title function_">put</span>(header, request.<span class="title function_">getHeader</span>(header));</span><br><span class="line">                    &#125;</span><br><span class="line"><span class="comment">//                    List&lt;Cookie&gt; cookies= request.getCookies();</span></span><br><span class="line">                    <span class="title class_">String</span> result = <span class="title class_">HttpUtils</span>.<span class="title function_">postSync</span>(url, string, headers);</span><br><span class="line">                    response.<span class="title function_">setBody</span>(<span class="keyword">new</span> <span class="title class_">JsonBody</span>(result));</span><br><span class="line"></span><br><span class="line">                &#125; <span class="keyword">catch</span> (<span class="title class_">Exception</span> ioException) &#123;</span><br><span class="line">                    <span class="title class_">Logger</span>.<span class="title function_">err</span>(<span class="string">&quot;Exception redirect post&quot;</span>, ioException);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="attr">GET</span>:</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="title class_">Map</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; parameters = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="comment">//                    for (String parameter : request.getParameterNames()) &#123;</span></span><br><span class="line"><span class="comment">//                        parameters.put(parameter, request.getParameter(parameter));</span></span><br><span class="line"><span class="comment">//                    &#125;</span></span><br><span class="line"></span><br><span class="line">                    <span class="title class_">Map</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; headers = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">                    <span class="keyword">for</span> (<span class="title class_">String</span> header : request.<span class="title function_">getHeaderNames</span>()) &#123;</span><br><span class="line">                        headers.<span class="title function_">put</span>(header, request.<span class="title function_">getHeader</span>(header));</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="title class_">String</span> result = <span class="title class_">HttpUtils</span>.<span class="title function_">getSync</span>(url, headers, parameters);</span><br><span class="line">                    response.<span class="title function_">setBody</span>(<span class="keyword">new</span> <span class="title class_">JsonBody</span>(result));</span><br><span class="line"></span><br><span class="line">                &#125; <span class="keyword">catch</span> (<span class="title class_">Exception</span> ioException) &#123;</span><br><span class="line">                    <span class="title class_">Logger</span>.<span class="title function_">err</span>(<span class="string">&quot;Exception redirect get&quot;</span>, ioException);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="attr">DELETE</span>:</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="title class_">Map</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; parameters = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">                    <span class="keyword">for</span> (<span class="title class_">String</span> parameter : request.<span class="title function_">getParameterNames</span>()) &#123;</span><br><span class="line">                        parameters.<span class="title function_">put</span>(parameter, request.<span class="title function_">getParameter</span>(parameter));</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="title class_">Map</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; headers = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">                    <span class="keyword">for</span> (<span class="title class_">String</span> header : request.<span class="title function_">getHeaderNames</span>()) &#123;</span><br><span class="line">                        headers.<span class="title function_">put</span>(header, request.<span class="title function_">getHeader</span>(header));</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (parameters.<span class="title function_">size</span>() == <span class="number">0</span>) &#123;</span><br><span class="line">                        <span class="title class_">RequestBody</span> body = request.<span class="title function_">getBody</span>();</span><br><span class="line">                        <span class="title class_">String</span> string = body.<span class="title function_">string</span>();</span><br><span class="line">                        <span class="keyword">if</span> (e <span class="keyword">instanceof</span> <span class="title class_">GlobalException</span>)&#123;</span><br><span class="line">                            string = e.<span class="title function_">getMessage</span>();</span><br><span class="line">                        &#125;</span><br><span class="line">                        <span class="title class_">String</span> result = <span class="title class_">HttpUtils</span>.<span class="title function_">deleteSync</span>(url, string, headers);</span><br><span class="line">                        response.<span class="title function_">setBody</span>(<span class="keyword">new</span> <span class="title class_">JsonBody</span>(result));</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        <span class="title class_">String</span> result = <span class="title class_">HttpUtils</span>.<span class="title function_">deleteSync</span>(url, headers, parameters);</span><br><span class="line">                        response.<span class="title function_">setBody</span>(<span class="keyword">new</span> <span class="title class_">JsonBody</span>(result));</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                &#125; <span class="keyword">catch</span> (<span class="title class_">Exception</span> ioException) &#123;</span><br><span class="line">                    <span class="title class_">Logger</span>.<span class="title function_">err</span>(<span class="string">&quot;Exception redirect DELETE&quot;</span>, ioException);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> <span class="attr">PUT</span>:</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="title class_">RequestBody</span> body = request.<span class="title function_">getBody</span>();</span><br><span class="line">                    <span class="title class_">String</span> string = body.<span class="title function_">string</span>();</span><br><span class="line">                    <span class="keyword">if</span> (e <span class="keyword">instanceof</span> <span class="title class_">GlobalException</span>)&#123;</span><br><span class="line">                        string = e.<span class="title function_">getMessage</span>();</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="title class_">Map</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; headers = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">                    <span class="keyword">for</span> (<span class="title class_">String</span> header : request.<span class="title function_">getHeaderNames</span>()) &#123;</span><br><span class="line">                        headers.<span class="title function_">put</span>(header, request.<span class="title function_">getHeader</span>(header));</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="title class_">String</span> result = <span class="title class_">HttpUtils</span>.<span class="title function_">putSync</span>(url, string, headers);</span><br><span class="line">                    response.<span class="title function_">setBody</span>(<span class="keyword">new</span> <span class="title class_">JsonBody</span>(result));</span><br><span class="line"></span><br><span class="line">                &#125; <span class="keyword">catch</span> (<span class="title class_">Exception</span> ioException) &#123;</span><br><span class="line">                    <span class="title class_">Logger</span>.<span class="title function_">err</span>(<span class="string">&quot;Exception redirect PUT&quot;</span>, ioException);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>有伸手党就要说了，我没有你转发这个HttpUtils，我又难得找，你想不想要赞啊，emmm<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/e245f3d9f01e4ea6af2f7f35e8e8c9ff.jpg"
+                      alt="在这里插入图片描述"
+                ></p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.<span class="property">io</span>.<span class="property">IOException</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">net</span>.<span class="property">ConnectException</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">net</span>.<span class="property">SocketTimeoutException</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">net</span>.<span class="property">UnknownHostException</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">util</span>.<span class="property">Map</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">TimeUnit</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.<span class="property">net</span>.<span class="property">ssl</span>.<span class="property">HostnameVerifier</span>;</span><br><span class="line"><span class="keyword">import</span> javax.<span class="property">net</span>.<span class="property">ssl</span>.<span class="property">SSLSession</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">util</span>.<span class="property">concurrent</span>.<span class="property">TimeUnit</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> okhttp3.<span class="property">Call</span>;</span><br><span class="line"><span class="keyword">import</span> okhttp3.<span class="property">Callback</span>;</span><br><span class="line"><span class="keyword">import</span> okhttp3.<span class="property">HttpUrl</span>;</span><br><span class="line"><span class="keyword">import</span> okhttp3.<span class="property">Interceptor</span>;</span><br><span class="line"><span class="keyword">import</span> okhttp3.<span class="property">MediaType</span>;</span><br><span class="line"><span class="keyword">import</span> okhttp3.<span class="property">OkHttpClient</span>;</span><br><span class="line"><span class="keyword">import</span> okhttp3.<span class="property">Request</span>;</span><br><span class="line"><span class="keyword">import</span> okhttp3.<span class="property">RequestBody</span>;</span><br><span class="line"><span class="keyword">import</span> okhttp3.<span class="property">Response</span>;</span><br><span class="line"></span><br><span class="line">public <span class="keyword">class</span> <span class="title class_">HttpUtils</span> &#123;</span><br><span class="line"></span><br><span class="line">    public <span class="keyword">static</span> final <span class="title class_">MediaType</span> <span class="title class_">JSON</span> = <span class="title class_">MediaType</span>.<span class="title function_">parse</span>(<span class="string">&quot;application/json; charset=utf-8&quot;</span>);</span><br><span class="line">    public <span class="keyword">static</span> <span class="title class_">OkHttpClient</span> client = <span class="keyword">new</span> <span class="title class_">OkHttpClient</span>.<span class="title class_">Builder</span>().</span><br><span class="line">    <span class="title function_">connectTimeout</span>(<span class="number">300</span>, <span class="title class_">TimeUnit</span>.<span class="property">SECONDS</span>).</span><br><span class="line">    <span class="title function_">readTimeout</span>(<span class="number">300</span>, <span class="title class_">TimeUnit</span>.<span class="property">SECONDS</span>)</span><br><span class="line">    .<span class="title function_">sslSocketFactory</span>(<span class="title class_">HttpsUtils</span>.<span class="title function_">getSslSocketFactory</span>(<span class="literal">null</span>,<span class="literal">null</span>,<span class="literal">null</span>))</span><br><span class="line">    .<span class="title function_">hostnameVerifier</span>(<span class="keyword">new</span> <span class="title class_">HostnameVerifier</span>() &#123;</span><br><span class="line">        @<span class="title class_">Override</span></span><br><span class="line">        public boolean <span class="title function_">verify</span>(<span class="params"><span class="built_in">String</span> hostname, SSLSession session</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).<span class="title function_">writeTimeout</span>(<span class="number">300</span>, <span class="title class_">TimeUnit</span>.<span class="property">SECONDS</span>).<span class="title function_">addInterceptor</span>(<span class="keyword">new</span> <span class="title class_">Interceptor</span>() &#123;</span><br><span class="line">        @<span class="title class_">Override</span></span><br><span class="line">        public <span class="title class_">Response</span> <span class="title function_">intercept</span>(<span class="title class_">Chain</span> chain) throws <span class="title class_">IOException</span> &#123;</span><br><span class="line">            <span class="title class_">Request</span>.<span class="property">Builder</span> builder = chain.<span class="title function_">request</span>()</span><br><span class="line">                    .<span class="title function_">newBuilder</span>();</span><br><span class="line">            <span class="keyword">if</span> (<span class="title class_">SysUtil</span>.<span class="title function_">get</span>().<span class="title function_">getToken</span>() != <span class="literal">null</span>) &#123;</span><br><span class="line">                builder.<span class="title function_">addHeader</span>(<span class="string">&quot;x-token&quot;</span>, <span class="title class_">SysUtil</span>.<span class="title function_">get</span>().<span class="title function_">getToken</span>());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (<span class="title class_">SysUtil</span>.<span class="title function_">get</span>().<span class="title function_">getOrganizationId</span>() != <span class="literal">null</span>) &#123;</span><br><span class="line">                builder.<span class="title function_">addHeader</span>(<span class="string">&quot;organizationId&quot;</span>, <span class="title class_">SysUtil</span>.<span class="title function_">get</span>().<span class="title function_">getOrganizationId</span>());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (<span class="title class_">SysUtil</span>.<span class="title function_">get</span>().<span class="title function_">getTerminalId</span>() != <span class="literal">null</span>) &#123;</span><br><span class="line">                builder.<span class="title function_">addHeader</span>(<span class="string">&quot;terminalId&quot;</span>, <span class="title class_">SysUtil</span>.<span class="title function_">get</span>().<span class="title function_">getTerminalId</span>());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (<span class="title class_">SysUtil</span>.<span class="title function_">get</span>().<span class="title function_">getTerminalNo</span>() != <span class="literal">null</span>) &#123;</span><br><span class="line">                builder.<span class="title function_">addHeader</span>(<span class="string">&quot;terminalNo&quot;</span>, <span class="title class_">SysUtil</span>.<span class="title function_">get</span>().<span class="title function_">getTerminalNo</span>());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="title class_">Request</span> request = builder.<span class="title function_">build</span>();</span><br><span class="line">            <span class="keyword">return</span> chain.<span class="title function_">proceed</span>(request);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).<span class="title function_">build</span>();</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     *�첽http post����</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    public <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">postAsync</span>(<span class="title class_">String</span> url, <span class="title class_">String</span> body) throws <span class="title class_">Exception</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="title class_">RequestBody</span> params = <span class="title class_">RequestBody</span>.<span class="title function_">create</span>(<span class="title class_">JSON</span>, body);</span><br><span class="line">        <span class="title class_">Request</span> request = <span class="keyword">new</span> <span class="title class_">Request</span>.<span class="title class_">Builder</span>().<span class="title function_">addHeader</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>).<span class="title function_">url</span>(url).<span class="title function_">post</span>(params).<span class="title function_">build</span>();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="title class_">Call</span> call = client.<span class="title function_">newCall</span>(request);</span><br><span class="line">            call.<span class="title function_">enqueue</span>(<span class="keyword">new</span> <span class="title class_">Callback</span>() &#123;</span><br><span class="line">                @<span class="title class_">Override</span></span><br><span class="line">                public <span class="keyword">void</span> <span class="title function_">onFailure</span>(<span class="params">Call call, IOException e</span>) &#123;</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                @<span class="title class_">Override</span></span><br><span class="line">                public <span class="keyword">void</span> <span class="title function_">onResponse</span>(<span class="title class_">Call</span> call, <span class="title class_">Response</span> response) throws <span class="title class_">IOException</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (response.<span class="title function_">isSuccessful</span>()) &#123;</span><br><span class="line">                        response.<span class="title function_">body</span>().<span class="title function_">string</span>();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">Exception</span> e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * �첽http get����</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    public <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">getAsync</span>(<span class="title class_">String</span> url, <span class="title class_">String</span> body) throws <span class="title class_">Exception</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="title class_">Request</span> request = <span class="keyword">new</span> <span class="title class_">Request</span>.<span class="title class_">Builder</span>().<span class="title function_">addHeader</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>).<span class="title function_">url</span>(url).<span class="title function_">get</span>().<span class="title function_">build</span>();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="title class_">Call</span> call = client.<span class="title function_">newCall</span>(request);</span><br><span class="line">            call.<span class="title function_">enqueue</span>(<span class="keyword">new</span> <span class="title class_">Callback</span>() &#123;</span><br><span class="line">                @<span class="title class_">Override</span></span><br><span class="line">                public <span class="keyword">void</span> <span class="title function_">onFailure</span>(<span class="params">Call call, IOException e</span>) &#123;</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                @<span class="title class_">Override</span></span><br><span class="line">                public <span class="keyword">void</span> <span class="title function_">onResponse</span>(<span class="title class_">Call</span> call, <span class="title class_">Response</span> response) throws <span class="title class_">IOException</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (response.<span class="title function_">isSuccessful</span>()) &#123;</span><br><span class="line">                        response.<span class="title function_">body</span>().<span class="title function_">string</span>();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">Exception</span> e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * ͬ��http post����</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    public <span class="keyword">static</span> <span class="title class_">String</span> <span class="title function_">postSync</span>(<span class="title class_">String</span> url, <span class="title class_">String</span> body, <span class="title class_">Map</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; headers) throws <span class="title class_">Exception</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="title class_">String</span> returnMessage = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="title class_">RequestBody</span> params = <span class="title class_">RequestBody</span>.<span class="title function_">create</span>(<span class="title class_">JSON</span>, body);</span><br><span class="line">        <span class="title class_">Request</span>.<span class="property">Builder</span> builder = <span class="keyword">new</span> <span class="title class_">Request</span>.<span class="title class_">Builder</span>();</span><br><span class="line">        builder.<span class="title function_">addHeader</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="title class_">Map</span>.<span class="property">Entry</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; header : headers.<span class="title function_">entrySet</span>()) &#123;</span><br><span class="line">            builder.<span class="title function_">addHeader</span>(header.<span class="title function_">getKey</span>(), header.<span class="title function_">getValue</span>());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title class_">Request</span> request = builder.<span class="title function_">url</span>(url).<span class="title function_">post</span>(params).<span class="title function_">build</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="title class_">Response</span> response = client.<span class="title function_">newCall</span>(request).<span class="title function_">execute</span>();</span><br><span class="line">            <span class="keyword">if</span> (response.<span class="title function_">isSuccessful</span>()) &#123;</span><br><span class="line"></span><br><span class="line">                returnMessage = response.<span class="title function_">body</span>().<span class="title function_">string</span>();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="title class_">Exception</span> e = <span class="keyword">new</span> <span class="title class_">Exception</span>(<span class="string">&quot;�������쳣��Ϣ��&quot;</span> + response.<span class="title function_">code</span>() + <span class="string">&quot;:&quot;</span> + response.<span class="title function_">message</span>());</span><br><span class="line">                <span class="keyword">throw</span> e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">UnknownHostException</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">ConnectException</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">SocketTimeoutException</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">Exception</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> returnMessage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * ͬ��http get����</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    public <span class="keyword">static</span> <span class="title class_">String</span> <span class="title function_">getSync</span>(<span class="title class_">String</span> url,<span class="title class_">Map</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; headers,<span class="title class_">Map</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; params) throws <span class="title class_">Exception</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="title class_">String</span> returnMessage = <span class="string">&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="title class_">HttpUrl</span>.<span class="property">Builder</span> httpBuilder = <span class="title class_">HttpUrl</span>.<span class="title function_">parse</span>(url).<span class="title function_">newBuilder</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (params != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="title class_">Map</span>.<span class="property">Entry</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; param : params.<span class="title function_">entrySet</span>()) &#123;</span><br><span class="line">                httpBuilder.<span class="title function_">addQueryParameter</span>(param.<span class="title function_">getKey</span>(), param.<span class="title function_">getValue</span>());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="title class_">Request</span>.<span class="property">Builder</span> builder = <span class="keyword">new</span> <span class="title class_">Request</span>.<span class="title class_">Builder</span>();</span><br><span class="line">        builder.<span class="title function_">addHeader</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="title class_">Map</span>.<span class="property">Entry</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; header : headers.<span class="title function_">entrySet</span>()) &#123;</span><br><span class="line">            builder.<span class="title function_">addHeader</span>(header.<span class="title function_">getKey</span>(), header.<span class="title function_">getValue</span>());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title class_">Request</span> request = builder.<span class="title function_">url</span>(httpBuilder.<span class="title function_">build</span>())</span><br><span class="line">                .<span class="title function_">build</span>();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="title class_">Response</span> response = client.<span class="title function_">newCall</span>(request).<span class="title function_">execute</span>();</span><br><span class="line">            <span class="keyword">if</span> (response.<span class="title function_">isSuccessful</span>()) &#123;</span><br><span class="line"></span><br><span class="line">                returnMessage = response.<span class="title function_">body</span>().<span class="title function_">string</span>();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="title class_">Exception</span> e = <span class="keyword">new</span> <span class="title class_">Exception</span>(<span class="string">&quot;&quot;</span> + response.<span class="title function_">code</span>() + <span class="string">&quot;:&quot;</span> + response.<span class="title function_">message</span>());</span><br><span class="line">                <span class="keyword">throw</span> e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">UnknownHostException</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">ConnectException</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">SocketTimeoutException</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">Exception</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> returnMessage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    * 同步put请求*</span></span><br><span class="line"><span class="comment">    /</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    public <span class="keyword">static</span> <span class="title class_">String</span> <span class="title function_">putSync</span>(<span class="title class_">String</span> url, <span class="title class_">String</span> body,<span class="title class_">Map</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; headers) throws <span class="title class_">Exception</span> &#123;</span><br><span class="line">        <span class="title class_">String</span> returnMessage = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="title class_">RequestBody</span> params = <span class="title class_">RequestBody</span>.<span class="title function_">create</span>(<span class="title class_">JSON</span>, body);</span><br><span class="line">        <span class="title class_">Request</span>.<span class="property">Builder</span> builder = <span class="keyword">new</span> <span class="title class_">Request</span>.<span class="title class_">Builder</span>();</span><br><span class="line">        builder.<span class="title function_">addHeader</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="title class_">Map</span>.<span class="property">Entry</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; header : headers.<span class="title function_">entrySet</span>()) &#123;</span><br><span class="line">            builder.<span class="title function_">addHeader</span>(header.<span class="title function_">getKey</span>(), header.<span class="title function_">getValue</span>());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title class_">Request</span> request = builder.<span class="title function_">url</span>(url).<span class="title function_">put</span>(params).<span class="title function_">build</span>();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="title class_">Response</span> response = client.<span class="title function_">newCall</span>(request).<span class="title function_">execute</span>();</span><br><span class="line">            <span class="keyword">if</span> (response.<span class="title function_">isSuccessful</span>()) &#123;</span><br><span class="line"></span><br><span class="line">                returnMessage = response.<span class="title function_">body</span>().<span class="title function_">string</span>();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="title class_">Exception</span> e = <span class="keyword">new</span> <span class="title class_">Exception</span>(<span class="string">&quot;�������쳣��Ϣ��&quot;</span> + response.<span class="title function_">code</span>() + <span class="string">&quot;:&quot;</span> + response.<span class="title function_">message</span>());</span><br><span class="line">                <span class="keyword">throw</span> e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">UnknownHostException</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">ConnectException</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">SocketTimeoutException</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">Exception</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> returnMessage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 同步delete请求,body</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    public <span class="keyword">static</span> <span class="title class_">String</span> <span class="title function_">deleteSync</span>(<span class="title class_">String</span> url, <span class="title class_">String</span> body,<span class="title class_">Map</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; headers) throws <span class="title class_">Exception</span> &#123;</span><br><span class="line">        <span class="title class_">String</span> returnMessage = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="title class_">RequestBody</span> params = <span class="title class_">RequestBody</span>.<span class="title function_">create</span>(<span class="title class_">JSON</span>, body);</span><br><span class="line">        <span class="title class_">Request</span>.<span class="property">Builder</span> builder = <span class="keyword">new</span> <span class="title class_">Request</span>.<span class="title class_">Builder</span>();</span><br><span class="line">        builder.<span class="title function_">addHeader</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="title class_">Map</span>.<span class="property">Entry</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; header : headers.<span class="title function_">entrySet</span>()) &#123;</span><br><span class="line">            builder.<span class="title function_">addHeader</span>(header.<span class="title function_">getKey</span>(), header.<span class="title function_">getValue</span>());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title class_">Request</span> request = builder.<span class="title function_">url</span>(url).<span class="title function_">delete</span>(params).<span class="title function_">build</span>();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="title class_">Response</span> response = client.<span class="title function_">newCall</span>(request).<span class="title function_">execute</span>();</span><br><span class="line">            <span class="keyword">if</span> (response.<span class="title function_">isSuccessful</span>()) &#123;</span><br><span class="line"></span><br><span class="line">                returnMessage = response.<span class="title function_">body</span>().<span class="title function_">string</span>();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="title class_">Exception</span> e = <span class="keyword">new</span> <span class="title class_">Exception</span>(<span class="string">&quot;�������쳣��Ϣ��&quot;</span> + response.<span class="title function_">code</span>() + <span class="string">&quot;:&quot;</span> + response.<span class="title function_">message</span>());</span><br><span class="line">                <span class="keyword">throw</span> e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">UnknownHostException</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">ConnectException</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">SocketTimeoutException</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">Exception</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> returnMessage;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 同步delete请求,body</span></span><br><span class="line"><span class="comment">     * */</span></span><br><span class="line">    public <span class="keyword">static</span> <span class="title class_">String</span> <span class="title function_">deleteSync</span>(<span class="title class_">String</span> url,<span class="title class_">Map</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; headers,<span class="title class_">Map</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; params) throws <span class="title class_">Exception</span> &#123;</span><br><span class="line">        <span class="title class_">String</span> returnMessage = <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="title class_">HttpUrl</span>.<span class="property">Builder</span> httpBuilder = <span class="title class_">HttpUrl</span>.<span class="title function_">parse</span>(url).<span class="title function_">newBuilder</span>();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (params != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="title class_">Map</span>.<span class="property">Entry</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; param : params.<span class="title function_">entrySet</span>()) &#123;</span><br><span class="line">                httpBuilder.<span class="title function_">addQueryParameter</span>(param.<span class="title function_">getKey</span>(), param.<span class="title function_">getValue</span>());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title class_">Request</span>.<span class="property">Builder</span> builder = <span class="keyword">new</span> <span class="title class_">Request</span>.<span class="title class_">Builder</span>();</span><br><span class="line">        builder.<span class="title function_">addHeader</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="title class_">Map</span>.<span class="property">Entry</span>&lt;<span class="title class_">String</span>, <span class="title class_">String</span>&gt; header : headers.<span class="title function_">entrySet</span>()) &#123;</span><br><span class="line">            builder.<span class="title function_">addHeader</span>(header.<span class="title function_">getKey</span>(), header.<span class="title function_">getValue</span>());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="title class_">Request</span> request = builder.<span class="title function_">addHeader</span>(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>)</span><br><span class="line">                .<span class="title function_">url</span>(httpBuilder.<span class="title function_">build</span>())</span><br><span class="line">                .<span class="title function_">delete</span>()</span><br><span class="line">                .<span class="title function_">build</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="title class_">Response</span> response = client.<span class="title function_">newCall</span>(request).<span class="title function_">execute</span>();</span><br><span class="line">            <span class="keyword">if</span> (response.<span class="title function_">isSuccessful</span>()) &#123;</span><br><span class="line"></span><br><span class="line">                returnMessage = response.<span class="title function_">body</span>().<span class="title function_">string</span>();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="title class_">Exception</span> e = <span class="keyword">new</span> <span class="title class_">Exception</span>(<span class="string">&quot;�������쳣��Ϣ��&quot;</span> + response.<span class="title function_">code</span>() + <span class="string">&quot;:&quot;</span> + response.<span class="title function_">message</span>());</span><br><span class="line">                <span class="keyword">throw</span> e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">UnknownHostException</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">ConnectException</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">SocketTimeoutException</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">Exception</span> e) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> returnMessage;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.<span class="property">io</span>.<span class="property">IOException</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">io</span>.<span class="property">InputStream</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">lang</span>.<span class="property">reflect</span>.<span class="property">Field</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">security</span>.<span class="property">KeyManagementException</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">security</span>.<span class="property">KeyStore</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">security</span>.<span class="property">KeyStoreException</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">security</span>.<span class="property">NoSuchAlgorithmException</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">security</span>.<span class="property">SecureRandom</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">security</span>.<span class="property">cert</span>.<span class="property">CertificateException</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">security</span>.<span class="property">cert</span>.<span class="property">CertificateFactory</span>;</span><br><span class="line"><span class="keyword">import</span> java.<span class="property">security</span>.<span class="property">cert</span>.<span class="property">X509Certificate</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.<span class="property">net</span>.<span class="property">ssl</span>.<span class="property">HostnameVerifier</span>;</span><br><span class="line"><span class="keyword">import</span> javax.<span class="property">net</span>.<span class="property">ssl</span>.<span class="property">KeyManager</span>;</span><br><span class="line"><span class="keyword">import</span> javax.<span class="property">net</span>.<span class="property">ssl</span>.<span class="property">KeyManagerFactory</span>;</span><br><span class="line"><span class="keyword">import</span> javax.<span class="property">net</span>.<span class="property">ssl</span>.<span class="property">SSLContext</span>;</span><br><span class="line"><span class="keyword">import</span> javax.<span class="property">net</span>.<span class="property">ssl</span>.<span class="property">SSLSession</span>;</span><br><span class="line"><span class="keyword">import</span> javax.<span class="property">net</span>.<span class="property">ssl</span>.<span class="property">SSLSocketFactory</span>;</span><br><span class="line"><span class="keyword">import</span> javax.<span class="property">net</span>.<span class="property">ssl</span>.<span class="property">TrustManager</span>;</span><br><span class="line"><span class="keyword">import</span> javax.<span class="property">net</span>.<span class="property">ssl</span>.<span class="property">TrustManagerFactory</span>;</span><br><span class="line"><span class="keyword">import</span> javax.<span class="property">net</span>.<span class="property">ssl</span>.<span class="property">X509TrustManager</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> okhttp3.<span class="property">OkHttpClient</span>;</span><br><span class="line"></span><br><span class="line">public <span class="keyword">class</span> <span class="title class_">HttpsUtils</span> &#123;</span><br><span class="line"></span><br><span class="line">    public <span class="keyword">static</span> <span class="title class_">SSLSocketFactory</span> <span class="title function_">getSslSocketFactory</span>(<span class="params">InputStream[] certificates, InputStream bksFile, <span class="built_in">String</span> password</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="title class_">TrustManager</span>[] trustManagers = <span class="title function_">prepareTrustManager</span>(certificates);</span><br><span class="line">            <span class="title class_">KeyManager</span>[] keyManagers = <span class="title function_">prepareKeyManager</span>(bksFile, password);</span><br><span class="line">            <span class="title class_">SSLContext</span> sslContext = <span class="title class_">SSLContext</span>.<span class="title function_">getInstance</span>(<span class="string">&quot;TLS&quot;</span>);</span><br><span class="line">            <span class="title class_">TrustManager</span> trustManager = <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">if</span> (trustManagers != <span class="literal">null</span>) &#123;</span><br><span class="line">                trustManager = <span class="keyword">new</span> <span class="title class_">MyTrustManager</span>(<span class="title function_">chooseTrustManager</span>(trustManagers));</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                trustManager = <span class="keyword">new</span> <span class="title class_">UnSafeTrustManager</span>();</span><br><span class="line">            &#125;</span><br><span class="line">            sslContext.<span class="title function_">init</span>(keyManagers, <span class="keyword">new</span> <span class="title class_">TrustManager</span>[]&#123;trustManager&#125;, <span class="keyword">new</span> <span class="title class_">SecureRandom</span>());</span><br><span class="line">            <span class="keyword">return</span> sslContext.<span class="title function_">getSocketFactory</span>();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">NoSuchAlgorithmException</span> e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">AssertionError</span>(e);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">KeyManagementException</span> e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">AssertionError</span>(e);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">KeyStoreException</span> e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">AssertionError</span>(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private <span class="keyword">static</span> <span class="title class_">TrustManager</span>[] <span class="title function_">prepareTrustManager</span>(<span class="params">InputStream... certificates</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (certificates == <span class="literal">null</span> || certificates.<span class="property">length</span> &lt;= <span class="number">0</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="title class_">CertificateFactory</span> certificateFactory = <span class="title class_">CertificateFactory</span>.<span class="title function_">getInstance</span>(<span class="string">&quot;X.509&quot;</span>);</span><br><span class="line">            <span class="title class_">KeyStore</span> keyStore = <span class="title class_">KeyStore</span>.<span class="title function_">getInstance</span>(<span class="title class_">KeyStore</span>.<span class="title function_">getDefaultType</span>());</span><br><span class="line">            keyStore.<span class="title function_">load</span>(<span class="literal">null</span>);</span><br><span class="line">            int index = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="title class_">InputStream</span> certificate : certificates) &#123;</span><br><span class="line">                <span class="title class_">String</span> certificateAlias = <span class="title class_">Integer</span>.<span class="title function_">toString</span>(index++);</span><br><span class="line">                keyStore.<span class="title function_">setCertificateEntry</span>(certificateAlias, certificateFactory.<span class="title function_">generateCertificate</span>(certificate));</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (certificate != <span class="literal">null</span>)</span><br><span class="line">                        certificate.<span class="title function_">close</span>();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (<span class="title class_">IOException</span> e) &#123;</span><br><span class="line">                    <span class="title class_">Logger</span>.<span class="title function_">err</span>(<span class="string">&quot;error to close certificate&quot;</span>, e);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="title class_">TrustManagerFactory</span> trustManagerFactory = <span class="literal">null</span>;</span><br><span class="line">            trustManagerFactory = <span class="title class_">TrustManagerFactory</span>.<span class="title function_">getInstance</span>(<span class="title class_">TrustManagerFactory</span>.<span class="title function_">getDefaultAlgorithm</span>());</span><br><span class="line">            trustManagerFactory.<span class="title function_">init</span>(keyStore);</span><br><span class="line">            <span class="title class_">TrustManager</span>[] trustManagers = trustManagerFactory.<span class="title function_">getTrustManagers</span>();</span><br><span class="line">            <span class="keyword">return</span> trustManagers;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">Exception</span> e) &#123;</span><br><span class="line">            <span class="title class_">Logger</span>.<span class="title function_">err</span>(<span class="string">&quot;fail to prepareTrustManager&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private <span class="keyword">static</span> <span class="title class_">KeyManager</span>[] <span class="title function_">prepareKeyManager</span>(<span class="params">InputStream bksFile, <span class="built_in">String</span> password</span>) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (bksFile == <span class="literal">null</span> || password == <span class="literal">null</span>) <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">            <span class="title class_">KeyStore</span> clientKeyStore = <span class="title class_">KeyStore</span>.<span class="title function_">getInstance</span>(<span class="string">&quot;BKS&quot;</span>);</span><br><span class="line">            clientKeyStore.<span class="title function_">load</span>(bksFile, password.<span class="title function_">toCharArray</span>());</span><br><span class="line">            <span class="title class_">KeyManagerFactory</span> keyManagerFactory = <span class="title class_">KeyManagerFactory</span>.<span class="title function_">getInstance</span>(<span class="title class_">KeyManagerFactory</span>.<span class="title function_">getDefaultAlgorithm</span>());</span><br><span class="line">            keyManagerFactory.<span class="title function_">init</span>(clientKeyStore, password.<span class="title function_">toCharArray</span>());</span><br><span class="line">            <span class="keyword">return</span> keyManagerFactory.<span class="title function_">getKeyManagers</span>();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">Exception</span> e) &#123;</span><br><span class="line">            <span class="title class_">Logger</span>.<span class="title function_">err</span>(<span class="string">&quot;fail to prepareKeyManager&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private <span class="keyword">static</span> X509TrustManager <span class="title function_">chooseTrustManager</span>(<span class="params">TrustManager[] trustManagers</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="title class_">TrustManager</span> trustManager : trustManagers) &#123;</span><br><span class="line">            <span class="keyword">if</span> (trustManager <span class="keyword">instanceof</span> X509TrustManager) &#123;</span><br><span class="line">                <span class="keyword">return</span> (X509TrustManager) trustManager;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">ignoreSSLCheck</span>(<span class="params">OkHttpClient sClient</span>) &#123;</span><br><span class="line">        <span class="title class_">SSLContext</span> sc = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            sc = <span class="title class_">SSLContext</span>.<span class="title function_">getInstance</span>(<span class="string">&quot;SSL&quot;</span>);</span><br><span class="line">            sc.<span class="title function_">init</span>(<span class="literal">null</span>, <span class="keyword">new</span> <span class="title class_">TrustManager</span>[]&#123;<span class="keyword">new</span> <span class="title function_">X509TrustManager</span>(<span class="params"></span>) &#123;</span><br><span class="line">                @<span class="title class_">Override</span></span><br><span class="line">                public <span class="keyword">void</span> <span class="title function_">checkClientTrusted</span>(java.<span class="property">security</span>.<span class="property">cert</span>.<span class="property">X509Certificate</span>[] chain, <span class="title class_">String</span> authType) throws java.<span class="property">security</span>.<span class="property">cert</span>.<span class="property">CertificateException</span> &#123;</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                @<span class="title class_">Override</span></span><br><span class="line">                public <span class="keyword">void</span> <span class="title function_">checkServerTrusted</span>(java.<span class="property">security</span>.<span class="property">cert</span>.<span class="property">X509Certificate</span>[] chain, <span class="title class_">String</span> authType) throws java.<span class="property">security</span>.<span class="property">cert</span>.<span class="property">CertificateException</span> &#123;</span><br><span class="line"></span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                @<span class="title class_">Override</span></span><br><span class="line">                public java.<span class="property">security</span>.<span class="property">cert</span>.<span class="property">X509Certificate</span>[] <span class="title function_">getAcceptedIssuers</span>(<span class="params"></span>) &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;&#125;, <span class="keyword">new</span> <span class="title class_">SecureRandom</span>());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">Exception</span> e) &#123;</span><br><span class="line">            <span class="title class_">Logger</span>.<span class="title function_">err</span>(<span class="string">&quot;fail to ignoreSSLCheck&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="title class_">HostnameVerifier</span> hv1 = <span class="keyword">new</span> <span class="title class_">HostnameVerifier</span>() &#123;</span><br><span class="line">            @<span class="title class_">Override</span></span><br><span class="line">            public boolean <span class="title function_">verify</span>(<span class="params"><span class="built_in">String</span> hostname, SSLSession session</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="title class_">String</span> workerClassName = <span class="string">&quot;okhttp3.OkHttpClient&quot;</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="title class_">Class</span> workerClass = <span class="title class_">Class</span>.<span class="title function_">forName</span>(workerClassName);</span><br><span class="line">            <span class="title class_">Field</span> hostnameVerifier = workerClass.<span class="title function_">getDeclaredField</span>(<span class="string">&quot;hostnameVerifier&quot;</span>);</span><br><span class="line">            hostnameVerifier.<span class="title function_">setAccessible</span>(<span class="literal">true</span>);</span><br><span class="line">            hostnameVerifier.<span class="title function_">set</span>(sClient, hv1);</span><br><span class="line"></span><br><span class="line">            <span class="title class_">Field</span> sslSocketFactory = workerClass.<span class="title function_">getDeclaredField</span>(<span class="string">&quot;sslSocketFactory&quot;</span>);</span><br><span class="line">            sslSocketFactory.<span class="title function_">setAccessible</span>(<span class="literal">true</span>);</span><br><span class="line">            sslSocketFactory.<span class="title function_">set</span>(sClient, sc.<span class="title function_">getSocketFactory</span>());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (<span class="title class_">Exception</span> e) &#123;</span><br><span class="line">            <span class="title class_">Logger</span>.<span class="title function_">err</span>(<span class="string">&quot;fail to hostnameVerifier&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">UnSafeTrustManager</span> implements X509TrustManager &#123;</span><br><span class="line">        @<span class="title class_">Override</span></span><br><span class="line">        public <span class="keyword">void</span> <span class="title function_">checkClientTrusted</span>(X509Certificate[] chain, <span class="title class_">String</span> authType) throws <span class="title class_">CertificateException</span> &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @<span class="title class_">Override</span></span><br><span class="line">        public <span class="keyword">void</span> <span class="title function_">checkServerTrusted</span>(X509Certificate[] chain, <span class="title class_">String</span> authType) throws <span class="title class_">CertificateException</span> &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @<span class="title class_">Override</span></span><br><span class="line">        public X509Certificate[] <span class="title function_">getAcceptedIssuers</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> X509Certificate[]&#123;&#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">MyTrustManager</span> implements X509TrustManager &#123;</span><br><span class="line">        private X509TrustManager defaultTrustManager;</span><br><span class="line">        private X509TrustManager localTrustManager;</span><br><span class="line"></span><br><span class="line">        public <span class="title class_">MyTrustManager</span>(X509TrustManager localTrustManager) throws <span class="title class_">NoSuchAlgorithmException</span>, <span class="title class_">KeyStoreException</span> &#123;</span><br><span class="line">            <span class="title class_">TrustManagerFactory</span> var4 = <span class="title class_">TrustManagerFactory</span>.<span class="title function_">getInstance</span>(<span class="title class_">TrustManagerFactory</span>.<span class="title function_">getDefaultAlgorithm</span>());</span><br><span class="line">            var4.<span class="title function_">init</span>((<span class="title class_">KeyStore</span>) <span class="literal">null</span>);</span><br><span class="line">            defaultTrustManager = <span class="title function_">chooseTrustManager</span>(var4.<span class="title function_">getTrustManagers</span>());</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">localTrustManager</span> = localTrustManager;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @<span class="title class_">Override</span></span><br><span class="line">        public <span class="keyword">void</span> <span class="title function_">checkClientTrusted</span>(X509Certificate[] chain, <span class="title class_">String</span> authType) throws <span class="title class_">CertificateException</span> &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @<span class="title class_">Override</span></span><br><span class="line">        public <span class="keyword">void</span> <span class="title function_">checkServerTrusted</span>(X509Certificate[] chain, <span class="title class_">String</span> authType) throws <span class="title class_">CertificateException</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                defaultTrustManager.<span class="title function_">checkServerTrusted</span>(chain, authType);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (<span class="title class_">CertificateException</span> ce) &#123;</span><br><span class="line">                localTrustManager.<span class="title function_">checkServerTrusted</span>(chain, authType);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        @<span class="title class_">Override</span></span><br><span class="line">        public X509Certificate[] <span class="title function_">getAcceptedIssuers</span>(<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> X509Certificate[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private <span class="keyword">class</span> <span class="title class_">UnSafeHostnameVerifier</span> implements <span class="title class_">HostnameVerifier</span> &#123;</span><br><span class="line">        @<span class="title class_">Override</span></span><br><span class="line">        public boolean <span class="title function_">verify</span>(<span class="params"><span class="built_in">String</span> hostname, SSLSession session</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="升级版本"><a href="#升级版本" class="headerlink" title="升级版本"></a>升级版本</h3><p>有细心的同学发现我们还有一个GlobalException的异常，这个东西是我们在andserver接收到请求，对请求处理过后不需要处理返回的信息的时候使用的自定义Exception；可以根据你们自己的业务需求取用</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> : yifeng_zeng</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Time</span> : 2021/11/5 14:22</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> : 全局转发异常，为了把body传给GlobalExceptionSolver</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">public <span class="keyword">class</span> <span class="title class_">GlobalException</span> <span class="keyword">extends</span> <span class="title class_ inherited__">BasicException</span> &#123;</span><br><span class="line">    private <span class="keyword">static</span> int statusCode = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">    public <span class="title class_">GlobalException</span>(<span class="title class_">DataRequest</span> request) &#123;</span><br><span class="line">        <span class="variable language_">super</span>(statusCode,<span class="title class_">JSON</span>.<span class="title function_">toJSONString</span>(request));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public <span class="title class_">GlobalException</span>(<span class="title class_">String</span> request) &#123;</span><br><span class="line">        <span class="variable language_">super</span>(statusCode,request);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>使用</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@<span class="title class_">Override</span></span><br><span class="line">	@<span class="title class_">RequestMapping</span>(method = &#123;<span class="title class_">RequestMethod</span>.<span class="property">OPTIONS</span>, <span class="title class_">RequestMethod</span>.<span class="property">POST</span>&#125;, path = <span class="string">&quot;/finishOrderSale&quot;</span>)</span><br><span class="line">	public <span class="title class_">Response</span> <span class="title function_">finishOrderSale</span>(@<span class="title class_">RequestBody</span> <span class="title class_">Request</span> requestModel)throws <span class="title class_">IOException</span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (requestModel.<span class="title function_">getData</span>()!=<span class="literal">null</span>)&#123;</span><br><span class="line">		<span class="comment">//这里可以对requestModel进行处理</span></span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">GlobalException</span>(requestModel);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="title class_">Response</span>  response = <span class="keyword">new</span>  <span class="title class_">Response</span>();</span><br><span class="line">		<span class="keyword">return</span> response;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>这个时候，坐在屏幕前的你是不是应该说一句：“秒啊！”<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/e245f3d9f01e4ea6af2f7f35e8e8c9ff.jpg"
+                      alt="在这里插入图片描述"
+                ></p>
+
+            </div>
+
+            
+                <div class="post-copyright-info">
+                    <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> andriod andserver 全局转发代理（部分接口在本地）的实现思路</li>
+        <li><strong>作者:</strong> 曾一峰</li>
+        <li><strong>创建于:</strong> 2022-05-11 11:36:15</li>
+        
+            <li>
+                <strong>更新于:</strong> 2023-04-20 08:12:38
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://blog.csdn.net/shop_and_sleep?type=blog/2022/05/11/andriod-andserver-全局转发代理（部分接口在本地）的实现思路/andriod-andserver-全局转发代理（部分接口在本地）的实现思路/
+        </li>
+        <li>
+            <strong>版权声明:</strong> 本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a> 进行许可。
+        </li>
+    </ul>
+</div>
+
+                </div>
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/tags/Andserver/">#Andserver</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+
+            
+                <div class="article-nav">
+                    
+                        <div class="article-prev">
+                            <a class="prev"
+                            rel="prev"
+                            href="/2022/07/29/android-retrofit-%E4%BB%8E%E6%97%A0%E7%9F%A5%E5%88%B0%E5%85%A5%E9%97%A8/android-retrofit-%E4%BB%8E%E6%97%A0%E7%9F%A5%E5%88%B0%E5%85%A5%E9%97%A8/"
+                            >
+                                <span class="left arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </span>
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">android retrofit 从无知到入门</span>
+                                    <span class="post-nav-item">上一篇</span>
+                                </span>
+                            </a>
+                        </div>
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                            rel="next"
+                            href="/2022/05/11/Andserver-%E9%85%8D%E7%BD%AE%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AE%9E%E7%8E%B0webview%E5%B1%95%E7%8E%B0%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/Andserver-%E9%85%8D%E7%BD%AE%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AE%9E%E7%8E%B0webview%E5%B1%95%E7%8E%B0%E6%9C%AC%E5%9C%B0%E5%9B%BE%E7%89%87/"
+                            >
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">Andserver 配置本地文件浏览器实现webview展现本地图片</span>
+                                    <span class="post-nav-item">下一篇</span>
+                                </span>
+                                <span class="right arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+
+            
+                <div class="comment-container">
+                    <div class="comments-container">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;评论
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-pjax
+            src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+    <script data-pjax>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: 'e2c821b7e7706fb9dfe1',
+                    clientSecret: '1e3e01d441df06461eb89d2f958fa38d84bb8053',
+                    repo: 'zyf-good.github.io',
+                    owner: 'zyf-good',
+                    admin: ['zyf-good'],
+                    id: __gitalk__pathname,
+                    language: 'zh-CN'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+                </div>
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">andriod andserver 全局转发代理（部分接口在本地）的实现思路</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text">参考资料</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="nav-text">实现思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E9%9C%80%E6%B1%82"><span class="nav-text">业务需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%93%B6%E9%A2%88"><span class="nav-text">瓶颈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%80%83"><span class="nav-text">思考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E7%BB%88%E8%A7%A3%E5%86%B3"><span class="nav-text">最终解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%87%E7%BA%A7%E7%89%88%E6%9C%AC"><span class="nav-text">升级版本</span></a></li></ol></li></ol></li></ol>
+
+    </div>
+</div>
+            </div>
+        
+    </div>
+</div>
+
+
+                
+
+            </div>
+            
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2023&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">曾一峰</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            <span class="powered-by-container">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 驱动</span>
+                <br>
+            <span class="theme-version-container">主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.1.2</a>
+        </div>
+        
+        
+        
+            <div id="start_div" style="display:none">
+                2023/4/18 12:00:00
+            </div>
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+        
+            <script async data-pjax>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-expand-width flex-center">
+            <i class="fa-regular fa-expand"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/layouts/navbarShrink.js"></script>
+
+<script src="/js/tools/scrollTopBottom.js"></script>
+
+<script src="/js/tools/lightDarkSwitch.js"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/layouts/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js"></script>
+
+
+
+
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/tools/tocToggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/layouts/toc.js"></script>
+
+<script src="/js/plugins/tabs.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax',
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            Global.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            Global.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            Global.refresh();
+        });
+    });
+</script>
+
+
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>

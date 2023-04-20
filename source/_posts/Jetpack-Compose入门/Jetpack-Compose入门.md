@@ -3,7 +3,7 @@ title: Jetpack Compose入门
 date: 2023-04-19 11:01:01
 tags: Jetpack Compose
 categories: andorid
-thumbnail: "/images/jp_fengmian.jpg"
+cover: "/images/andorid.jpeg"
 ---
 
 # 一.前言

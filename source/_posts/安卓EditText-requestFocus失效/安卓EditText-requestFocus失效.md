@@ -2,8 +2,8 @@
 title: 安卓EditText.requestFocus失效
 date: 2021-10-20 11:08:54
 tags: 
-    -开发日常
-    -java
+    开发日常
+    java
 categories: andorid
 cover: "/images/andorid.jpeg"
 ---

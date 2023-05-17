@@ -969,6 +969,188 @@
       </tags>
   </entry>
   <entry>
+    <title>写给Android开发的Android简史</title>
+    <url>/2023/05/17/%E5%86%99%E7%BB%99Android%E5%BC%80%E5%8F%91%E7%9A%84Android%E7%AE%80%E5%8F%B2/%E5%86%99%E7%BB%99Android%E5%BC%80%E5%8F%91%E7%9A%84Android%E7%AE%80%E5%8F%B2/</url>
+    <content><![CDATA[<p>Android 是一个流行的移动操作系统，由 Google 开发并于 2008 年首次推出。以下是 Android 的详细发展历史：</p>
+<h3 id="2003-年开始开发"><a href="#2003-年开始开发" class="headerlink" title="2003 年开始开发"></a>2003 年开始开发</h3><p>Android 最初由鲍尔斯·卡普和安迪·鲁宾（Andy Rubin）于 2003 年创立，并在一家名为 Android Inc. 的公司下进行开发。该公司旨在开发可定制和基于 Linux 的移动设备操作系统。</p>
+<h3 id="2005-年被收购"><a href="#2005-年被收购" class="headerlink" title="2005 年被收购"></a>2005 年被收购</h3><p>2005 年，Google 收购了 Android Inc. ，其创始人和员工随后加入了 Google。</p>
+<h3 id="2007-年发布-Open-Handset-Alliance"><a href="#2007-年发布-Open-Handset-Alliance" class="headerlink" title="2007 年发布 Open Handset Alliance"></a>2007 年发布 Open Handset Alliance</h3><p>2007 年 11 月，Google 宣布成立 Open Handset Alliance （OHA），这是一个联盟组织，面向移动设备生态系统提供自由和开放的标准化平台。该联盟由手机制造商、软件开发商、芯片制造商和电信运营商等行业组成。</p>
+<h3 id="2008-年发布-Android-1-0"><a href="#2008-年发布-Android-1-0" class="headerlink" title="2008 年发布 Android 1.0"></a>2008 年发布 Android 1.0</h3><p>2008 年 9 月，Android 1.0 正式发布，包括一系列基本应用程序，如 <strong>拨打电话、发送短信、浏览器、地图</strong> 等。</p>
+<h3 id="后续版本"><a href="#后续版本" class="headerlink" title="后续版本"></a>后续版本</h3><p>随着时间的推移，Android 发布了许多重要版本，每个版本都引入了新的特性和更新，包括：</p>
+<ul>
+<li>2009 年：Android 1.5 Cupcake<ul>
+<li>虚拟键盘。</li>
+<li>插件框架，支持第三方输入法。</li>
+<li>录音机应用程序。</li>
+<li>自动旋转屏幕的支持。</li>
+</ul>
+</li>
+<li>2009 年：Android 1.6 Donut<ul>
+<li>快捷搜索框（Quick Search Box）。</li>
+<li>支持 CDMA 网络。</li>
+<li>新的摄像头和图库应用程序。</li>
+<li>改进的 Android Market 应用商店。</li>
+</ul>
+</li>
+<li>2010 年：Android 2.0&#x2F;2.1 Éclair<ul>
+<li>Google Maps 导航应用程序。</li>
+<li>改进的用户界面和操作体验。</li>
+<li>HTML5 功能支持。</li>
+<li>改进的 Android Market 应用商店。</li>
+<li>多点触控和虚拟相机功能。</li>
+</ul>
+</li>
+<li>2010 年：Android 2.2 Froyo<ul>
+<li>增强的性能、速度和内存管理。</li>
+<li>改进了 Flash Player 支持。</li>
+<li>支持 Wi-Fi 热点分享。</li>
+<li>增加了 USB 和 Bluetooth Tethering 功能。</li>
+</ul>
+</li>
+<li>2011 年：Android 2.3 Gingerbread<ul>
+<li>新增 NFC（近场通讯）支持。</li>
+<li>视频和音频格式支持改进。</li>
+<li>下拉通知栏添加快捷切换功能。</li>
+<li>增强的键盘和文本输入功能。</li>
+</ul>
+</li>
+<li>2011 年：Android 3.0&#x2F;3.1&#x2F;3.2 Honeycomb（专为平板电脑设计）<ul>
+<li>专门为平板电脑设计的版本。</li>
+<li>新增了更大、高分辨率的图标和控件。</li>
+<li>设计更加直观和符合人体工程学，可更好地适应平板电脑屏幕。</li>
+<li>Android 3.2 版本引入更多语言支持。</li>
+</ul>
+</li>
+<li>2011 年：Android 4.0 Ice Cream Sandwich<ul>
+<li>全新界面设计 Holo。提供了支持拉出式通知栏的新状态栏和虚拟导航栏，并支持多任务视图。</li>
+<li>改进通知系统及应用程序管理。</li>
+<li>引入 People app 和 Face Unlock 功能。</li>
+<li>增强性能和稳定性。</li>
+</ul>
+</li>
+<li>2012 年：Android 4.1&#x2F;4.2&#x2F;4.3 Jelly Bean<ul>
+<li>项目 Butter 提升用户界面流畅度。</li>
+<li>Siri 类似的 Google Now 功能。</li>
+<li>相片应用程序增强。</li>
+<li>蓝牙和安全性改进。</li>
+</ul>
+</li>
+<li>2013 年：Android 4.4 KitKat<ul>
+<li>孵化器支持。</li>
+<li>全局打字搜索功能。</li>
+<li>原生短信应用程序变为 Hangouts。</li>
+<li>移动设备管理中新增支持个人和企业的分离数据存储和访问权限控制。</li>
+<li>增加了透明状态栏，使应用程序可以延伸到屏幕顶部。同时优化了音频、视频以及渲染引擎等方面的性能。</li>
+</ul>
+</li>
+<li>2014 年：Android 5.0&#x2F;5.1 Lollipop<ul>
+<li>Material Design 更新外观设计。</li>
+<li>多用户支持。</li>
+<li>捆绑过的通知和锁屏预览。</li>
+<li>设备保护功能，可以防止未经授权的用户访问丢失或被盗的设备。</li>
+<li>同时增加了 ART 虚拟机支持，大幅度提升了应用程序性能。</li>
+</ul>
+</li>
+<li>2015 年：Android 6.0 Marshmallow<ul>
+<li>支持运行时权限管理，用户可以在使用应用程序时授权或拒绝开启某些操作权限，如访问相机或联系人。</li>
+<li>Google Now On Tap 功能，可为你提供更加个性化和定制化的搜索结果。</li>
+<li>延长了电池寿命并减少移动数据使用量的 Doze 模式。</li>
+<li>改进的指纹识别 API。</li>
+</ul>
+</li>
+<li>2016 年：Android 7.0&#x2F;7.1 Nougat<ul>
+<li>新增了「分屏模式」，可将两个应用程序并排展示，同时支持优化因网络连接而打断应用程序使用体验的多窗口模式。</li>
+<li>支持多任务分屏。</li>
+<li>改进通知系统。</li>
+<li>Vulkan API 支持游戏体验改善。</li>
+</ul>
+</li>
+<li>2017 年：Android 8.0&#x2F;8.1 Oreo<ul>
+<li>引入 Project Treble，简化了 Android 更新流程。最大的更新包括限制了不必要的后台任务，例如«胡萝卜和棍子»算法来保留电量；Webview 已经从系统中移除，在 Google Play 商店中分发更新。</li>
+<li>自适应图标。</li>
+<li>强化 WiFi 连接速度及安全性。</li>
+<li>新增 PiP（画中画）功能以便于多任务处理。</li>
+</ul>
+</li>
+<li>2018 年：Android 9.0 Pie<ul>
+<li>快捷启动应用程序操作。引入了名为「适配屏幕缺口」(Notch)的特性，以支持新一代手机屏幕的刘海设计。同样支持同时开启多个 Bluetooth、Wi-Fi 等连接，方便设备连接管理。</li>
+<li>颜色呈现增强。</li>
+<li>自适应亮度控制。</li>
+<li>全面采取高效 AI 和机器学习技术。</li>
+</ul>
+</li>
+<li>2019 年：Android 10<ul>
+<li>手势导航。</li>
+<li>暗黑模式。</li>
+<li>重要通知可进行回复。</li>
+<li>系统安全性支持增强。加强了隐私保护措施，支持应用程序读取短信权限的部分变化，使用非 resettable 的 MAC 地址等。</li>
+</ul>
+</li>
+<li>2020 年：Android 11<ul>
+<li>新增了 Bubbles 聊天气泡功能，可以在不打断现有任务的情况下查看聊天内容。调整了通知样式和布局，并加强了应用程序故障监视和定位。</li>
+<li>媒体和控制，机器学习加强智能化操作。</li>
+<li>我的设备中新增“小黄车”支持。</li>
+<li>隐私提醒全方面增强。</li>
+</ul>
+</li>
+<li>2021 年：Android 12<ul>
+<li>Material You 设计语言。</li>
+<li>多点触控增强。</li>
+<li>更快、更流畅的动画效果。</li>
+<li>对于隐私保护做出了大量改进。</li>
+</ul>
+</li>
+</ul>
+<p>在每个版本的发布中，Google 增加了各种新特性和改进。现在，Android 成为了全球最流行的手机操作系统之一，并支持许多不同类型的设备，包括智能手机、平板电脑、智能手表等。</p>
+<h2 id="Andorid的各个版本占市场的份额"><a href="#Andorid的各个版本占市场的份额" class="headerlink" title="Andorid的各个版本占市场的份额"></a>Andorid的各个版本占市场的份额</h2><p>谷歌每月都会发布最新的“Platform Distribution”报告。以下是 2023 年 4 月份的数据：</p>
+<ol>
+<li>Android 11：21.9%</li>
+<li>Android 12：16.5%</li>
+<li>Android 10：15.3%</li>
+<li>Android 9 Pie: 12.8%</li>
+<li>Android 8.0&#x2F;8.1 Oreo: 7%</li>
+<li>Android 7.0&#x2F;7.1 Nougat: 4.7%</li>
+<li>Android 6.0 Marshmallow: 2.8%</li>
+<li>Android 5.0&#x2F;5.1 Lollipop: 1.3%</li>
+<li>其他版本及 SDK 29 以下的 Android 版本：18.7%</li>
+</ol>
+<p>可以看到，较新的Android版本比如 Android 11、Android 12 市场占有率处于领先位置，但仍然有相当多量的机型运行着 Android 10 及之前的操作系统版本。</p>
+<h2 id="不同-Android-版本对应的-compileSdk-等级"><a href="#不同-Android-版本对应的-compileSdk-等级" class="headerlink" title="不同 Android 版本对应的 compileSdk 等级"></a>不同 Android 版本对应的 <code>compileSdk</code> 等级</h2><ol>
+<li>Android 1.0-1.1: 没有 <code>compileSdk</code> 的概念。</li>
+<li>Android 1.5 Cupcake: <code>compileSdk</code> 等级为 3。</li>
+<li>Android 1.6 Donut: <code>compileSdk</code> 等级为 4。</li>
+<li>Android 2.0-2.1 Eclair: <code>compileSdk</code> 等级为 5-7。</li>
+<li>Android 2.2 Froyo: <code>compileSdk</code> 等级为 8。</li>
+<li>Android 2.3 Gingerbread: <code>compileSdk</code> 等级为 9-10。</li>
+<li>Android 3.0-3.2 Honeycomb: <code>compileSdk</code> 等级为 11-13。</li>
+<li>Android 4.0 Ice Cream Sandwich: <code>compileSdk</code> 等级为 14-15。</li>
+<li>Android 4.1-4.3 Jelly Bean: <code>compileSdk</code> 等级为 16-18。</li>
+<li>Android 4.4 KitKat: <code>compileSdk</code> 等级为 19。</li>
+<li>Android 5.0-5.1 Lollipop: <code>compileSdk</code> 等级为 21-22。</li>
+<li>Android 6.0 Marshmallow: <code>compileSdk</code> 等级为 23。</li>
+<li>Android 7.0-7.1 Nougat: <code>compileSdk</code> 等级为 24-25。</li>
+<li>Android 8.0-8.1 Oreo: <code>compileSdk</code> 等级为 26-27。</li>
+<li>Android 9 Pie: <code>compileSdk</code> 等级为 28。</li>
+<li>Android 10: <code>compileSdk</code> 等级为 29。</li>
+<li>Android 11: <code>compileSdk</code> 等级为 30。</li>
+<li>Android 12: <code>compileSdk</code> 等级为 31。</li>
+</ol>
+<p>需要注意的是，不同版本的 <code>compileSdk</code> 等级可以让开发者使用不同的特性和 API，并且可能导致应用程序的兼容性问题。因此，在编写应用程序时，请选择适当的 <code>compileSdk</code> 等级，以确保该应用程序能在目标设备上正确运行。</p>
+<h2 id="Android-的软件包（Library）发展历史"><a href="#Android-的软件包（Library）发展历史" class="headerlink" title="Android 的软件包（Library）发展历史"></a>Android 的软件包（Library）发展历史</h2><ol>
+<li>Support Library v4-v7: 早期的 Android 版本中，缺乏一些现代应用程序所需要的新特性和功能。因此，Google 推出了 Support Library v4-v7 软件包，以提供这些缺失的特性和功能并提高开发效率。其中包括 RecyclerView、CardView、AppCompat 等常用组件。</li>
+<li>Android X: 2018 年，Android 全面支持 Kotlin 并推出了 Android Jetpack 包，Android X 是公共支持库核心部分，并提供了与 Jetpack 其他组件结合使用的向后兼容的 API 支持。具体来说，它底层架构及其实现方式都进行了改进，它使用定义清晰、能够分离的模块、良好组织、依赖关系明确的框架来重新组织它的软件包，使得开发者可以更轻松快捷地编写 Android 应用程序，同时还增强了代码的可读性和可维护性。</li>
+<li>Jetpack 组件：Jetpack 是一个集成式的工具包，包括多个组件，可以帮助开发者更快、更轻松地编写高质量的 Android 应用程序。这些组件包括但不限于：Navigation、LiveData、ViewModel、Room、Data Binding 等。</li>
+</ol>
+<p>与 Support Library 不同，Android X 和 Jetpack 组件的重要意义不在于其“前缀”名字（从 v7 变成 Android X），而是它们所代表的完全不同的设计思想和 API 集合。它们通过提供更简单、标准化且良好组织的解决方案来简化 Android 开发过程，同时通过其向后兼容性和协作方式，使得确定应用程序的执行环境变得更加容易。</p>
+]]></content>
+      <categories>
+        <category>andorid</category>
+      </categories>
+      <tags>
+        <tag>开发日常 andorid</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>安卓EditText.requestFocus失效</title>
     <url>/2021/10/20/%E5%AE%89%E5%8D%93EditText-requestFocus%E5%A4%B1%E6%95%88/%E5%AE%89%E5%8D%93EditText-requestFocus%E5%A4%B1%E6%95%88/</url>
     <content><![CDATA[<p>   之前项目需求要求在进入一个activity的时候自动获取页面内某个EditText的焦点，让用户可以进入页面过后马上输入，这里我使用了</p>
@@ -981,7 +1163,7 @@
         <category>andorid</category>
       </categories>
       <tags>
-        <tag>-开发日常 -java</tag>
+        <tag>开发日常 java</tag>
       </tags>
   </entry>
   <entry>

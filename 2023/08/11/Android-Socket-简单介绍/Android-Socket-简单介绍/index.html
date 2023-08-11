@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="曾一峰">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="https://zyf-good.github.io/2023/08/11/android-socket-简单介绍/android-socket-简单介绍/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="前言最近需求需要使用Socket进行通讯，我在工作后的安卓开发中没有接触过，所以有了这篇文章；写的时候想起来好像上大学的时候学过，后面一直没用忘记了；之前公司同事的男朋友也在写这个来着，我当时还嘲笑怎么还会有人用这个，现在自己遇到了🐕；  一、Socket是什么？百度百科的解释所谓套接字(Socket)，就是对网络中不同主机上的应用进程之间进行双向通信的端点的抽象。一个套接字就是网络上进程通信">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Socket 简单介绍">
+<meta property="og:url" content="https://zyf-good.github.io/2023/08/11/Android-Socket-%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/Android-Socket-%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言最近需求需要使用Socket进行通讯，我在工作后的安卓开发中没有接触过，所以有了这篇文章；写的时候想起来好像上大学的时候学过，后面一直没用忘记了；之前公司同事的男朋友也在写这个来着，我当时还嘲笑怎么还会有人用这个，现在自己遇到了🐕；  一、Socket是什么？百度百科的解释所谓套接字(Socket)，就是对网络中不同主机上的应用进程之间进行双向通信的端点的抽象。一个套接字就是网络上进程通信">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zyf-good.github.io/images/socket1.png">
+<meta property="og:image" content="https://zyf-good.github.io/images/socket2.png">
+<meta property="article:published_time" content="2023-08-11T14:54:55.000Z">
+<meta property="article:modified_time" content="2023-08-11T07:07:16.037Z">
+<meta property="article:author" content="曾一峰">
+<meta property="article:tag" content="Socket">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://zyf-good.github.io/images/socket1.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/android_icon.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/android_icon.png">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/android_icon.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            Android Socket 简单介绍 -
+        
+        我怀里的猫的博客
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/assets/fonts.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    let Global = window.Global || {};
+    Global.hexo_config = {"hostname":"zyf-good.github.io","root":"/","language":"zh-CN","path":"search.xml"};
+    Global.theme_config = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[""]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"busuanzi_counter":{"enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"pjax":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"static","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"一个90后安卓开发","subtitle":{"text":[""],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn/"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":false,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/zyf-good","instagram":null,"zhihu":null,"twitter":null,"email":null,"fa-solid fa-solid fa-c":"https://blog.csdn.net/shop_and_sleep?spm=1011.2124.3001.5343"}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"Imagine","artist":"John Lennon","url":"https://evan.beee.top/music/Imagine%20-%20John%20Lennon.mp3","cover":"https://evan.beee.top/music/covers/Lennon_Imagine_Sleeve_1975.jpg"},{"name":"Something Just Like This","artist":"Coldplay","url":"https://evan.beee.top/music/Something%20Just%20Like%20This%20-%20The%20Chainsmokers%E3%80%81Coldplay.mp3","cover":"https://evan.beee.top/music/covers/Something_Just_Like_This.png"}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.1.3","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"},"Archives":{"path":"/archives","icon":"fa-regular fa-archive","tags":null},"Tags":{"icon":"fa-solid fa-tags","path":"/tags/"},"Categories":{"icon":"fa-solid fa-folder","path":"/categories/"},"About":{"icon":"fa-regular fa-user","submenus":{"博主":"/about","Github":"https://github.com/zyf-good","CSDN":"https://blog.csdn.net/shop_and_sleep/"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}}};
+    Global.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="main-content-container">
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                我怀里的猫的博客
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        首页
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/archives"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-archive"></i>
+                                        
+                                        归档
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/tags/"  >
+                                    
+                                        
+                                            <i class="fa-solid fa-tags"></i>
+                                        
+                                        标签
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/categories/"  >
+                                    
+                                        
+                                            <i class="fa-solid fa-folder"></i>
+                                        
+                                        分类
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown" 
+                                    href="#" onClick="return false;">
+                                    
+                                        
+                                            <i class="fa-regular fa-user"></i>
+                                        
+                                        关于&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                    
+                                        <li>
+                                        <a href="/about">博主
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://github.com/zyf-good">GITHUB
+                                        </a>
+                                        </li>
+                                    
+                                        <li>
+                                        <a target="_blank" rel="noopener" href="https://blog.csdn.net/shop_and_sleep/">CSDN
+                                        </a>
+                                        </li>
+                                    
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i></div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer">
+        <ul class="drawer-navbar-list">
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                首页
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/archives"  >
+                             
+                                
+                                    <i class="fa-regular fa-archive"></i>
+                                
+                                归档
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/tags/"  >
+                             
+                                
+                                    <i class="fa-solid fa-tags"></i>
+                                
+                                标签
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/categories/"  >
+                             
+                                
+                                    <i class="fa-solid fa-folder"></i>
+                                
+                                分类
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="has-dropdown" 
+                        href="#" onClick="return false;">
+                            
+                                
+                                    <i class="fa-regular fa-user"></i>
+                                
+                                关于&nbsp;<i class="fa-solid fa-chevron-down"></i>
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                              
+                        
+                            <li class="dropdown-item flex-center">
+                                <a class="dropdown-item" href="/about">博主</a>
+                            </li>
+                        
+                            <li class="dropdown-item flex-center">
+                                <a class="dropdown-item" target="_blank" rel="noopener" href="https://github.com/zyf-good">GITHUB</a>
+                            </li>
+                        
+                            <li class="dropdown-item flex-center">
+                                <a class="dropdown-item" target="_blank" rel="noopener" href="https://blog.csdn.net/shop_and_sleep/">CSDN</a>
+                            </li>
+                        
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container">
+        <div class="article-content-container">
+
+            
+             
+                <div class="article-title">         
+                    <img src="/images/page3.webp" alt="Android Socket 简单介绍" />
+                    <h1 class="article-title-cover">Android Socket 简单介绍</h1>
+                </div>
+            
+                
+            
+
+            
+                <div class="article-header">
+                    <div class="avatar">
+                        <img src="/images/lipu.jpg">
+                    </div>
+                    <div class="info">
+                        <div class="author">
+                            <span class="name">曾一峰</span>
+                            
+                                <span class="author-label"></span>
+                            
+                        </div>
+                        <div class="meta-info">
+                            <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-08-11 14:54:55</span>
+        <span class="mobile">2023-08-11 14:54</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-08-11 07:07:16</span>
+            <span class="mobile">2023-08-11 07:07</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/andorid/">andorid</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Socket/">Socket</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>2.2k 字</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>10 分钟</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="article-content markdown-body">
+                <hr>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近需求需要使用Socket进行通讯，我在工作后的安卓开发中没有接触过，所以有了这篇文章；<br>写的时候想起来好像上大学的时候学过，后面一直没用忘记了；<br>之前公司同事的男朋友也在写这个来着，我当时还嘲笑怎么还会有人用这个，现在自己遇到了🐕；</p>
+<hr>
+<h1 id="一、Socket是什么？"><a href="#一、Socket是什么？" class="headerlink" title="一、Socket是什么？"></a>一、Socket是什么？</h1><h2 id="百度百科的解释"><a href="#百度百科的解释" class="headerlink" title="百度百科的解释"></a>百度百科的解释</h2><p>所谓套接字(Socket)，就是对网络中不同主机上的应用进程之间进行双向通信的端点的抽象。一个套接字就是网络上进程通信的一端，提供了应用层进程利用网络协议交换数据的机制。从所处的地位来讲，套接字上联应用进程，下联网络协议栈，是应用程序通过网络协议进行通信的接口，是应用程序与网络协议栈进行交互的接口。</p>
+<p>套接字Socket&#x3D;（IP地址：端口号），套接字的表示方法是点分十进制的lP地址后面写上端口号，中间用冒号或逗号隔开。每一个传输层连接唯一地被通信两端的两个端点（即两个套接字）所确定。例如：如果IP地址是210.37.145.1，而端口号是23，那么得到套接字就是(210.37.145.1:23)</p>
+<h2 id="我自己的理解"><a href="#我自己的理解" class="headerlink" title="我自己的理解"></a>我自己的理解</h2><p>分客户端与服务端，socket以服务端的ip地址和约定好的端口号进行组合得到套接字进行一个两端的相互连接，达到能够互相收发消息的一个目的。</p>
+<h1 id="二、简单示例"><a href="#二、简单示例" class="headerlink" title="二、简单示例"></a>二、简单示例</h1><p>下面的代码将演示如何在一个app中实现服务端和客户端的简单示例</p>
+<h2 id="1-服务端"><a href="#1-服务端" class="headerlink" title="1.服务端"></a>1.服务端</h2><p>先创建抽象的<strong>ServerCallback</strong></p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">ServerCallback</span> &#123;</span><br><span class="line">    <span class="comment">//接收客户端的消息</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">receiveClientMsg</span><span class="params">(success: <span class="type">Boolean</span>, msg: <span class="type">String</span>)</span></span></span><br><span class="line">    <span class="comment">//其他消息，例如有客户端连接和发送消息成功等</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">otherMsg</span><span class="params">(msg: <span class="type">String</span>)</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>然后创建<strong>SocketServer</strong>来管理服务端的连接</p>
+<p>代码如下：</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> android.util.Log</span><br><span class="line"><span class="keyword">import</span> java.io.IOException</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream</span><br><span class="line"><span class="keyword">import</span> java.io.OutputStream</span><br><span class="line"><span class="keyword">import</span> java.net.ServerSocket</span><br><span class="line"><span class="keyword">import</span> java.net.Socket</span><br><span class="line"></span><br><span class="line"><span class="keyword">object</span> SocketServer &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> TAG = SocketServer::<span class="keyword">class</span>.java.simpleName</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">val</span> SOCKET_PORT =</span><br><span class="line">        <span class="number">7878</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> socket: Socket? = <span class="literal">null</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> serverSocket: ServerSocket? = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">lateinit</span> <span class="keyword">var</span> mCallback: ServerCallback</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">lateinit</span> <span class="keyword">var</span> outputStream: OutputStream</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> result = <span class="literal">true</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 开启服务</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">startServer</span><span class="params">(callback: <span class="type">ServerCallback</span>)</span></span>: <span class="built_in">Boolean</span> &#123;</span><br><span class="line">        Log.i(TAG, <span class="string">&quot;startServer: &quot;</span>)</span><br><span class="line">        mCallback = callback</span><br><span class="line">        Thread &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                serverSocket = ServerSocket(SOCKET_PORT)</span><br><span class="line">                <span class="keyword">while</span> (result) &#123;</span><br><span class="line">                    socket = serverSocket?.accept()</span><br><span class="line">                    mCallback.otherMsg(<span class="string">&quot;<span class="subst">$&#123;socket?.inetAddress&#125;</span> to connected&quot;</span>)</span><br><span class="line">                    ServerThread(socket!!, mCallback).start()</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (e: IOException) &#123;</span><br><span class="line">                e.printStackTrace()</span><br><span class="line">                result = <span class="literal">false</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;.start()</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 关闭服务</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">stopServer</span><span class="params">()</span></span> &#123;</span><br><span class="line">        Log.i(TAG, <span class="string">&quot;stopServer: &quot;</span>)</span><br><span class="line">        socket?.apply &#123;</span><br><span class="line">            shutdownInput()</span><br><span class="line">            shutdownOutput()</span><br><span class="line">            close()</span><br><span class="line">        &#125;</span><br><span class="line">        serverSocket?.close()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 发送到客户端</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">sendToClient</span><span class="params">(msg: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">        Thread &#123;</span><br><span class="line">            <span class="keyword">if</span> (socket!!.isClosed) &#123;</span><br><span class="line">                Log.e(TAG, <span class="string">&quot;sendToClient: Socket is closed&quot;</span>)</span><br><span class="line">                <span class="keyword">return</span><span class="symbol">@Thread</span></span><br><span class="line">            &#125;</span><br><span class="line">            outputStream = socket!!.getOutputStream()</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                outputStream.write(msg.toByteArray())</span><br><span class="line">                outputStream.flush()</span><br><span class="line">                mCallback.otherMsg(<span class="string">&quot;toClient: <span class="variable">$msg</span>&quot;</span>)</span><br><span class="line">                Log.d(TAG, <span class="string">&quot;发送到客户端成功&quot;</span>)</span><br><span class="line">            &#125; <span class="keyword">catch</span> (e: IOException) &#123;</span><br><span class="line">                e.printStackTrace()</span><br><span class="line">                Log.e(TAG, <span class="string">&quot;向客户端发送消息失败&quot;</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;.start()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">ServerThread</span>(<span class="keyword">private</span> <span class="keyword">val</span> socket: Socket, <span class="keyword">private</span> <span class="keyword">val</span> callback: ServerCallback) :</span><br><span class="line">        Thread() &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">run</span><span class="params">()</span></span> &#123;</span><br><span class="line">            <span class="keyword">val</span> inputStream: InputStream?</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                inputStream = socket.getInputStream()</span><br><span class="line">                <span class="keyword">val</span> buffer = ByteArray(<span class="number">1024</span>)</span><br><span class="line">                <span class="keyword">var</span> len: <span class="built_in">Int</span></span><br><span class="line">                <span class="keyword">var</span> receiveStr = <span class="string">&quot;&quot;</span></span><br><span class="line">                <span class="keyword">if</span> (inputStream.available() == <span class="number">0</span>) &#123;</span><br><span class="line">                    Log.e(TAG, <span class="string">&quot;inputStream.available() == 0&quot;</span>)</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">while</span> (inputStream.read(buffer).also &#123; len = it &#125; != -<span class="number">1</span>) &#123;</span><br><span class="line">                    receiveStr += String(buffer, <span class="number">0</span>, len, Charsets.UTF_8)</span><br><span class="line">                    <span class="keyword">if</span> (len &lt; <span class="number">1024</span>) &#123;</span><br><span class="line">                        callback.receiveClientMsg(<span class="literal">true</span>, receiveStr)</span><br><span class="line">                        receiveStr = <span class="string">&quot;&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (e: IOException) &#123;</span><br><span class="line">                e.printStackTrace()</span><br><span class="line">                e.message?.let &#123; Log.e(<span class="string">&quot;socket error&quot;</span>, it) &#125;</span><br><span class="line">                callback.receiveClientMsg(<span class="literal">false</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>可以看到我们在通过startServer方法初始化ServerSocket时，只使用到了SOCKET_PORT，这个ServerSocket方法接收一个端口号，不接收ip，因为它将作为服务端<br><strong>ServerSocket方法的注释译文：</strong> 创建绑定到指定端口的服务器套接字。端口号为0表示端口号是自动分配的，通常是从临时端口范围分配的。然后可以通过调用getLocalPort来检索这个端口号。传入连接指示(连接请求)的最大队列长度设置为50。如果连接指示在队列已满时到达，则拒绝连接。</p>
+<h2 id="2-客户端"><a href="#2-客户端" class="headerlink" title="2.客户端"></a>2.客户端</h2><p>同样我们创建一个抽象的 <strong>ClientCallback</strong></p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">ClientCallback</span> &#123;</span><br><span class="line">    <span class="comment">//接收服务端的消息</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">receiveServerMsg</span><span class="params">(msg: <span class="type">String</span>)</span></span></span><br><span class="line">    <span class="comment">//其他消息</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">otherMsg</span><span class="params">(msg: <span class="type">String</span>)</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>然后创建SocketClient来管理服务端的连接</p>
+<p>代码如下：</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.util.Log</span><br><span class="line"><span class="keyword">import</span> java.io.IOException</span><br><span class="line"><span class="keyword">import</span> java.io.InputStream</span><br><span class="line"><span class="keyword">import</span> java.io.InputStreamReader</span><br><span class="line"><span class="keyword">import</span> java.io.OutputStream</span><br><span class="line"><span class="keyword">import</span> java.net.Socket</span><br><span class="line"><span class="keyword">import</span> java.util.Locale</span><br><span class="line"></span><br><span class="line"><span class="keyword">object</span> SocketClient &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> TAG = SocketClient::<span class="keyword">class</span>.java.simpleName</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> socket: Socket? = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> outputStream: OutputStream? = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> inputStreamReader: InputStreamReader? = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">lateinit</span> <span class="keyword">var</span> mCallback: ClientCallback</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">val</span> SOCKET_PORT = <span class="number">7878</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 连接服务</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">connectServer</span><span class="params">(ipAddress: <span class="type">String</span>, callback: <span class="type">ClientCallback</span>)</span></span> &#123;</span><br><span class="line">        mCallback = callback</span><br><span class="line">        Thread &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                socket = Socket(ipAddress, SOCKET_PORT)</span><br><span class="line">                ClientThread(socket!!, mCallback).start()</span><br><span class="line">            &#125; <span class="keyword">catch</span> (e: Exception) &#123;</span><br><span class="line">                e.printStackTrace()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;.start()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 关闭连接</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">closeConnect</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            inputStreamReader?.close()</span><br><span class="line">            outputStream?.close()</span><br><span class="line">            socket?.apply &#123;</span><br><span class="line">                shutdownInput()</span><br><span class="line">                shutdownOutput()</span><br><span class="line">                close()</span><br><span class="line">            &#125;</span><br><span class="line">            Log.d(TAG, <span class="string">&quot;关闭连接&quot;</span>)</span><br><span class="line">        &#125;<span class="keyword">catch</span> (e: Exception)&#123;</span><br><span class="line">            e.printStackTrace()</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 发送数据至服务器</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> msg 要发送至服务器的字符串</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">sendToServer</span><span class="params">(msg: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">        Thread &#123;</span><br><span class="line">            <span class="keyword">if</span> (socket!!.isClosed) &#123;</span><br><span class="line">                Log.e(TAG, <span class="string">&quot;sendToServer: Socket is closed&quot;</span>)</span><br><span class="line">                <span class="keyword">return</span><span class="symbol">@Thread</span></span><br><span class="line">            &#125;</span><br><span class="line">            outputStream = socket?.getOutputStream()</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                outputStream?.write(msg.toByteArray())</span><br><span class="line">                outputStream?.flush()</span><br><span class="line">                mCallback.otherMsg(<span class="string">&quot;toServer: <span class="variable">$msg</span>&quot;</span>)</span><br><span class="line">                Log.e(TAG, <span class="string">&quot;向服务端发送消息成功&quot;</span>)</span><br><span class="line">            &#125; <span class="keyword">catch</span> (e: IOException) &#123;</span><br><span class="line">                e.printStackTrace()</span><br><span class="line">                Log.e(TAG, <span class="string">&quot;向服务端发送消息失败&quot;</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;.start()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">ClientThread</span>(<span class="keyword">private</span> <span class="keyword">val</span> socket: Socket, <span class="keyword">private</span> <span class="keyword">val</span> callback: ClientCallback) : Thread() &#123;</span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">run</span><span class="params">()</span></span> &#123;</span><br><span class="line">            <span class="keyword">val</span> inputStream: InputStream?</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                inputStream = socket.getInputStream()</span><br><span class="line">                <span class="keyword">val</span> buffer = ByteArray(<span class="number">1024</span>)</span><br><span class="line">                <span class="keyword">var</span> len: <span class="built_in">Int</span></span><br><span class="line">                <span class="keyword">var</span> receiveStr = <span class="string">&quot;&quot;</span></span><br><span class="line">                <span class="keyword">if</span> (inputStream.available() == <span class="number">0</span>) &#123;</span><br><span class="line">                    Log.e(TAG, <span class="string">&quot;inputStream.available() == 0&quot;</span>)</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">while</span> (inputStream.read(buffer).also &#123; len = it &#125; != -<span class="number">1</span>) &#123;</span><br><span class="line">                    receiveStr += String(buffer, <span class="number">0</span>, len, Charsets.UTF_8)</span><br><span class="line">                    <span class="keyword">if</span> (len &lt; <span class="number">1024</span>) &#123;</span><br><span class="line">                        callback.receiveServerMsg(receiveStr)</span><br><span class="line">                        receiveStr = <span class="string">&quot;&quot;</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (e: IOException) &#123;</span><br><span class="line">                e.printStackTrace()</span><br><span class="line">                e.message?.let &#123; Log.e(<span class="string">&quot;socket error&quot;</span>, it) &#125;</span><br><span class="line">                callback.receiveServerMsg( <span class="string">&quot;&quot;</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>可以看到我们在客户端通过connectServer方法连接服务端时，使用了Socket方法，它接收了一个ip和一个约定好的端口号，这里的ip就是服务端的ip<br><strong>Socket方法的注释译文为：</strong> 创建流套接字并将其连接到指定主机上的指定端口号。如果指定的主机为空，则相当于指定地址为InetAddress。getByName (null)。也就是说，它相当于指定loopback接口的地址。</p>
+<h2 id="3-布局"><a href="#3-布局" class="headerlink" title="3.布局"></a>3.布局</h2><div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;utf-8&quot;</span>?&gt;</span><br><span class="line">&lt;LinearLayout xmlns:android=<span class="string">&quot;http://schemas.android.com/apk/res/android&quot;</span></span><br><span class="line">    android:layout_width=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">    android:layout_height=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">    xmlns:app=<span class="string">&quot;http://schemas.android.com/apk/res-auto&quot;</span></span><br><span class="line">    android:orientation=<span class="string">&quot;vertical&quot;</span>&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;LinearLayout</span><br><span class="line">        android:id=<span class="string">&quot;@+id/lay_server&quot;</span></span><br><span class="line">        android:layout_width=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">        android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">        android:orientation=<span class="string">&quot;vertical&quot;</span>&gt;</span><br><span class="line">        &lt;TextView</span><br><span class="line">            android:id=<span class="string">&quot;@+id/tv_ip_address&quot;</span></span><br><span class="line">            android:layout_width=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">            android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">            android:padding=<span class="string">&quot;16dp&quot;</span></span><br><span class="line">            android:text=<span class="string">&quot;Ip地址：&quot;</span> /&gt;</span><br><span class="line"></span><br><span class="line">        &lt;Button</span><br><span class="line">            android:id=<span class="string">&quot;@+id/btn_start_service&quot;</span></span><br><span class="line">            android:layout_width=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">            android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">            android:layout_marginStart=<span class="string">&quot;16dp&quot;</span></span><br><span class="line">            android:layout_marginEnd=<span class="string">&quot;16dp&quot;</span></span><br><span class="line">            android:text=<span class="string">&quot;开启服务&quot;</span></span><br><span class="line">             /&gt;</span><br><span class="line">        &lt;Button</span><br><span class="line">            android:id=<span class="string">&quot;@+id/btn_connect_service&quot;</span></span><br><span class="line">            android:layout_width=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">            android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">            android:layout_marginStart=<span class="string">&quot;16dp&quot;</span></span><br><span class="line">            android:layout_marginEnd=<span class="string">&quot;16dp&quot;</span></span><br><span class="line">            android:text=<span class="string">&quot;开启链接&quot;</span></span><br><span class="line">             /&gt;</span><br><span class="line">        &lt;Button</span><br><span class="line">            android:id=<span class="string">&quot;@+id/btn_client_send_msg&quot;</span></span><br><span class="line">            android:layout_width=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">            android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">            android:layout_marginStart=<span class="string">&quot;16dp&quot;</span></span><br><span class="line">            android:layout_marginEnd=<span class="string">&quot;16dp&quot;</span></span><br><span class="line">            android:text=<span class="string">&quot;客户端发送消息&quot;</span></span><br><span class="line">            /&gt;</span><br><span class="line">        &lt;Button</span><br><span class="line">            android:id=<span class="string">&quot;@+id/btn_server_send_msg&quot;</span></span><br><span class="line">            android:layout_width=<span class="string">&quot;match_parent&quot;</span></span><br><span class="line">            android:layout_height=<span class="string">&quot;wrap_content&quot;</span></span><br><span class="line">            android:layout_marginStart=<span class="string">&quot;16dp&quot;</span></span><br><span class="line">            android:layout_marginEnd=<span class="string">&quot;16dp&quot;</span></span><br><span class="line">            android:text=<span class="string">&quot;服务端发送消息&quot;</span></span><br><span class="line">            /&gt;</span><br><span class="line">    &lt;/LinearLayout&gt;</span><br><span class="line"></span><br><span class="line">&lt;/LinearLayout&gt;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="4-实现"><a href="#4-实现" class="headerlink" title="4.实现"></a>4.实现</h2><p>在activity中</p>
+<div class="highlight-container" data-rel="Kotlin"><figure class="iseeu highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> android.net.wifi.WifiManager</span><br><span class="line"><span class="keyword">import</span> android.os.Bundle</span><br><span class="line"><span class="keyword">import</span> android.util.Log</span><br><span class="line"><span class="keyword">import</span> androidx.appcompat.app.AppCompatActivity</span><br><span class="line"><span class="keyword">import</span> com.zyf.vlc.databinding.ActivityMainBinding</span><br><span class="line"><span class="keyword">import</span> com.zyf.vlc.socket.ClientCallback</span><br><span class="line"><span class="keyword">import</span> com.zyf.vlc.socket.ServerCallback</span><br><span class="line"><span class="keyword">import</span> com.zyf.vlc.socket.SocketClient</span><br><span class="line"><span class="keyword">import</span> com.zyf.vlc.socket.SocketServer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MainActivity</span> : <span class="type">AppCompatActivity</span>(),ServerCallback, ClientCallback &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>  <span class="keyword">val</span> TAG = <span class="string">&quot;MainActivity&quot;</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">lateinit</span> <span class="keyword">var</span> binding: ActivityMainBinding</span><br><span class="line"></span><br><span class="line">    <span class="comment">//Socket服务是否打开</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> openSocket = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> connectSocket = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line"></span><br><span class="line">        binding = ActivityMainBinding.inflate(layoutInflater)</span><br><span class="line">        setContentView(binding.root)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        binding.tvIpAddress.text = <span class="string">&quot;Ip地址：<span class="subst">$&#123;getIp()&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//开启服务/关闭服务 服务端处理</span></span><br><span class="line">        binding.btnStartService.setOnClickListener &#123;</span><br><span class="line">            openSocket = <span class="keyword">if</span> (openSocket) &#123;</span><br><span class="line">                SocketServer.stopServer();<span class="literal">false</span></span><br><span class="line">            &#125; <span class="keyword">else</span> SocketServer.startServer(<span class="keyword">this</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment">//改变按钮文字</span></span><br><span class="line">            binding.btnStartService.text = <span class="keyword">if</span> (openSocket) <span class="string">&quot;关闭服务&quot;</span> <span class="keyword">else</span> <span class="string">&quot;开启服务&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        binding.btnConnectService.setOnClickListener &#123;</span><br><span class="line">            <span class="keyword">val</span> ip = getIp()</span><br><span class="line">            connectSocket = <span class="keyword">if</span> (connectSocket) &#123;</span><br><span class="line">                SocketClient.closeConnect();<span class="literal">false</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                SocketClient.connectServer(ip, <span class="keyword">this</span>);<span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            binding.btnConnectService.text = <span class="keyword">if</span> (connectSocket) <span class="string">&quot;关闭连接&quot;</span> <span class="keyword">else</span> <span class="string">&quot;连接服务&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        binding.btnClientSendMsg.setOnClickListener &#123;</span><br><span class="line">            SocketClient.sendToServer(<span class="string">&quot;客户端发送消息&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        binding.btnServerSendMsg.setOnClickListener &#123;</span><br><span class="line">            SocketServer.sendToClient(<span class="string">&quot;服务端发送消息&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">getIp</span><span class="params">()</span></span> =</span><br><span class="line">        intToIp((applicationContext.getSystemService(WIFI_SERVICE) <span class="keyword">as</span> WifiManager).connectionInfo.ipAddress)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">intToIp</span><span class="params">(ip: <span class="type">Int</span>)</span></span> =</span><br><span class="line">        <span class="string">&quot;<span class="subst">$&#123;(ip and <span class="number">0xFF</span>)&#125;</span>.<span class="subst">$&#123;(ip shr <span class="number">8</span> and <span class="number">0xFF</span>)&#125;</span>.<span class="subst">$&#123;(ip shr <span class="number">16</span> and <span class="number">0xFF</span>)&#125;</span>.<span class="subst">$&#123;(ip shr <span class="number">24</span> and <span class="number">0xFF</span>)&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">receiveClientMsg</span><span class="params">(success: <span class="type">Boolean</span>, msg: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">        Log.i(TAG, <span class="string">&quot;receiveClientMsg: <span class="variable">$msg</span>&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">receiveServerMsg</span><span class="params">(msg: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">        Log.i(TAG, <span class="string">&quot;receiveServerMsg: <span class="variable">$msg</span>&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">otherMsg</span><span class="params">(msg: <span class="type">String</span>)</span></span> &#123;</span><br><span class="line">        Log.i(TAG, <span class="string">&quot;otherMsg: <span class="variable">$msg</span>&quot;</span>)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div>
+
+
+<p>最终实现的效果如下</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/socket1.png"
+                      alt="在这里插入图片描述"
+                ><br>运行后依次点击按钮，可以得到如下日志<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/images/socket2.png"
+                      alt="在这里插入图片描述"
+                ></p>
+<hr>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38436214/article/details/126177462" >Android Socket通讯 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文简单介绍了Android 中Socket 的使用方法，并通过简单的示例帮助理解。<br>可以关注下<a class="link"   target="_blank" rel="noopener" href="http://weixin.qq.com/r/kRyxqZbENMtLrdLK90mD" >我的公众号 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a>，我会不定时分享文章和帮助解决问题</p>
+
+            </div>
+
+            
+                <div class="post-copyright-info">
+                    <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> Android Socket 简单介绍</li>
+        <li><strong>作者:</strong> 曾一峰</li>
+        <li><strong>创建于:</strong> 2023-08-11 14:54:55</li>
+        
+            <li>
+                <strong>更新于:</strong> 2023-08-11 07:07:16
+            </li>
+        
+        <li>
+            <strong>链接:</strong> https://blog.csdn.net/shop_and_sleep?type=blog/2023/08/11/Android-Socket-简单介绍/Android-Socket-简单介绍/
+        </li>
+        <li>
+            <strong>版权声明:</strong> 本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a> 进行许可。
+        </li>
+    </ul>
+</div>
+
+                </div>
+            
+
+            
+                <ul class="post-tags-box">
+                    
+                        <li class="tag-item">
+                            <a href="/tags/Socket/">#Socket</a>&nbsp;
+                        </li>
+                    
+                </ul>
+            
+
+            
+
+            
+                <div class="article-nav">
+                    
+                    
+                        <div class="article-next">
+                            <a class="next"
+                            rel="next"
+                            href="/2023/07/27/%E5%AE%89%E5%8D%93%E7%9A%84%E6%92%AD%E6%94%BE%E5%99%A8%E5%AF%B9%E6%AF%94%E4%B8%8E%E9%80%89%E5%9E%8B%EF%BC%88vlc%EF%BC%8CEXOplayer%EF%BC%8CIjkplayer%EF%BC%8CGSYVideoPlayer%EF%BC%89%E8%AF%A6%E7%BB%86%E8%BF%87%E7%A8%8B/%E5%AE%89%E5%8D%93%E7%9A%84%E6%92%AD%E6%94%BE%E5%99%A8%E5%AF%B9%E6%AF%94%E4%B8%8E%E9%80%89%E5%9E%8B%EF%BC%88vlc%EF%BC%8CEXOplayer%EF%BC%8CIjkplayer%EF%BC%8CGSYVideoPlayer%EF%BC%89%E8%AF%A6%E7%BB%86%E8%BF%87%E7%A8%8B/"
+                            >
+                                <span class="title flex-center">
+                                    <span class="post-nav-title-item">安卓的播放器对比与选型（vlc，EXOplayer，Ijkplayer，GSYVideoPlayer）📺详细过程</span>
+                                    <span class="post-nav-item">下一篇</span>
+                                </span>
+                                <span class="right arrow-icon flex-center">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </span>
+                            </a>
+                        </div>
+                    
+                </div>
+            
+
+
+            
+                <div class="comment-container">
+                    <div class="comments-container">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;评论
+    </div>
+    
+
+        
+            
+    <div id="gitalk-container"></div>
+    <script data-pjax
+            src="//cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+    <script data-pjax>
+
+        function loadGitalk() {
+            let __gitalk__pathname = decodeURI(location.pathname);
+            const __gitalk__pathnameLength = __gitalk__pathname.length;
+            const __gitalk__pathnameMaxLength = 50;
+            if (__gitalk__pathnameLength > __gitalk__pathnameMaxLength) {
+                __gitalk__pathname = __gitalk__pathname.substring(0, __gitalk__pathnameMaxLength - 3) + '...';
+            }
+
+            try {
+                Gitalk && new Gitalk({
+                    clientID: 'e2c821b7e7706fb9dfe1',
+                    clientSecret: '1e3e01d441df06461eb89d2f958fa38d84bb8053',
+                    repo: 'zyf-good.github.io',
+                    owner: 'zyf-good',
+                    admin: ['zyf-good'],
+                    id: __gitalk__pathname,
+                    language: 'zh-CN'
+                }).render('gitalk-container');
+
+            } catch (e) {
+                window.Gitalk = null;
+            }
+        }
+
+        if ('true') {
+            const loadGitalkTimeout = setTimeout(() => {
+                loadGitalk();
+                clearTimeout(loadGitalkTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadGitalk);
+        }
+    </script>
+
+
+
+        
+    
+</div>
+
+                </div>
+            
+        </div>
+
+        
+            <div class="toc-content-container">
+                <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">Android Socket 简单介绍</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81Socket%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-text">一、Socket是什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%99%BE%E5%BA%A6%E7%99%BE%E7%A7%91%E7%9A%84%E8%A7%A3%E9%87%8A"><span class="nav-text">百度百科的解释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E8%87%AA%E5%B7%B1%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-text">我自己的理解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%AE%80%E5%8D%95%E7%A4%BA%E4%BE%8B"><span class="nav-text">二、简单示例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%9C%8D%E5%8A%A1%E7%AB%AF"><span class="nav-text">1.服务端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-text">2.客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%B8%83%E5%B1%80"><span class="nav-text">3.布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%AE%9E%E7%8E%B0"><span class="nav-text">4.实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-text">参考</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol>
+
+    </div>
+</div>
+            </div>
+        
+    </div>
+</div>
+
+
+                
+
+            </div>
+            
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2023&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">曾一峰</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            <span class="powered-by-container">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 驱动</span>
+                <br>
+            <span class="theme-version-container">主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.1.3</a>
+        </div>
+        
+        
+        
+            <div id="start_div" style="display:none">
+                2023/4/18 12:00:00
+            </div>
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+        
+            <script async data-pjax>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-expand-width flex-center">
+            <i class="fa-regular fa-expand"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+
+</main>
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/layouts/navbarShrink.js"></script>
+
+<script src="/js/tools/scrollTopBottom.js"></script>
+
+<script src="/js/tools/lightDarkSwitch.js"></script>
+
+
+
+    
+<script src="/js/tools/localSearch.js"></script>
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/layouts/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js"></script>
+
+
+
+
+
+
+
+
+<div class="post-scripts pjax">
+    
+        
+<script src="/js/tools/tocToggle.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/layouts/toc.js"></script>
+
+<script src="/js/plugins/tabs.js"></script>
+
+    
+</div>
+
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax',
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            Global.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            Global.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            Global.refresh();
+        });
+    });
+</script>
+
+
+
+
+    <div id="aplayer"></div>
+
+<script src="/js/libs/APlayer.min.js"></script>
+
+
+<script src="/js/plugins/aplayer.js"></script>
+
+
+</body>
+</html>
